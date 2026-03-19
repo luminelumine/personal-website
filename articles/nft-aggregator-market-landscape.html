@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFT Aggregator Market Landscape — Luminescence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('../modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --body-font: 'DM Sans', sans-serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1a1a18;
+      --border: rgba(200, 198, 190, 0.12);
+      --text-bright: rgba(220, 218, 210, 0.95);
+      --text-mid: rgba(200, 198, 190, 0.85);
+      --text-dim: rgba(200, 198, 190, 0.70);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-vol {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-meta-item {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-meta-item span:first-child {
+      color: var(--text-dim);
+      opacity: 0.7;
+      min-width: 44px;
+    }
+
+    .sidebar-meta-item span:last-child {
+      color: var(--text-mid);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    .sidebar-foot-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 52px 60px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.1); }
+
+    /* ── Article header ── */
+    .article-header {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .article-vol {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 700px;
+    }
+
+    .article-tagline {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7ec8a0;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* ── Article body ── */
+    .article-body {
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-bright);
+    }
+
+    .article-body p {
+      font-family: var(--body-font);
+      margin-bottom: 18px;
+    }
+
+    .article-body h2 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-mid);
+      margin: 28px 0 12px;
+    }
+
+    .article-body ul,
+    .article-body ol {
+      padding-left: 20px;
+      margin-bottom: 18px;
+    }
+
+    .article-body li {
+      font-family: var(--body-font);
+      margin-bottom: 10px;
+      color: var(--text-bright);
+    }
+
+    .article-body strong {
+      color: var(--text-bright);
+      font-weight: bold;
+    }
+
+    .article-body u {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+    }
+
+    .article-body a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+      transition: color 0.2s;
+    }
+    .article-body a:hover { color: var(--text-bright); }
+
+    /* ── TL;DR block ── */
+    .tldr {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .tldr-label {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .tldr ol {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .tldr li {
+      font-family: var(--body-font);
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: var(--text-bright);
+      line-height: 1.7;
+    }
+    .tldr li:last-child { margin-bottom: 0; }
+
+    /* ── Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 12px;
+    }
+
+    .compare-table th {
+      font-family: var(--body-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .compare-table td {
+      font-family: var(--body-font);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200,198,190,0.05);
+      color: var(--text-bright);
+      vertical-align: top;
+      line-height: 1.6;
+      font-size: 12px;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
+    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+
+    .tick-yes { color: #7ec8a0; }
+    .tick-no  { color: var(--text-dim); opacity: 0.4; }
+
+    .table-caption {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin: -18px 0 32px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Footnote ── */
+    .footnote {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .footnote a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.15);
+    }
+
+    /* ── Fade ── */
+    #fade {
+      position: fixed; inset: 0;
+      background: #111110; opacity: 0;
+      pointer-events: none; z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-label">Writings</div>
+    <div class="sidebar-vol">Research</div>
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-title">NFT Aggregator Market Landscape</div>
+
+    <div class="sidebar-meta-row">
+      <div class="sidebar-meta-item">
+        <span>Vol</span><span>01</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Date</span><span>Jun 2022</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Type</span><span>Research</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
+      <div class="sidebar-foot-label">
+        Luminescence<br>
+        ID: LT-1997
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <div class="article-header">
+      <div class="article-vol">Vol. 01 &nbsp;/&nbsp; Jun 2022</div>
+      <div class="article-title">NFT Aggregator Market Landscape</div>
+      <div class="article-tagline"><span class="status-dot"></span>Research</div>
+    </div>
+
+    <div class="article-body">
+
+      <!-- TL;DR -->
+      <div class="tldr">
+        <div class="tldr-label">TL;DR</div>
+        <ol>
+          <li><strong>NFT aggregators solved a real friction problem.</strong> By mid-2022, NFT trading was fragmented across a dozen major marketplaces. Aggregators reduced gas costs by ~40% on batch operations and consolidated discovery, making them essential infrastructure for active collectors.</li>
+          <li><strong>Two distinct archetypes emerged.</strong> Purpose-built aggregators (Gem, Genie, NFTGo.io) prioritised transaction execution — batch purchase, floor sweep, batch listing. Experience-oriented platforms (Nifty Gateway, Flip.xyz, Mintable) led with curation, social features, and Web2 accessibility.</li>
+          <li><strong>Gem and Genie dominated the execution layer.</strong> Gem accumulated ~90,000 unique wallets and ~380,000 ETH in volume; Genie ~44,000 wallets and ~150,000 ETH — both within months of launch. Both were acquired: Gem by OpenSea, Genie by Uniswap.</li>
+          <li><strong>Batch purchase was the category's killer feature.</strong> Floor sweep was the most used function. Rarity ranking via Rarity Sniper integration was table stakes for both major aggregators.</li>
+          <li><strong>NFTGo.io signalled the next competitive dimension.</strong> Its analytics-first approach — whale activity, top mints, wallet leaderboards — suggested deeper data integration as an emerging differentiator beyond execution speed.</li>
+          <li><strong>Web2 onboarding remained an untapped opportunity in the core segment.</strong> Social login and credit card payments were available only on secondary platforms, leaving a clear gap for aggregators targeting the next wave of NFT adopters.</li>
+        </ol>
+      </div>
+
+      <h2>1. Market Context</h2>
+
+      <p>By Q2 2022, NFT trading had fragmented across OpenSea, LooksRare, X2Y2, NFTX, Foundation, Coinbase NFT, and others. For active collectors, this created compounding friction: price discovery required visiting multiple platforms, and executing multi-item purchases across venues was both gas-intensive and operationally tedious.</p>
+
+      <p>NFT aggregators addressed this by routing orders through smart contract bundles, reducing gas consumption by approximately 39–40% for batch operations relative to individual marketplace transactions. Beyond cost savings, aggregation solved an information asymmetry problem — rarity data, wallet behaviour, and floor sweep activity could be consolidated in one dashboard, shortening the research cycle.</p>
+
+      <p>The core value proposition proved compelling enough for the two leading purpose-built aggregators to attract acquisition interest from the largest protocols in the space within months of launch.</p>
+
+      <h2>2. Purpose-Built Aggregators</h2>
+
+      <h3>Platform Profiles</h3>
+
+      <p><strong>Gem</strong> launched in January 2022 after forking from Genie's codebase, and scaled rapidly to surpass its predecessor on both users (~90,000 cumulative unique wallets) and volume (~380,000 ETH). Its distinguishing feature was <u>batch transfer</u> — moving multiple NFTs to another wallet in a single transaction — valued by institutional holders and portfolio rebalancers. Acquired by OpenSea.</p>
+
+      <p><strong>Genie</strong>, the category pioneer (November 2021), established the product template that Gem refined. Its differentiation lay in a B2B layer under development: external APIs for index, trade, and fraud data, and a cross-marketplace price indexer. A USDC airdrop was announced for August 2022 as a user acquisition mechanism. Acquired by Uniswap.</p>
+
+      <p><strong>NFTGo.io</strong> was a pre-existing analytics platform preparing to enter aggregation. Its planned feature set was weaker on transaction execution — no floor sweep or batch listing at launch — but significantly stronger on analytics: whale activity tracking, top mint identification, and richer discovery tooling. It represented an analytics-first approach, targeting researchers and high-conviction collectors rather than high-frequency floor traders.</p>
+
+      <h3>Feature Comparison</h3>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Gem</th>
+            <th>Genie</th>
+            <th>NFTGo.io <em style="opacity:0.5;font-size:11px">(planned)</em></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Launch</td>
+            <td>Jan 2022</td>
+            <td>Nov 2021</td>
+            <td>Feb 2021 (aggregator: TBA)</td>
+          </tr>
+          <tr>
+            <td class="row-label">Owner</td>
+            <td>OpenSea (acquired)</td>
+            <td>Uniswap (acquired)</td>
+            <td>Independent</td>
+          </tr>
+          <tr>
+            <td class="row-label">Aggregated Marketplaces</td>
+            <td>OpenSea, Seaport, LooksRare, X2Y2, Rarible, Larva Labs, NFTX, NFT20, Xmarket</td>
+            <td>OpenSea, Seaport, LooksRare, X2Y2, NFTX, NFT20, Foundation, Coinbase NFT</td>
+            <td>[Tentative] OpenSea, Rarible, LooksRare, X2Y2, Element, Mintverse</td>
+          </tr>
+          <tr>
+            <td class="row-label">Cumulative Users</td>
+            <td>~90,000 wallets</td>
+            <td>~44,000 wallets</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td class="row-label">Total Volume</td>
+            <td>~380,000 ETH</td>
+            <td>~150,000 ETH</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td class="row-label">NFT Discovery</td>
+            <td>Trending by volume; portfolio performance; recent sweeps</td>
+            <td>Recent purchases & sweeps; trending; wallet leaderboard</td>
+            <td>Trending; top mints & sales; leaderboard; whale activity</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Purchase</td>
+            <td class="tick-yes">✓</td>
+            <td class="tick-yes">✓</td>
+            <td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Floor Sweep</td>
+            <td class="tick-yes">✓ by item # or ETH value</td>
+            <td class="tick-yes">✓ by item # or ETH value</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Listing</td>
+            <td class="tick-yes">✓ OpenSea, LooksRare, X2Y2</td>
+            <td class="tick-yes">✓ OpenSea, LooksRare, X2Y2</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Transfer</td>
+            <td class="tick-yes">✓ multi-NFT in one tx</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Rarity Ranking</td>
+            <td class="tick-yes">✓ via Rarity Sniper</td>
+            <td class="tick-yes">✓ via Rarity Sniper</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Gas Savings</td>
+            <td>~39%</td>
+            <td>~40%</td>
+            <td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Suspicious Item Detection</td>
+            <td>OpenSea-flagged items marked</td>
+            <td>OpenSea-flagged items marked</td>
+            <td>Pre-checkout alert</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="table-caption">Table 1. Purpose-built aggregator comparison. User and volume data as of 24 Jun 2022 (Dune Analytics).</p>
+
+      <h2>3. Secondary Aggregators</h2>
+
+      <h3>Platform Profiles</h3>
+
+      <p><strong>Nifty Gateway</strong> (est. 2018, owned by Gemini) positioned itself as a premium digital art platform with a strong accessibility emphasis. Its standout feature was <u>Global Offer</u> — bidding on any item in a collection by price and trait selection — a mechanism not available on purpose-built aggregators. Gas savings of ~70% were achieved through custom contract optimisation. Credit card and Gemini balance payments made it the most Web2-friendly option in the comparison.</p>
+
+      <p><strong>Flip.xyz</strong> (January 2022) was a social-first NFT tracker. Its aggregation function was passive — linking users to external marketplace websites rather than executing on-chain — making its value primarily in discovery and social signalling. Users could follow collections and wallets and track activity through a feed interface analogous to social media. Pre-scale at the time of analysis (~100 Google Play downloads), but occupying a distinct positioning around community and curation.</p>
+
+      <p><strong>Mintable</strong> (November 2020, aggregation added November 2021) distinguished itself with gas-free minting on ImmutableX and a native in-platform messaging system, targeting creators more than collectors. Monthly active users stood at ~40,000, with monthly volume in the 200–300 ETH range. Its aggregation covered all ERC-721 tokens without specific marketplace partnerships — broad but shallow.</p>
+
+      <h3>Feature Comparison</h3>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nifty Gateway</th>
+            <th>Flip.xyz</th>
+            <th>Mintable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Launch</td>
+            <td>Oct 2018</td>
+            <td>Jan 2022</td>
+            <td>Nov 2020</td>
+          </tr>
+          <tr>
+            <td class="row-label">Owner</td>
+            <td>Gemini</td>
+            <td>Independent</td>
+            <td>Independent</td>
+          </tr>
+          <tr>
+            <td class="row-label">Chains</td>
+            <td>Ethereum</td>
+            <td>Ethereum</td>
+            <td>Ethereum, ImmutableX</td>
+          </tr>
+          <tr>
+            <td class="row-label">User Base</td>
+            <td>N/A</td>
+            <td>~100+ downloads (Google Play)</td>
+            <td>~40,000 MAU</td>
+          </tr>
+          <tr>
+            <td class="row-label">Monthly Volume</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>~200–300 ETH</td>
+          </tr>
+          <tr>
+            <td class="row-label">NFT Discovery</td>
+            <td>Curated & verified collections; buy/sell timeline</td>
+            <td>Featured collections; wallet/collection feed; trending by volume</td>
+            <td>Category browse; sort by volume/sales; top & new collections</td>
+          </tr>
+          <tr>
+            <td class="row-label">Global Offer</td>
+            <td class="tick-yes">✓ by price & trait</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bulk Purchase</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Rarity Ranking</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-yes">✓ Flip ranking</td>
+            <td class="tick-yes">✓ Mintable ranking</td>
+          </tr>
+          <tr>
+            <td class="row-label">Gas Savings</td>
+            <td>~70% via custom contracts</td>
+            <td class="tick-no">✗ links to external sites</td>
+            <td>Gas-free minting</td>
+          </tr>
+          <tr>
+            <td class="row-label">Social Features</td>
+            <td class="tick-no">✗</td>
+            <td class="tick-yes">✓ follow collections & wallets; activity feed</td>
+            <td class="tick-yes">✓ in-platform messaging</td>
+          </tr>
+          <tr>
+            <td class="row-label">Payment Options</td>
+            <td>Credit card, prepaid ETH, Gemini balance, MetaMask</td>
+            <td>Links to external marketplace</td>
+            <td>MetaMask, credit card</td>
+          </tr>
+          <tr>
+            <td class="row-label">Sign-In Options</td>
+            <td>Email, MetaMask</td>
+            <td>Apple, Google, Twitter, wallet, email</td>
+            <td>Email, Google, Facebook</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="table-caption">Table 2. Secondary aggregator comparison. Mintable MAU data from Mintable March 2022 Townhall.</p>
+
+      <h2>4. Cross-Platform Feature Summary</h2>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Gem</th>
+            <th>Genie</th>
+            <th>NFTGo</th>
+            <th>Nifty</th>
+            <th>Flip</th>
+            <th>Mintable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">NFT Discovery</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Purchase</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Floor Sweep</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-no">✗</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Listing</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-no">✗</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Batch Transfer</td>
+            <td class="tick-yes">✓</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Rarity Ranking</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-no">✗</td>
+            <td class="tick-no">✗</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Gas Optimisation</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+            <td class="tick-yes">✓</td><td class="tick-no">✗</td><td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Suspicious Item Detection</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Global Offer</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+            <td class="tick-yes">✓</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+          </tr>
+          <tr>
+            <td class="row-label">Social Features</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+            <td class="tick-no">✗</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Web2 Sign-In</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+            <td class="tick-yes">✓</td><td class="tick-yes">✓</td><td class="tick-yes">✓</td>
+          </tr>
+          <tr>
+            <td class="row-label">Credit Card Payment</td>
+            <td class="tick-no">✗</td><td class="tick-no">✗</td><td class="tick-no">✗</td>
+            <td class="tick-yes">✓</td><td class="tick-no">✗</td><td class="tick-yes">✓</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="table-caption">Table 3. Consolidated feature matrix across all six platforms, Q2 2022.</p>
+
+      <h2>5. Key Findings</h2>
+
+      <h3>Two distinct product archetypes</h3>
+      <p>The market divided cleanly into <u>execution-optimised aggregators</u> (Gem, Genie, NFTGo.io) and <u>experience-optimised aggregators</u> (Nifty Gateway, Flip.xyz, Mintable). The former prioritised gas efficiency, batch operations, and cross-marketplace liquidity. The latter prioritised onboarding familiarity, content curation, and social engagement. No platform had bridged both archetypes at scale by mid-2022.</p>
+
+      <h3>Batch purchase as the dominant use case</h3>
+      <p>Batch purchase — and floor sweep as a specific variant — was the single most used function on purpose-built aggregators, and the primary driver of user adoption. NFTGo.io's absence of floor sweep at launch was a notable gap given how central it was to the active collector workflow.</p>
+
+      <h3>Acquisition velocity signals category maturity</h3>
+      <p>The near-simultaneous acquisitions of Gem (OpenSea) and Genie (Uniswap) within months of their launches indicated that the aggregation layer was being treated as strategic infrastructure, not an independent product category. Future aggregator development would likely occur within larger protocol ecosystems.</p>
+
+      <h3>Analytics as emerging differentiator</h3>
+      <p>NFTGo.io's positioning surfaced analytics depth — whale tracking, mint activity, behavioural signals — as an underexplored moat. Platforms that could integrate execution efficiency with institutional-grade analytics were positioned to capture higher-value users that Gem and Genie's execution-only focus left underserved.</p>
+
+      <h3>Web2 onboarding as an untapped gap in the core segment</h3>
+      <p>Social sign-in and credit card payments were exclusive to secondary platforms. Purpose-built aggregators required a Web3 wallet, creating a barrier for new market entrants. As the addressable NFT market broadened beyond crypto-native users, this represented a clear onboarding opportunity for any aggregator willing to invest in custodial or hybrid infrastructure.</p>
+
+      <div class="footnote">
+        <sup>1</sup> User and volume data from <a href="https://dune.com/sohwak/NFT-Aggregator-(OpenSea-via-GemGenie)-Overview" target="_blank" rel="noopener">Dune Analytics — NFT Aggregator Overview</a>, as of 24 Jun 2022.<br>
+        <sup>2</sup> Mintable MAU data from Mintable March 2022 Townhall presentation.<br>
+        <sup>3</sup> Feature availability based on direct platform review, 23–28 Jun 2022.
+      </div>
+
+    </div><!-- /article-body -->
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+
+</body>
+</html>

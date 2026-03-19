@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lending-AMM Convergence: A Comparative Study of Euler and Fluid — Luminescence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('../modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --body-font: 'DM Sans', sans-serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1a1a18;
+      --border: rgba(200, 198, 190, 0.12);
+      --text-bright: rgba(220, 218, 210, 0.95);
+      --text-mid: rgba(200, 198, 190, 0.85);
+      --text-dim: rgba(200, 198, 190, 0.70);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-vol {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-meta-item {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-meta-item span:first-child {
+      color: var(--text-dim);
+      opacity: 0.7;
+      min-width: 44px;
+    }
+
+    .sidebar-meta-item span:last-child {
+      color: var(--text-mid);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    .sidebar-foot-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 52px 60px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.1); }
+
+    /* ── Article header ── */
+    .article-header {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .article-vol {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 700px;
+    }
+
+    .article-tagline {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7ec8a0;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* ── Article body ── */
+    .article-body {
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-bright);
+    }
+
+    .article-body p {
+      font-family: var(--body-font);
+      margin-bottom: 18px;
+    }
+
+    .article-body h2 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-mid);
+      margin: 28px 0 12px;
+    }
+
+    .article-body ul,
+    .article-body ol {
+      padding-left: 20px;
+      margin-bottom: 18px;
+    }
+
+    .article-body li {
+      font-family: var(--body-font);
+      margin-bottom: 10px;
+      color: var(--text-bright);
+    }
+
+    .article-body strong {
+      color: var(--text-bright);
+      font-weight: bold;
+    }
+
+    .article-body u {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+    }
+
+    .article-body a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+      transition: color 0.2s;
+    }
+    .article-body a:hover { color: var(--text-bright); }
+
+    /* ── Summary box ── */
+    .summary-box {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .summary-label {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── Note ── */
+    .note {
+      border-left: 2px solid var(--border);
+      background: rgba(200,198,190,0.01);
+      padding: 10px 14px;
+      margin: 16px 0 20px;
+      color: var(--text-dim);
+      font-size: 13px;
+      line-height: 1.7;
+      font-family: var(--body-font);
+    }
+
+    /* ── Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 12px;
+    }
+
+    .compare-table th {
+      font-family: var(--body-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .compare-table td {
+      font-family: var(--body-font);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200,198,190,0.05);
+      color: var(--text-bright);
+      vertical-align: top;
+      line-height: 1.6;
+      font-size: 12px;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
+    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+
+    /* ── Figure grid ── */
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 14px 0 24px;
+    }
+
+    .figure-grid.single { grid-template-columns: 1fr; }
+
+    .figure-card {
+      border: 1px solid var(--border);
+      background: rgba(200,198,190,0.02);
+      padding: 8px;
+    }
+
+    .figure-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: #060606;
+    }
+
+    .figure-cap {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    /* ── Footnote ── */
+    .footnote {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .footnote a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.15);
+    }
+
+    /* ── Fade ── */
+    #fade {
+      position: fixed; inset: 0;
+      background: #111110; opacity: 0;
+      pointer-events: none; z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-label">Writings</div>
+    <div class="sidebar-vol">Research</div>
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-title">Lending-AMM<br>Convergence</div>
+
+    <div class="sidebar-meta-row">
+      <div class="sidebar-meta-item">
+        <span>Vol</span><span>06</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Date</span><span>Jun 2025</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Type</span><span>Research</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
+      <div class="sidebar-foot-label">
+        Luminescence<br>
+        ID: LT-1997
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <div class="article-header">
+      <div class="article-vol">Vol. 06 &nbsp;/&nbsp; Jun 2025</div>
+      <div class="article-title">Lending-AMM Convergence</div>
+      <div class="article-tagline"><span class="status-dot"></span>Research</div>
+    </div>
+
+    <div class="article-body">
+
+      <div class="summary-box">
+        <div class="summary-label">EXECUTIVE SUMMARY</div>
+        <p>This report examines whether integrating lending rails and AMM liquidity can sustainably improve capital efficiency in DeFi. Euler and Fluid are used as comparative case studies because both protocols explicitly design for this convergence, but through different architectures.</p>
+        <p>The core finding is that <strong>Lending x AMM</strong> meaningfully improves capital reuse in theory and in early growth metrics, but scalability still depends on three constraints: depth in stressed markets, liquidation quality under volatility, and risk-governance discipline as protocol complexity increases.</p>
+      </div>
+
+      <h2>1. Why Lending and AMM Integration Matters</h2>
+      <p>Traditional DeFi market structure separates two functions:</p>
+      <ul>
+        <li><strong>Lending protocols</strong> optimize idle capital utilization (deposit/borrow rates).</li>
+        <li><strong>AMMs</strong> optimize price discovery and execution liquidity (swap fees).</li>
+      </ul>
+      <p>Because these functions are usually isolated, one unit of capital often earns one type of yield at one time. The integration thesis is that the same balance sheet can support both borrowing activity and swap execution, potentially improving yield density per dollar of collateral.</p>
+
+      <div class="note">
+        For readers new to this topic: "binding lending with AMM" means a position is no longer static. In integrated systems, trading activity can directly change debt composition, collateral usage, or LP risk profile. That is the source of both higher efficiency and higher model complexity.
+      </div>
+
+      <h2>2. Market Context</h2>
+      <p>The lending market remains highly concentrated, with Aave still the structural leader. However, Euler and Fluid have posted materially higher short-window growth rates, suggesting clear demand for alternative efficiency models.</p>
+      <p>For Fluid specifically, a key growth driver is <strong>ultra-low swap pricing</strong>: stablecoin pairs (e.g., USDT/USDC) can be priced as low as <strong>0.001%</strong>, below most competing DEX levels. This is economically feasible because LP economics are not funded only by swap fees; lending-side yield can subsidize LP returns, allowing lower explicit trading fees while preserving LP incentives.</p>
+
+      <div class="figure-grid">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image2.png" alt="Lending market share snapshot">
+          <figcaption class="figure-cap">Figure 1. Lending market structure snapshot (Aave remains dominant).</figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image3.png" alt="180-day growth comparison">
+          <figcaption class="figure-cap">Figure 2. Relative growth over 180 days (Euler and Fluid outpacing legacy baseline).</figcaption>
+        </figure>
+      </div>
+
+      <div class="figure-grid single">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image5.png" alt="DEX volume rank">
+          <figcaption class="figure-cap">Figure 3. Both protocols entering top-10 30-day ETH DEX volume ranking.</figcaption>
+        </figure>
+      </div>
+
+      <h2>3. Comparative Framework: Euler vs Fluid</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width: 18%">Dimension</th>
+            <th style="width: 41%">Fluid</th>
+            <th style="width: 41%">Euler</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Strategic Direction</td>
+            <td>Targets high-efficiency collateralized stablecoin borrowing and tightly integrated execution liquidity.</td>
+            <td>Builds modular lending markets with curator-managed risk parameters, extended by EulerSwap liquidity design.</td>
+          </tr>
+          <tr>
+            <td>Key Mechanism</td>
+            <td>Smart Collateral + Smart Debt, where trade flow can alter debt composition dynamically.</td>
+            <td>Isolated vault architecture + JIT liquidity, allowing LPs to scale effective exposure via lending rails.</td>
+          </tr>
+          <tr>
+            <td>Current Scale (source snapshot)</td>
+            <td>Active Loans ~902M; TVL ~1.7B.</td>
+            <td>Active Loans ~1B; TVL ~2B.</td>
+          </tr>
+          <tr>
+            <td>Competitive Reference</td>
+            <td>Closer to Aave-adjacent collateralized borrowing flows.</td>
+            <td>Closer to Morpho-like modular market expansion logic.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. Mechanism Primer</h2>
+
+      <h3>4.1 Fluid: Dynamic Debt Recomposition</h3>
+      <p>In Fluid's model, a borrower's liabilities are not treated as fully static. As swaps occur in the integrated pool, debt composition can be rebalanced across assets. This means execution flow can partially offset borrow cost and convert inactive collateral into a fee-generating component.</p>
+      <p><strong>Illustrative flow:</strong> assume a borrower starts with <strong>100 USDT debt</strong>. A trader wants to swap <strong>80 USDT for 80 USDC</strong>. The borrower effectively borrows <strong>80 USDC</strong> against collateral, delivers USDC to the trader, and receives trading fees plus <strong>80 USDT</strong>. After this transaction, the borrower's debt composition becomes <strong>20 USDT + 80 USDC</strong> instead of the original single-asset USDT debt.</p>
+
+      <div class="figure-grid">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image7.png" alt="Fluid architecture">
+          <figcaption class="figure-cap">Figure 4. Fluid architecture overview.</figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image8.png" alt="Fluid debt adjustment">
+          <figcaption class="figure-cap">Figure 5. Example of debt-side adjustment driven by swap flow.</figcaption>
+        </figure>
+      </div>
+
+      <h3>4.2 Euler: Modular Risk + JIT Liquidity</h3>
+      <p>Euler separates risk configuration into market-level modules (vault-style design), then overlays swap-side liquidity behavior. JIT liquidity aims to provide execution support at the moment of trade using limited initial LP capital, with borrowing capacity filling the gap.</p>
+
+      <div class="figure-grid">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image9.png" alt="Euler architecture">
+          <figcaption class="figure-cap">Figure 6. Euler / EulerSwap architecture overview.</figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image13.png" alt="JIT liquidity mechanism">
+          <figcaption class="figure-cap">Figure 7. JIT liquidity illustration in Euler-style execution logic.</figcaption>
+        </figure>
+      </div>
+
+      <h2>5. Quantitative Snapshot (As of 2025-06-20)</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width: 24%">Metric</th>
+            <th style="width: 28%">Market Share</th>
+            <th style="width: 24%">90D Growth</th>
+            <th style="width: 24%">Interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Active Loans</td>
+            <td>Fluid 4.0% / Euler 3.7%</td>
+            <td>Fluid +54% / Euler +133%</td>
+            <td>Euler's growth slope is steeper; Fluid shows broader current usage.</td>
+          </tr>
+          <tr>
+            <td>TVL</td>
+            <td>Fluid 3.3% / Euler 2.9%</td>
+            <td>Fluid +37% / Euler +118%</td>
+            <td>Both protocols are in share-capture mode from a smaller base.</td>
+          </tr>
+          <tr>
+            <td>DAU</td>
+            <td>Fluid 16.6% / Euler 11.4%</td>
+            <td>Fluid +125% / Euler +267%</td>
+            <td>User participation is expanding rapidly, especially on Euler.</td>
+          </tr>
+          <tr>
+            <td>DEX Volume</td>
+            <td>Both are top-10 on ETH 30D basis</td>
+            <td>Sustained expansion phase</td>
+            <td>Integration model is gaining relevance at execution layer.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="figure-grid">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image21.png" alt="Fluid active loans">
+          <figcaption class="figure-cap">Figure 8. Active Loans trend (Fluid).</figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image22.png" alt="Euler active loans">
+          <figcaption class="figure-cap">Figure 9. Active Loans trend (Euler).</figcaption>
+        </figure>
+      </div>
+
+      <div class="figure-grid">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image25.png" alt="Fluid DAU">
+          <figcaption class="figure-cap">Figure 10. DAU trend (Fluid).</figcaption>
+        </figure>
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image26.png" alt="Euler DAU">
+          <figcaption class="figure-cap">Figure 11. DAU trend (Euler).</figcaption>
+        </figure>
+      </div>
+
+      <div class="figure-grid single">
+        <figure class="figure-card">
+          <img src="lending-x-amm-euler-fluid-assets/image27.png" alt="DEX volume snapshot">
+          <figcaption class="figure-cap">Figure 12. DEX volume snapshot.</figcaption>
+        </figure>
+      </div>
+
+      <h2>6. Risk Assessment</h2>
+      <ul>
+        <li><strong>Liquidity depth under stress:</strong> if exits are one-sided, AMM depth can thin out quickly and worsen liquidation slippage.</li>
+        <li><strong>Path-dependent debt risk:</strong> dynamic debt recomposition can amplify borrower health deterioration under persistent directional flow.</li>
+        <li><strong>Execution dependency:</strong> auction/liquidation design requires active liquidator participation and reliable on-chain execution capacity.</li>
+        <li><strong>Institutional migration inertia:</strong> large allocators still prioritize proven depth and security history over headline efficiency.</li>
+      </ul>
+
+      <h2>7. Conclusion</h2>
+      <p>Lending-AMM convergence is best viewed as a structural design upgrade rather than a single feature narrative. Euler and Fluid demonstrate that deeper coupling between borrowing and execution can produce meaningful growth and improve capital utilization.</p>
+      <p>The next milestone is not incremental user growth alone, but resilience at larger scale: liquidation quality in volatile windows, stable depth across key pairs, and disciplined risk governance. Protocols that can meet those conditions are likely to define the next generation of DeFi core infrastructure.</p>
+
+      <h2>References</h2>
+      <ul>
+        <li><a href="https://x.com/cmdefi/status/1928295871847846023" target="_blank">Source Thread</a></li>
+        <li><a href="https://tokenterminal.com/explorer/markets/lending/metrics/active-loans" target="_blank">TokenTerminal Lending Metrics</a></li>
+        <li><a href="https://www.euler.finance/blog/introducing-eulerswap" target="_blank">EulerSwap Introduction</a></li>
+        <li><a href="https://github.com/euler-xyz/euler-swap/blob/master/docs/whitepaper/EulerSwap_White_Paper.pdf" target="_blank">EulerSwap Whitepaper</a></li>
+        <li><a href="https://dune.com/dknugo/fluid-dex" target="_blank">Fluid Dune Dashboard</a></li>
+      </ul>
+
+    </div><!-- /article-body -->
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+
+</body>
+</html>

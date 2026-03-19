@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writings — Lumine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --modernline: 'Modernline', 'Cormorant Garamond', Georgia, serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1e1e1c;
+      --mosaic-width: 15%;
+      --border: rgba(200, 198, 190, 0.12);
+      --border-hover: rgba(200, 198, 190, 0.35);
+      --text-bright: rgb(32, 28, 13);
+      --text-mid: rgba(200, 198, 190, 0.90);
+      --text-dim: rgba(200, 198, 190, 0.80);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-logo {
+      font-family: var(--modernline);
+      font-size: 15px;
+      letter-spacing: 0.28em;
+      text-transform: lowercase;
+      color: var(--text-bright);
+      text-decoration: none;
+      margin-bottom: 32px;
+      display: block;
+    }
+    .sidebar-logo:hover { opacity: 0.7; }
+
+    .sidebar-title {
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    .nav-item {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-item::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--text-bright);
+      border-radius: 50%;
+      opacity: 0;
+      flex-shrink: 0;
+    }
+    .nav-item.active { color: var(--text-bright); }
+    .nav-item.active::before { opacity: 1; }
+    .nav-item:hover { color: var(--text-mid); }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      line-height: 2;
+      text-transform: uppercase;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 28px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 36px 18px 36px 8px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.12); }
+
+    /* ── Card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 34px;
+    }
+
+    /* ── Ticket card ── */
+    .ticket-card {
+      position: relative;
+      min-height: 150px;
+      width: 92%;
+      justify-self: start;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 16px 16px 12px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.25s ease;
+    }
+    .ticket-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-hover);
+    }
+
+    .card-canvas {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: var(--mosaic-width);
+      height: 100%;
+      opacity: 0.30;
+      pointer-events: none;
+    }
+
+    .card-vol {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: rgba(230, 226, 214, 0.95);
+      text-transform: uppercase;
+      line-height: 1.65;
+      padding-right: calc(var(--mosaic-width) + 2%);
+      flex: 1;
+      word-break: break-word;
+    }
+
+    .card-date {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      margin-bottom: 7px;
+      margin-top: 8px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    .status-dot { background: #7ec8a0; }
+
+    #fade {
+      position: fixed;
+      inset: 0;
+      background: #111110;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 1200px) {
+      .ticket-card {
+        width: 100%;
+      }
+      .main {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <div class="sidebar">
+    <div class="sidebar-title">Writings</div>
+    <div class="sidebar-divider"></div>
+
+    <div style="height:28px"></div>
+    <a class="back-btn" href="index.html" onclick="fadeOut(event,'index.html')">← Back</a>
+
+    <div class="sidebar-footer">
+      Lumine<br>
+      Vol. 01<br>
+      ID: LT-1997
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="card-grid">
+
+      <!-- Vol 06 — diagonal lines -->
+      <a class="ticket-card" href="articles/lending-x-amm-euler-fluid-research.html" onclick="fadeOut(event,'articles/lending-x-amm-euler-fluid-research.html')">
+        <div class="card-vol">Vol. 06</div>
+        <div class="card-title">Lending-AMM Convergence: A Comparative Study of Euler and Fluid</div>
+        <div class="card-date">06.2025</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="lines" data-seed="0.15"></canvas>
+      </a>
+
+      <!-- Vol 05 — scattered dots -->
+      <a class="ticket-card" href="articles/fartcoin-insider-manipulation.html" onclick="fadeOut(event,'articles/fartcoin-insider-manipulation.html')">
+        <div class="card-vol">Vol. 05</div>
+        <div class="card-title">The Fartcoin Insider Playbook:<br>Buy Low, Dump Loud</div>
+        <div class="card-date">02.2025</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="dots" data-seed="0.45"></canvas>
+      </a>
+
+      <!-- Vol 04 — scan lines -->
+      <a class="ticket-card" href="articles/nft-ticketing-market-research.html" onclick="fadeOut(event,'articles/nft-ticketing-market-research.html')">
+        <div class="card-vol">Vol. 04</div>
+        <div class="card-title">Can NFT Ticketing Go Mainstream?</div>
+        <div class="card-date">04.2023</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="scan" data-seed="0.82"></canvas>
+      </a>
+
+      <!-- Vol 03 — ripple waves -->
+      <a class="ticket-card" href="articles/nft-creator-empowerment-tools-market-research.html" onclick="fadeOut(event,'articles/nft-creator-empowerment-tools-market-research.html')">
+        <div class="card-vol">Vol. 03</div>
+        <div class="card-title">NFT Creator Tools at a Crossroads</div>
+        <div class="card-date">11.2022</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="ripple" data-seed="1.12"></canvas>
+      </a>
+
+      <!-- Vol 02 — cross grid -->
+      <a class="ticket-card" href="articles/nft-omnichain-research.html" onclick="fadeOut(event,'articles/nft-omnichain-research.html')">
+        <div class="card-vol">Vol. 02</div>
+        <div class="card-title">On the Promise of Omnichain NFTs</div>
+        <div class="card-date">10.2022</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="grid" data-seed="1.55"></canvas>
+      </a>
+
+      <!-- Vol 01 — gradient bars -->
+      <a class="ticket-card" href="articles/nft-aggregator-market-landscape.html" onclick="fadeOut(event,'articles/nft-aggregator-market-landscape.html')">
+        <div class="card-vol">Vol. 01</div>
+        <div class="card-title">NFT Aggregator Market Landscape</div>
+        <div class="card-date">06.2022</div>
+        <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
+        <canvas class="card-canvas" data-type="bars" data-seed="1.88"></canvas>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+
+  // Align first-row card top border with the sidebar divider line.
+  function alignCardTopToSidebarDivider() {
+    const wrapper = document.querySelector('.wrapper');
+    const divider = document.querySelector('.sidebar-divider');
+    const main = document.querySelector('.main');
+    if (!wrapper || !divider || !main) return;
+
+    // Keep mobile/tablet layout controlled by CSS media rules.
+    if (window.innerWidth <= 1200) {
+      main.style.paddingTop = '';
+      return;
+    }
+
+    const wrapperTop = wrapper.getBoundingClientRect().top;
+    const dividerTop = divider.getBoundingClientRect().top;
+    const targetTop = Math.max(0, Math.round(dividerTop - wrapperTop));
+
+    main.style.paddingTop = targetTop + 'px';
+  }
+
+  window.addEventListener('load', alignCardTopToSidebarDivider);
+  window.addEventListener('resize', alignCardTopToSidebarDivider);
+  setTimeout(alignCardTopToSidebarDivider, 60);
+
+  /* ── Mosaic pixel noise shader (same for all cards, seed provides variation) ── */
+  const fsSource = `
+    precision highp float;
+    uniform vec2 uR; uniform float uT; uniform float uS;
+    float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898,78.233))) * 43758.5453); }
+    void main() {
+      vec2 st = gl_FragCoord.xy / uR;
+      float n = hash(floor(st * 38.0) + uS + uT * 0.04);
+      gl_FragColor = vec4(0.89, 0.87, 0.84, step(0.68, n));
+    }
+  `;
+
+  document.querySelectorAll('.card-canvas').forEach(canvas => {
+    const gl = canvas.getContext('webgl');
+    if (!gl) return;
+    const seed = parseFloat(canvas.dataset.seed);
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width  = rect.width  * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+    resize();
+
+    const vsSource = `attribute vec4 aP; void main() { gl_Position = aP; }`;
+
+    const program = gl.createProgram();
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, vsSource); gl.compileShader(vs);
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fs, fsSource); gl.compileShader(fs);
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,1,1,-1,-1,1,-1]), gl.STATIC_DRAW);
+
+    const pos = gl.getAttribLocation(program, 'aP');
+    const res = gl.getUniformLocation(program, 'uR');
+    const tim = gl.getUniformLocation(program, 'uT');
+    const sed = gl.getUniformLocation(program, 'uS');
+
+    function render(t) {
+      gl.clearColor(0,0,0,0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(program);
+      gl.enableVertexAttribArray(pos);
+      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+      gl.uniform2f(res, canvas.width, canvas.height);
+      gl.uniform1f(tim, t * 0.001);
+      gl.uniform1f(sed, seed);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      requestAnimationFrame(render);
+    }
+    render(0);
+  });
+</script>
+
+</body>
+</html>

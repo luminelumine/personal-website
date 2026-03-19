@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On the Promise of Omnichain NFTs — Luminescence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('../modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --body-font: 'DM Sans', sans-serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1a1a18;
+      --border: rgba(200, 198, 190, 0.12);
+      --text-bright: rgba(220, 218, 210, 0.95);
+      --text-mid: rgba(200, 198, 190, 0.85);
+      --text-dim: rgba(200, 198, 190, 0.70);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-vol {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-meta-item {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-meta-item span:first-child {
+      color: var(--text-dim);
+      opacity: 0.7;
+      min-width: 44px;
+    }
+
+    .sidebar-meta-item span:last-child {
+      color: var(--text-mid);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    .sidebar-foot-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 52px 60px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.1); }
+
+    /* ── Article header ── */
+    .article-header {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .article-vol {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 700px;
+    }
+
+    .article-tagline {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7ec8a0;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* ── Article body ── */
+    .article-body {
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-bright);
+    }
+
+    .article-body p {
+      font-family: var(--body-font);
+      margin-bottom: 18px;
+    }
+
+    .article-body h2 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-mid);
+      margin: 28px 0 12px;
+    }
+
+    .article-body ul,
+    .article-body ol {
+      padding-left: 20px;
+      margin-bottom: 18px;
+    }
+
+    .article-body li {
+      font-family: var(--body-font);
+      margin-bottom: 10px;
+      color: var(--text-mid);
+    }
+
+    .article-body li ul {
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .article-body strong {
+      color: var(--text-bright);
+      font-weight: bold;
+    }
+
+    .article-body u {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+    }
+
+    .article-body a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+      transition: color 0.2s;
+    }
+    .article-body a:hover { color: var(--text-bright); }
+
+    /* ── TL;DR block ── */
+    .tldr {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .tldr-label {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .tldr ol {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .tldr li {
+      font-family: var(--body-font);
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: var(--text-bright);
+      line-height: 1.7;
+    }
+    .tldr li:last-child { margin-bottom: 0; }
+
+    /* ── Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 12px;
+    }
+
+    .compare-table th {
+      font-family: var(--body-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .compare-table td {
+      font-family: var(--body-font);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200,198,190,0.05);
+      color: var(--text-bright);
+      vertical-align: top;
+      line-height: 1.6;
+      font-size: 12px;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
+    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+
+    .table-caption {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin: -18px 0 32px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Footnote ── */
+    .footnote {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .footnote a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.15);
+    }
+
+    /* ── Fade ── */
+    #fade {
+      position: fixed; inset: 0;
+      background: #111110; opacity: 0;
+      pointer-events: none; z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-label">Writings</div>
+    <div class="sidebar-vol">Research</div>
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-title">On the Promise of<br>Omnichain NFTs</div>
+
+    <div class="sidebar-meta-row">
+      <div class="sidebar-meta-item">
+        <span>Vol</span><span>02</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Date</span><span>Oct 2022</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Type</span><span>Research</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
+      <div class="sidebar-foot-label">
+        Luminescence<br>
+        ID: LT-1997
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <div class="article-header">
+      <div class="article-vol">Vol. 02 &nbsp;/&nbsp; Oct 2022</div>
+      <div class="article-title">On the Promise of Omnichain NFTs</div>
+      <div class="article-tagline"><span class="status-dot"></span>Research</div>
+    </div>
+
+    <div class="article-body">
+
+      <!-- TL;DR -->
+      <div class="tldr">
+        <div class="tldr-label">TL;DR</div>
+        <ol>
+          <li><strong>The concept of omnichain NFTs attracted growing market interest with the arrival of LayerZero in Apr 2022.</strong> Omnichain NFTs are NFTs that can exist/be bridged on more than one chain. The first omnichain collection Gh0stly Gh0st built on 7 chains soon ranked top 10 projects by trading volume on OpenSea a week after launch.</li>
+          <li><strong>There are two key narratives around omnichain NFTs: wider utility and simpler payment process.</strong> Wider utility enables integration with games or DApps on different chains and enhanced trading liquidity. Simpler payment allows users to purchase NFTs on chain A with currency on chain B, without bridging.</li>
+          <li><strong>There are two main types of players: platforms (marketplace, launchpad, bridges) and collections (PFPs).</strong> Most platforms are built on LayerZero or Axelar and support EVM chains only.</li>
+          <li><strong>The market sizing of omnichain NFTs is still fairly small.</strong> 90% of omnichain NFT collection volume is still generated on Ethereum, with low trading volume on all other chains.</li>
+          <li><strong>Key challenges include Ethereum dominance, lack of cross-chain utility, and complexity</strong> — higher tech barriers for web2 creators compared to regular NFTs.</li>
+          <li><strong>Future potential depends on multichain development, open integration, and cross-chain utility expansion</strong> across different chains and ecosystems.</li>
+          <li><strong>Short-term opportunity is limited; long-term potential exists</strong> if the NFT ecosystem becomes more multi-chain and more dApps open for third-party integration.</li>
+        </ol>
+      </div>
+
+      <h2>Context & Objectives</h2>
+
+      <h3>What Is Omnichain NFT?</h3>
+      <p>Omnichain NFTs are NFTs that can <u>exist/be bridged on more than one chain</u>. The interest in the concept spiked with the arrival of LayerZero in early 2022, which is a transport layer using which smart contracts can communicate across blockchains.</p>
+      <p>Gh0stly Ghosts, a 7.7K free-to-mint NFT collection launched in April 2022, was the first NFT collection with omnichain interoperability. The collection can be freely traversed across 7 chains supported by LayerZero.</p>
+
+      <h3>Narratives</h3>
+      <p>The ability to be transported to different chains can unlock wider utilities for NFTs, including:</p>
+      <ul>
+        <li><u>Gas efficiency</u> — choice of minting at lower cost chains</li>
+        <li><u>Wider integration opportunities</u> with games or DApps</li>
+        <li><u>Enhanced liquidity</u> with more expansive access to audiences on different chains and thus higher resale value</li>
+      </ul>
+
+      <h3>Omnichain vs. Multichain</h3>
+      <p>Multi-chain capability is another solution for ecosystem fragmentation and expanding NFT utilities. However, from a UX standpoint, the omnichain solution is more seamless: users can purchase NFTs on chain A with payment currency on chain B, without needing to bridge or exchange currencies.</p>
+
+      <h2>Competitor Landscape</h2>
+
+      <h3>1 / Omnichain Marketplaces</h3>
+      <p>Comparing three major NFT marketplaces with omnichain capabilities, two different models emerge:</p>
+
+      <p><strong>Native omnichain platforms</strong> are built on top of cross-chain messaging tools like LayerZero or Axelar. Table-stake features include (1) minting ONFTs, (2) wrapping non-omnichain NFTs to omnichain NFTs, and (3) bridging omnichain NFTs across chains. OmniX, a fork of LooksRare, additionally supports chain-agnostic payment with its platform token $OMNI.</p>
+
+      <p><strong>Multi-chain platforms with omnichain capability</strong> (e.g. TofuNFT) do not provide minting/wrapping but support trading of certain omnichain NFT collections and provide a storefront for omnichain NFTs to traverse across chains.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th><a href="https://omni-x.io/" target="_blank" rel="noopener">Omni X</a></th>
+            <th><a href="https://omnisea.org/" target="_blank" rel="noopener">Omnisea</a></th>
+            <th><a href="https://app.holograph.xyz/" target="_blank" rel="noopener">Holograph</a></th>
+            <th><a href="https://tofunft.com/" target="_blank" rel="noopener">TofuNFT</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Launch</td>
+            <td>Not launched yet</td>
+            <td>Sep 2022</td>
+            <td>Testnet beta</td>
+            <td>Sep 2021</td>
+          </tr>
+          <tr>
+            <td class="row-label">Nature</td>
+            <td>NFT Marketplace</td>
+            <td>NFT Launchpad</td>
+            <td>NFT Launchpad & bridge</td>
+            <td>NFT Marketplace</td>
+          </tr>
+          <tr>
+            <td class="row-label">Architecture</td>
+            <td>LayerZero, Stargate Finance</td>
+            <td>Internal Omnichain router (LayerZero + Axelar)</td>
+            <td>LayerZero messaging; Holograph Bridge for interoperability</td>
+            <td>LayerZero</td>
+          </tr>
+          <tr>
+            <td class="row-label">Chains</td>
+            <td>7 chains (ETH, ARB, OP, BNB, AVAX, MATIC, FTM)</td>
+            <td>8 chains (ARB, AVAX, BNB, ETH, FTM, Moonbeam, OP, MATIC)</td>
+            <td>5 chains (ETH, MATIC, AVAX, BSC, OP)</td>
+            <td>28 chains (multichain)</td>
+          </tr>
+          <tr>
+            <td class="row-label">Token</td>
+            <td>$OMNI</td>
+            <td>$OSEA</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>2 / Omnichain NFT Collections</h3>
+      <p>Looking at three top omnichain NFT collections, several observations emerge:</p>
+      <ul>
+        <li>Most existing omnichain collections are <u>built with LayerZero technology</u> and only exist on 7 EVMs supported by LayerZero</li>
+        <li><u>Trading volume remains low</u> after initial hype, with <u>&gt;90% of trading volume happening on Ethereum</u> — likely because teams have not actively pushed for integration of collections with dApps on other chains post-launch</li>
+        <li>Among the three OG collections, only KanpaiPandas remain actively traded — and <u>volume is driven by real-world events, not omnichain features</u></li>
+      </ul>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th><a href="https://linktr.ee/gh0stlygh0sts" target="_blank" rel="noopener">Gh0stly Gh0st</a></th>
+            <th><a href="https://linktr.ee/tinydinosnft" target="_blank" rel="noopener">Tiny Dinos</a></th>
+            <th><a href="https://linktr.ee/kanpaipandas" target="_blank" rel="noopener">KanpaiPandas</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Launch</td>
+            <td>4 Apr 2022</td>
+            <td>5 Apr 2022</td>
+            <td>22 Apr 2022</td>
+          </tr>
+          <tr>
+            <td class="row-label">Collection</td>
+            <td>7,710</td>
+            <td>10,000</td>
+            <td>10,000 + 50 honorary</td>
+          </tr>
+          <tr>
+            <td class="row-label">Mint Price</td>
+            <td>Free</td>
+            <td>Free</td>
+            <td>$400 USDC</td>
+          </tr>
+          <tr>
+            <td class="row-label">Floor Price</td>
+            <td>0.06 ETH</td>
+            <td>0.09 ETH</td>
+            <td>0.42 ETH</td>
+          </tr>
+          <tr>
+            <td class="row-label">Volume (30D)</td>
+            <td>8 ETH</td>
+            <td>18 ETH</td>
+            <td>722 ETH</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Conclusion</h2>
+
+      <p>The omnichain NFT market is still in a nascent stage. Analysis of key ecosystem players reveals that market size remains tiny with limited near-term opportunities.</p>
+
+      <p><strong>Critical challenges for mass adoption:</strong></p>
+      <ul>
+        <li><u>Ethereum Dominance</u> — Ethereum still commands more than 70% of NFT transaction volume</li>
+        <li><u>Lack of cross-chain utility</u> — limited games or dApps are open to integrating third-party NFT collections across chains</li>
+        <li><u>Complexity</u> — higher barriers for web2 creators compared to regular NFTs</li>
+      </ul>
+
+      <p><strong>Future market potential can only be unlocked if:</strong></p>
+      <ul>
+        <li><u>Multichain development</u> — chains other than Ethereum take up higher market share in NFT activities</li>
+        <li><u>Open integration</u> — more dApps and games open their ecosystems to third-party NFT projects</li>
+        <li><u>Cross-chain utility expansion</u> — projects become willing to expand utilities onto different chains</li>
+      </ul>
+
+      <p>In the short term, the opportunity presented by omnichain is rather limited. In the long-term, omnichain has the potential to become a major solution to NFT market fragmentation and empower NFT interoperability — but this depends on the NFT ecosystem going more multi-chain, and more dApps and games being open for integration.</p>
+
+      <div class="footnote">
+        <sup>1</sup> Volume data from <a href="https://dappradar.com/multichain/marketplaces/tofunft" target="_blank" rel="noopener">tofuNFT · DappRadar</a>
+      </div>
+
+    </div><!-- /article-body -->
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+
+</body>
+</html>

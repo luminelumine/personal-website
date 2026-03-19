@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Fartcoin Insider Playbook — Luminescence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('../modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --body-font: 'DM Sans', sans-serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1a1a18;
+      --border: rgba(200, 198, 190, 0.12);
+      --text-bright: rgba(220, 218, 210, 0.95);
+      --text-mid: rgba(200, 198, 190, 0.85);
+      --text-dim: rgba(200, 198, 190, 0.70);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-vol {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-meta-item {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-meta-item span:first-child {
+      color: var(--text-dim);
+      opacity: 0.7;
+      min-width: 44px;
+    }
+
+    .sidebar-meta-item span:last-child {
+      color: var(--text-mid);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    .sidebar-foot-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 52px 60px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.1); }
+
+    /* ── Article header ── */
+    .article-header {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .article-vol {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 700px;
+    }
+
+    .article-tagline {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7ec8a0;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* ── Article body ── */
+    .article-body {
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-bright);
+    }
+
+    .article-body p {
+      font-family: var(--body-font);
+      margin-bottom: 18px;
+    }
+
+    .article-body h2 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-mid);
+      margin: 28px 0 12px;
+    }
+
+    .article-body ul,
+    .article-body ol {
+      padding-left: 20px;
+      margin-bottom: 18px;
+    }
+
+    .article-body li {
+      font-family: var(--body-font);
+      margin-bottom: 10px;
+      color: var(--text-bright);
+    }
+
+    .article-body strong {
+      color: var(--text-bright);
+      font-weight: bold;
+    }
+
+    .article-body u {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+    }
+
+    .article-body a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+      transition: color 0.2s;
+    }
+    .article-body a:hover { color: var(--text-bright); }
+
+    /* ── TL;DR / Bottom Line ── */
+    .tldr {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .tldr-label {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 12px;
+    }
+
+    .compare-table th {
+      font-family: var(--body-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .compare-table td {
+      font-family: var(--body-font);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200,198,190,0.05);
+      color: var(--text-bright);
+      vertical-align: top;
+      line-height: 1.6;
+      font-size: 12px;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
+    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+
+    /* ── Flow map ── */
+    .flow-map {
+      border: 1px solid var(--border);
+      background: rgba(200,198,190,0.02);
+      padding: 14px;
+      margin: 16px 0 24px;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+
+    .flow-map svg {
+      width: 100%;
+      min-width: 760px;
+      height: auto;
+      display: block;
+    }
+
+    .flow-map .node {
+      fill: rgba(200,198,190,0.05);
+      stroke: rgba(200,198,190,0.26);
+      stroke-width: 1.2;
+    }
+
+    .flow-map .node.main {
+      fill: rgba(200,198,190,0.09);
+      stroke: rgba(200,198,190,0.42);
+    }
+
+    .flow-map .node.exit {
+      fill: rgba(200,198,190,0.11);
+      stroke: rgba(200,198,190,0.56);
+    }
+
+    .flow-map .edge {
+      stroke: rgba(220,218,210,0.68);
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .flow-map .label {
+      font-family: var(--mono);
+      fill: rgba(220,218,210,0.86);
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .flow-map .sub-label {
+      font-family: var(--mono);
+      fill: rgba(220,218,210,0.58);
+      font-size: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .flow-map .junction {
+      fill: rgba(220,218,210,0.75);
+    }
+
+    /* ── Evidence figures ── */
+    .evidence-figure {
+      margin: 20px 0 32px;
+    }
+
+    .evidence-figure img {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .evidence-figure figcaption {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── Final judgment ── */
+    .final-judgment {
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+      padding-top: 22px;
+      font-family: var(--body-font);
+    }
+
+    /* ── Footnote ── */
+    .footnote {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .footnote a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.15);
+    }
+
+    /* ── Fade ── */
+    #fade {
+      position: fixed; inset: 0;
+      background: #111110; opacity: 0;
+      pointer-events: none; z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-label">Writings</div>
+    <div class="sidebar-vol">Research</div>
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-title">The Fartcoin<br>Insider Playbook</div>
+
+    <div class="sidebar-meta-row">
+      <div class="sidebar-meta-item">
+        <span>Vol</span><span>05</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Date</span><span>Feb 2025</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Type</span><span>Research</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
+      <div class="sidebar-foot-label">
+        Luminescence<br>
+        ID: LT-1997
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <div class="article-header">
+      <div class="article-vol">Vol. 05 &nbsp;/&nbsp; Feb 2025</div>
+      <div class="article-title">The Fartcoin Insider Playbook</div>
+      <div class="article-tagline"><span class="status-dot"></span>Research</div>
+    </div>
+
+    <div class="article-body">
+
+      <div class="tldr">
+        <div class="tldr-label">BOTTOM LINE</div>
+        <p><strong>This is not retail-led organic demand.</strong> The on-chain trace points to a coordinated insider-linked operation: early low-cap accumulation, centralized routing, and staged liquidation via recurring executor wallets.</p>
+        <p>The cluster entered below ~$200K and realized exits above ~$3M, with repeated fragmented transfer patterns that behave like a single execution system rather than independent market participants.</p>
+      </div>
+
+      <h2>What We Traced</h2>
+      <p>The operation begins with aggressive DCA accumulation with Jupiter DCA tool shortly after launch, then transitions into a hub-and-spoke routing model. Wallet 2 repeatedly acts as the control hub, redistributing inventory to staging wallets and then into execution wallets.</p>
+      <p>Wallets 6-8 (all j1o-prefixed) receive fragmented transfers and rapidly sell through DEX paths. The same path repeats across multiple dates and volumes, consistent with synchronized distribution rather than normal holder behavior.</p>
+
+      <h2>Timeline of the Operation</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width: 18%">Time</th>
+            <th style="width: 46%">Observed Action</th>
+            <th style="width: 36%">Why It Matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Launch + ~5h</td>
+            <td>Wallet 1 accumulates 7.4M tokens via ~400 transactions (200 SOL), while market cap remains under $2M.</td>
+            <td>Insider-style early positioning at low-cap levels.</td>
+          </tr>
+          <tr>
+            <td>+3 days</td>
+            <td>Wallet 1 transfers full 7.4M inventory to Wallet 2; Wallet 2 runs 4 more DCA rounds for another 4.6M tokens (910 SOL).</td>
+            <td>Centralized inventory management and conviction accumulation.</td>
+          </tr>
+          <tr>
+            <td>Nov 9</td>
+            <td>Wallet 2 sends 1.2M to Wallet 3. Wallet 3 splits 200K across Wallets 6-8 over 49 transfers; immediate DEX selling; remaining 1M routed back.</td>
+            <td>Pilot disposal sequence and throughput test of the executor cluster.</td>
+          </tr>
+          <tr>
+            <td>Nov 10</td>
+            <td>Wallet 2 sends another 1.2M to Wallet 4. Then 414 fragmented transfers flow to Wallets 6-8 and are dumped.</td>
+            <td>Scaled disposal using the same execution topology.</td>
+          </tr>
+          <tr>
+            <td>Dec 16/19</td>
+            <td>Wallet 2 offloads 3.4M tokens to Wallet 5; Wallet 5 liquidates around $3M on Raydium.</td>
+            <td>Major profit extraction stage.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Flow of Control</h2>
+      <div class="flow-map">
+        <svg viewBox="0 0 980 360" role="img" aria-label="Flow of Control Diagram">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(220,218,210,0.75)"></path>
+            </marker>
+          </defs>
+
+          <line class="edge" x1="220" y1="70" x2="300" y2="70" marker-end="url(#arrow)"></line>
+          <line class="edge" x1="390" y1="94" x2="390" y2="112"></line>
+          <line class="edge" x1="390" y1="112" x2="250" y2="112"></line>
+          <line class="edge" x1="250" y1="112" x2="250" y2="290"></line>
+          <line class="edge" x1="250" y1="180" x2="300" y2="180" marker-end="url(#arrow)"></line>
+          <line class="edge" x1="250" y1="290" x2="300" y2="290" marker-end="url(#arrow)"></line>
+          <line class="edge" x1="480" y1="180" x2="560" y2="180" marker-end="url(#arrow)"></line>
+          <line class="edge" x1="740" y1="180" x2="820" y2="180" marker-end="url(#arrow)"></line>
+          <line class="edge" x1="480" y1="290" x2="560" y2="290" marker-end="url(#arrow)"></line>
+          <circle class="junction" cx="250" cy="112" r="3"></circle>
+
+          <rect class="node" x="40" y="46" width="180" height="48" rx="8"></rect>
+          <text class="label" x="130" y="67" text-anchor="middle">Wallet 1</text>
+          <text class="sub-label" x="130" y="83" text-anchor="middle">Early accumulation</text>
+
+          <rect class="node main" x="300" y="46" width="180" height="48" rx="8"></rect>
+          <text class="label" x="390" y="67" text-anchor="middle">Wallet 2</text>
+          <text class="sub-label" x="390" y="83" text-anchor="middle">Control hub</text>
+
+          <rect class="node" x="300" y="156" width="180" height="48" rx="8"></rect>
+          <text class="label" x="390" y="177" text-anchor="middle">Wallet 3 / Wallet 4</text>
+          <text class="sub-label" x="390" y="193" text-anchor="middle">Staging wallets</text>
+
+          <rect class="node" x="560" y="156" width="180" height="48" rx="8"></rect>
+          <text class="label" x="650" y="177" text-anchor="middle">Wallets 6-8 (j1o)</text>
+          <text class="sub-label" x="650" y="193" text-anchor="middle">Execution wallets</text>
+
+          <rect class="node exit" x="820" y="156" width="120" height="48" rx="8"></rect>
+          <text class="label" x="880" y="185" text-anchor="middle">DEX Sell</text>
+
+          <rect class="node" x="300" y="266" width="180" height="48" rx="8"></rect>
+          <text class="label" x="390" y="287" text-anchor="middle">Wallet 5</text>
+          <text class="sub-label" x="390" y="303" text-anchor="middle">Offload wallet</text>
+
+          <rect class="node exit" x="560" y="266" width="180" height="48" rx="8"></rect>
+          <text class="label" x="650" y="287" text-anchor="middle">Raydium Exit</text>
+          <text class="sub-label" x="650" y="303" text-anchor="middle">~$3M liquidation</text>
+
+          <text class="sub-label" x="500" y="148">Distribution branch</text>
+          <text class="sub-label" x="500" y="333">Realization branch</text>
+        </svg>
+      </div>
+
+      <h2>Key Numbers</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width: 42%">Metric</th>
+            <th style="width: 58%">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Estimated entry capital</td>
+            <td>&lt;$200K</td>
+          </tr>
+          <tr>
+            <td>Accumulation batch 1</td>
+            <td>7.4M tokens, 200 SOL, ~400 transactions</td>
+          </tr>
+          <tr>
+            <td>Accumulation batch 2</td>
+            <td>4.6M tokens, 910 SOL, 4 DCA rounds</td>
+          </tr>
+          <tr>
+            <td>Peak coordinated inventory</td>
+            <td>~12M tokens</td>
+          </tr>
+          <tr>
+            <td>Large realized exit</td>
+            <td>~$3M via Wallet 5 on Raydium</td>
+          </tr>
+          <tr>
+            <td>Execution signature</td>
+            <td>Repeated fragmented routing + immediate DEX disposal</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Evidence Screenshots</h2>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image1.jpeg" alt="Figure 1 - initial post-launch accumulation by Wallet 1">
+        <figcaption>Figure 1. Initial post-launch accumulation by Wallet 1 through high-frequency DCA.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image2.jpeg" alt="Figure 2 - transfer to Wallet 2 and secondary accumulation">
+        <figcaption>Figure 2. Full transfer to Wallet 2 and secondary accumulation sequence.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image3.jpeg" alt="Figure 3 - Nov 9 routing through Wallet 3">
+        <figcaption>Figure 3. Nov 9 routing through Wallet 3 with split-distribution and sell execution.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image4.jpeg" alt="Figure 4 - Nov 10 repeat pattern through Wallet 4">
+        <figcaption>Figure 4. Nov 10 repeat pattern through Wallet 4 with heavier fragmentation.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image5.png" alt="Figure 5 - Wallets 6-8 behavior pattern">
+        <figcaption>Figure 5. Wallets 6-8 (j1o) behavioral consistency as recurring execution wallets.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image6.jpeg" alt="Figure 6 - Dec 16/19 offload to Wallet 5 and Raydium realization">
+        <figcaption>Figure 6. Dec 16/19 offload to Wallet 5 and major Raydium realization.</figcaption>
+      </figure>
+
+      <figure class="evidence-figure">
+        <img src="fartcoin-insider-manipulation-assets/image7.png" alt="Figure 7 - social tagging context for wallet cluster">
+        <figcaption>Figure 7. Social-level tagging context aligned with the tracked cluster.</figcaption>
+      </figure>
+
+      <h2 class="final-judgment">Final Judgment</h2>
+      <p class="final-judgment"><strong>The wallet behavior is best explained as insider trading combined with coordinated market manipulation.</strong> The cluster accumulated early, routed inventory through a central hub, and executed structured distribution through reusable executor wallets to extract profit at scale. This pattern does not match organic, retail-driven demand formation.</p>
+
+    </div><!-- /article-body -->
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+
+</body>
+</html>

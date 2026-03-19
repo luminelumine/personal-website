@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can NFT Ticketing Go Mainstream? — Luminescence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('../modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    :root {
+      --mono: 'Courier New', 'Courier', monospace;
+      --body-font: 'DM Sans', sans-serif;
+      --bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1a1a18;
+      --border: rgba(200, 198, 190, 0.12);
+      --text-bright: rgba(220, 218, 210, 0.95);
+      --text-mid: rgba(200, 198, 190, 0.85);
+      --text-dim: rgba(200, 198, 190, 0.70);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--text-bright);
+      font-family: var(--mono);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.6;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      height: 100%;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-vol {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 22px;
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .sidebar-meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: auto;
+    }
+
+    .sidebar-meta-item {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-meta-item span:first-child {
+      color: var(--text-dim);
+      opacity: 0.7;
+      min-width: 44px;
+    }
+
+    .sidebar-meta-item span:last-child {
+      color: var(--text-mid);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-mid); }
+
+    .sidebar-foot-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 40px 52px 60px;
+    }
+    .main::-webkit-scrollbar { width: 3px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: rgba(200,198,190,0.1); }
+
+    /* ── Article header ── */
+    .article-header {
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+
+    .article-vol {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .article-title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      max-width: 700px;
+    }
+
+    .article-tagline {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #7ec8a0;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    /* ── Article body ── */
+    .article-body {
+      max-width: 680px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-bright);
+    }
+
+    .article-body p {
+      font-family: var(--body-font);
+      margin-bottom: 18px;
+    }
+
+    .article-body h2 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-bright);
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .article-body h3 {
+      font-family: var(--body-font);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-mid);
+      margin: 28px 0 12px;
+    }
+
+    .article-body ul,
+    .article-body ol {
+      padding-left: 20px;
+      margin-bottom: 18px;
+    }
+
+    .article-body li {
+      font-family: var(--body-font);
+      margin-bottom: 10px;
+      color: var(--text-bright);
+    }
+
+    .article-body strong {
+      color: var(--text-bright);
+      font-weight: bold;
+    }
+
+    .article-body u {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+    }
+
+    .article-body a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.25);
+      transition: color 0.2s;
+    }
+    .article-body a:hover { color: var(--text-bright); }
+
+    /* ── Summary box ── */
+    .summary-box {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 22px 28px;
+      margin-bottom: 40px;
+      background: rgba(200,198,190,0.02);
+    }
+
+    .summary-label {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ── Table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 32px;
+      font-size: 12px;
+    }
+
+    .compare-table th {
+      font-family: var(--body-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      font-weight: normal;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .compare-table td {
+      font-family: var(--body-font);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200,198,190,0.05);
+      color: var(--text-bright);
+      vertical-align: top;
+      line-height: 1.6;
+      font-size: 12px;
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
+    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+
+    /* ── Flow chart ── */
+    .flow-chart {
+      border: 1px solid var(--border);
+      background: rgba(200,198,190,0.02);
+      border-radius: 3px;
+      padding: 14px;
+      margin: 16px 0 24px;
+      overflow-x: auto;
+    }
+
+    .flow-chart svg {
+      width: 100%;
+      min-width: 900px;
+      height: auto;
+      display: block;
+    }
+
+    .flow-chart .lane-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      fill: rgba(220,218,210,0.66);
+      text-transform: uppercase;
+    }
+
+    .flow-chart .node {
+      fill: rgba(200,198,190,0.06);
+      stroke: rgba(200,198,190,0.28);
+      stroke-width: 1.2;
+    }
+
+    .flow-chart .node.organizer {
+      fill: rgba(200,198,190,0.09);
+      stroke: rgba(200,198,190,0.42);
+    }
+
+    .flow-chart .node.buyer {
+      fill: rgba(200,198,190,0.05);
+      stroke: rgba(200,198,190,0.26);
+    }
+
+    .flow-chart .edge {
+      stroke: rgba(220,218,210,0.72);
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .flow-chart .node-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      fill: rgba(220,218,210,0.88);
+      text-anchor: middle;
+    }
+
+    .flow-chart .node-sub {
+      font-family: var(--mono);
+      font-size: 10px;
+      fill: rgba(220,218,210,0.58);
+      text-anchor: middle;
+    }
+
+    /* ── Footnote ── */
+    .footnote {
+      margin-top: 48px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .footnote a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(200,198,190,0.15);
+    }
+
+    /* ── Fade ── */
+    #fade {
+      position: fixed; inset: 0;
+      background: #111110; opacity: 0;
+      pointer-events: none; z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+    body { animation: fadeIn 0.5s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<div id="fade"></div>
+
+<div class="wrapper">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <div class="sidebar-label">Writings</div>
+    <div class="sidebar-vol">Research</div>
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-title">Can NFT Ticketing<br>Go Mainstream?</div>
+
+    <div class="sidebar-meta-row">
+      <div class="sidebar-meta-item">
+        <span>Vol</span><span>04</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Date</span><span>Apr 2023</span>
+      </div>
+      <div class="sidebar-meta-item">
+        <span>Type</span><span>Research</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
+      <div class="sidebar-foot-label">
+        Luminescence<br>
+        ID: LT-1997
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <div class="article-header">
+      <div class="article-vol">Vol. 04 &nbsp;/&nbsp; Apr 2023</div>
+      <div class="article-title">Can NFT Ticketing Go Mainstream?</div>
+      <div class="article-tagline"><span class="status-dot"></span>Research</div>
+    </div>
+
+    <div class="article-body">
+
+      <div class="summary-box">
+        <div class="summary-label">EXECUTIVE SUMMARY</div>
+        <p>NFT ticketing has progressed from a speculative narrative to an emerging infrastructure layer for live-event distribution and fan engagement. Institutional experiments are increasing, and the value proposition is clearer in high-engagement verticals where programmable access, resale economics, and post-event utility matter.</p>
+        <p>That said, the category remains early. Adoption friction, real-time throughput constraints, and ownership-identity ambiguity still prevent broad mainstream penetration. At this stage, NFT ticketing is best viewed as a targeted upgrade for specific event ecosystems rather than a full replacement for traditional ticket rails.</p>
+      </div>
+
+      <h2>1. Market Context</h2>
+      <p>NFT tickets represent verifiable, programmable ownership credentials tied to event access. Compared with conventional digital tickets, they add persistent ownership records and configurable utility before, during, and after an event.</p>
+      <p>Market interest has accelerated through three visible signals: growing event-level experimentation, optimistic multi-year market-size forecasts, and NFT-gated feature rollouts by major incumbents. Together, these indicate that incumbents are treating NFT ticketing as a strategic design space, not just a marketing novelty.</p>
+
+      <h2>2. Strategic Value Drivers</h2>
+
+      <h3>Security, Transparency, and Traceability</h3>
+      <p>Blockchain-backed issuance and transfer logs improve anti-counterfeit controls and make lifecycle verification materially easier for organizers and marketplaces.</p>
+
+      <h3>Programmable Access and Product Design</h3>
+      <p>Event operators can encode tiering, privileges, and policy logic directly into ticket assets, enabling more flexible packaging than static QR-based systems.</p>
+
+      <h3>Secondary Market Economics</h3>
+      <p>Programmable resale logic and royalty mechanics create recurring monetization pathways that are difficult to enforce in conventional secondary markets.</p>
+
+      <h3>Post-Event Community Utility</h3>
+      <p>Tickets can remain active as membership credentials for loyalty, gated content, future drops, or VIP access, extending value beyond a single event date.</p>
+
+      <h2>3. Competitive Landscape</h2>
+      <p>The market currently clusters into two strategic archetypes:</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width: 24%">Archetype</th>
+            <th style="width: 38%">Core Focus</th>
+            <th style="width: 38%">Typical Players / Positioning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Issuer-Focused (B2B-led)</td>
+            <td>Seller tooling, inventory digitization, event operations, scanning integrations.</td>
+            <td>Platforms such as Get Protocol, NFT Tix, and Oveit emphasize operational enablement for organizers.</td>
+          </tr>
+          <tr>
+            <td>Buyer-Focused (UX/liquidity-led)</td>
+            <td>Checkout experience, wallet abstraction, artist/festival partnerships, secondary activity.</td>
+            <td>Platforms such as Seatlab and YellowHeart prioritize demand-side conversion and engagement.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>4. Monetization Models</h2>
+      <p>Most business models combine transaction infrastructure economics with marketplace take rates:</p>
+      <ul>
+        <li><strong>Subscription fees</strong> for issuer-side tooling access.</li>
+        <li><strong>Primary sales fees</strong> on first issuance or initial ticket sales.</li>
+        <li><strong>Royalty participation</strong> on secondary resale flows.</li>
+        <li><strong>Marketplace fees</strong> on each buy/sell transaction.</li>
+      </ul>
+      <p>This profile resembles a hybrid SaaS + payments + marketplace stack rather than a pure ticketing software model.</p>
+
+      <h2>5. Typical Operating Flow</h2>
+      <div class="flow-chart">
+        <svg viewBox="0 0 980 300" role="img" aria-label="NFT ticketing organizer and buyer operating flow">
+          <defs>
+            <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(220,218,210,0.75)"></path>
+            </marker>
+          </defs>
+
+          <text class="lane-label" x="20" y="28">Organizer Flow</text>
+          <text class="lane-label" x="20" y="168">Buyer Flow</text>
+
+          <line class="edge" x1="190" y1="80" x2="220" y2="80" marker-end="url(#flow-arrow)"></line>
+          <line class="edge" x1="390" y1="80" x2="420" y2="80" marker-end="url(#flow-arrow)"></line>
+          <line class="edge" x1="590" y1="80" x2="620" y2="80" marker-end="url(#flow-arrow)"></line>
+
+          <line class="edge" x1="190" y1="220" x2="220" y2="220" marker-end="url(#flow-arrow)"></line>
+          <line class="edge" x1="390" y1="220" x2="420" y2="220" marker-end="url(#flow-arrow)"></line>
+          <line class="edge" x1="590" y1="220" x2="620" y2="220" marker-end="url(#flow-arrow)"></line>
+
+          <rect class="node organizer" x="20" y="50" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="105" y="74">1. Seller Registration</text>
+          <text class="node-sub" x="105" y="92">Create issuer account</text>
+
+          <rect class="node organizer" x="220" y="50" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="305" y="74">2. Event Setup</text>
+          <text class="node-sub" x="305" y="92">Metadata + ticket tiers</text>
+
+          <rect class="node organizer" x="420" y="50" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="505" y="74">3. Policy Configuration</text>
+          <text class="node-sub" x="505" y="92">Supply, pricing, resale rules</text>
+
+          <rect class="node organizer" x="620" y="50" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="705" y="74">4. Mint + List</text>
+          <text class="node-sub" x="705" y="92">Publish to marketplace</text>
+
+          <rect class="node buyer" x="20" y="190" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="105" y="214">1. Account + Wallet</text>
+          <text class="node-sub" x="105" y="232">Custodial/non-custodial</text>
+
+          <rect class="node buyer" x="220" y="190" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="305" y="214">2. Purchase</text>
+          <text class="node-sub" x="305" y="232">Crypto or card rails</text>
+
+          <rect class="node buyer" x="420" y="190" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="505" y="214">3. Credential Delivery</text>
+          <text class="node-sub" x="505" y="232">Mobile-scannable ticket</text>
+
+          <rect class="node buyer" x="620" y="190" width="170" height="60" rx="8"></rect>
+          <text class="node-title" x="705" y="214">4. Entry + Utility</text>
+          <text class="node-sub" x="705" y="232">Venue access + post-event use</text>
+        </svg>
+      </div>
+
+      <h2>6. Structural Constraints</h2>
+
+      <h3>Adoption Friction</h3>
+      <p>Wallet setup and key management remain a meaningful hurdle for mainstream audiences compared with one-click card checkout and email QR delivery.</p>
+
+      <h3>Scalability and Throughput</h3>
+      <p>Large-venue entry windows create concentrated verification demand; weak architecture can lead to latency spikes and elevated costs at the exact moment reliability matters most.</p>
+
+      <h3>Ownership-Identity Ambiguity</h3>
+      <p>Pseudonymous ownership can complicate disputes, transfer policy enforcement, and compliance requirements in regulated event contexts.</p>
+
+      <h2>7. Outlook</h2>
+      <p>Near-term growth is likely to be strongest in ecosystems where fan identity, collectibility, and secondary market behavior are core to the value proposition, especially music, festivals, sports communities, and premium experience formats.</p>
+      <p>The category's next phase depends on three execution priorities: lower-friction onboarding abstractions, high-throughput access verification design, and stronger identity/compliance layers. If those bottlenecks are addressed, NFT ticketing can mature into a standardized programmable access layer for live experiences.</p>
+
+    </div><!-- /article-body -->
+  </div><!-- /main -->
+</div><!-- /wrapper -->
+
+<script>
+  function fadeOut(e, url) {
+    e.preventDefault();
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 560);
+  }
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+
+</body>
+</html>

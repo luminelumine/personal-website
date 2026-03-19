@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photography — Luminescence</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Photography 主页专属样式 ── */
+
+    /* 主页不滚动，一屏完整展示 */
+    html, body { overflow: auto; min-height: 100%; }
+
+    :root {
+      --nav-h: 0px;
+      --hdr-h: 0px;
+    }
+
+    .photo-page-header {
+      padding: 48px 240px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .photo-page-header h1 {
+      font-family: var(--modernline);
+      font-size: clamp(20px, 2.4vw, 36px);
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: lowercase;
+      color: #fff;
+      line-height: 1;
+    }
+    .photo-page-header .subtitle {
+      margin-top: 10px;
+      font-size: 15px;
+      font-style: italic;
+      color: rgba(255,255,255,0.62);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── 城市卡片 wrapper — 标题在外面 ── */
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px 40px;
+      padding: 32px 240px 48px;
+      box-sizing: border-box;
+      align-content: start;
+    }
+
+    /* 每张城市：图片 + 文字分离 */
+    .city-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 图片容器 — 1:1 正方形 */
+    .city-img-wrap {
+      position: relative;
+      overflow: hidden;
+      background: #0e0e0e;
+      border: 1px solid var(--border);
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+
+    /* coming-soon 无点击 */
+    .city-item.coming-soon {
+      pointer-events: none;
+    }
+
+    /* 幻灯片 */
+    .city-img-wrap .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity 0.06s ease;
+      display: block;
+      filter: grayscale(10%);
+    }
+    .city-img-wrap .slide.active { opacity: 1; }
+
+    /* 占位 */
+    .city-placeholder {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        #0e0e0e,
+        #0e0e0e 4px,
+        #111 4px,
+        #111 8px
+      );
+    }
+
+    /* hover 时轻微亮度提升 */
+    .city-item:not(.coming-soon):hover .city-img-wrap {
+      border-color: #333;
+    }
+    .city-item:not(.coming-soon):hover .slide.active {
+      filter: grayscale(0%);
+    }
+
+    /* ── 图片下方标题区 ── */
+    .city-caption {
+      padding: 14px 2px 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-top: none;
+    }
+
+    .city-name {
+      font-family: var(--windsor);
+      font-size: clamp(13px, 1.2vw, 16px);
+      letter-spacing: 0.05em;
+      color: #fff;
+      font-weight: 400;
+    }
+    .city-item.coming-soon .city-name {
+      color: rgba(255,255,255,0.28);
+    }
+
+    .city-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .city-count {
+      font-family: var(--windsor);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.35);
+    }
+    .coming-label {
+      font-family: var(--windsor);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 3px 8px;
+    }
+
+    /* 轮播指示点 — 图片内部底边 */
+    .city-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .city-item:hover .city-dots { opacity: 1; }
+    .city-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: background 0.12s;
+    }
+    .city-dot.active { background: rgba(255,255,255,0.85); }
+
+    @media (max-width: 900px) {
+      .city-grid { grid-template-columns: repeat(2, 1fr); padding: 28px 80px 36px; gap: 20px 28px; height: auto; align-content: start; }
+      .photo-page-header { padding: 36px 80px 24px; }
+    }
+    @media (max-width: 600px) {
+      .city-grid { grid-template-columns: 1fr; padding: 24px 40px 48px; height: auto; align-content: start; }
+      .photo-page-header { padding: 32px 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="page-fade"></div>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html" onclick="fadeOut(event,'index.html')">Luminescence</a>
+  <div class="nav-right">
+    <div class="nav-index">
+      <a class="nav-index-link" href="About Me/cv.html" onclick="fadeOut(event,'About Me/cv.html')">About Me</a>
+      <a class="nav-index-link" href="writings.html" onclick="fadeOut(event,'writings.html')">Writings</a>
+      <a class="nav-index-link active" href="photos.html" onclick="fadeOut(event,'photos.html')">Photography</a>
+    </div>
+    <a class="nav-back" href="index.html" onclick="fadeOut(event,'index.html')">← Back</a>
+  </div>
+</nav>
+
+<div class="photo-page-header">
+  <h1>photography</h1>
+  <p class="subtitle">fragmented memories</p>
+</div>
+
+<div class="city-grid">
+
+  <a class="city-item" href="Photos/brussels.html" onclick="fadeOut(event,'Photos/brussels.html')"
+     data-photos='[
+       "Photos/Brussels/01.jpg",
+       "Photos/Brussels/000002 2.jpg",
+       "Photos/Brussels/000002 2_副本.jpg",
+       "Photos/Brussels/000002.jpg",
+       "Photos/Brussels/000005 2.jpg",
+       "Photos/Brussels/000005.jpg",
+       "Photos/Brussels/000010.jpg",
+       "Photos/Brussels/000029.jpg",
+       "Photos/Brussels/000031.jpg",
+       "Photos/Brussels/000033.jpg",
+       "Photos/Brussels/LVCP2101.JPG",
+       "Photos/Brussels/UHUV1361.JPG"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Brussels</span>
+      <div class="city-right">
+        <span class="city-count">12</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/buenos-aires.html" onclick="fadeOut(event,'Photos/buenos-aires.html')"
+     data-photos='[
+       "Photos/Burenos Aries/01.JPG",
+       "Photos/Burenos Aries/fqs 2025-11-18 161253.381.JPG",
+       "Photos/Burenos Aries/fxn 2025-11-18 174248.254.JPG",
+       "Photos/Burenos Aries/IMG_6368.JPG",
+       "Photos/Burenos Aries/ofm 2025-11-15 181706.311.JPG",
+       "Photos/Burenos Aries/ofm 2025-11-18 164946.232.JPG"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Buenos Aires</span>
+      <div class="city-right">
+        <span class="city-count">6</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/finland.html" onclick="fadeOut(event,'Photos/finland.html')"
+     data-photos='[
+       "Photos/Finland/01.JPG",
+       "Photos/Finland/DSCF8192.JPG",
+       "Photos/Finland/DSCF8266.JPG",
+       "Photos/Finland/DSCF8451.JPG",
+       "Photos/Finland/DSCF8631.JPG",
+       "Photos/Finland/DSCF8660.JPG",
+       "Photos/Finland/IMG_3221.JPG",
+       "Photos/Finland/IMG_3228.JPG"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Finland</span>
+      <div class="city-right">
+        <span class="city-count">8</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/hong-kong.html" onclick="fadeOut(event,'Photos/hong-kong.html')"
+     data-photos='[
+       "Photos/Hong Kong/01.jpg",
+       "Photos/Hong Kong/000021340026.jpg",
+       "Photos/Hong Kong/000021340036 - 副本.jpg",
+       "Photos/Hong Kong/000021340036.jpg",
+       "Photos/Hong Kong/000021340042 - 副本.jpg",
+       "Photos/Hong Kong/000021340044 - 副本.jpg",
+       "Photos/Hong Kong/DSCF0876.JPG",
+       "Photos/Hong Kong/DSCF7997.JPG"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Hong Kong</span>
+      <div class="city-right">
+        <span class="city-count">8</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/san-francisco.html" onclick="fadeOut(event,'Photos/san-francisco.html')"
+     data-photos='[
+       "Photos/San Francisco/01.JPG",
+       "Photos/San Francisco/DSCF1520.JPG",
+       "Photos/San Francisco/DSCF1605.JPG",
+       "Photos/San Francisco/DSCF1719.JPG"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">San Francisco</span>
+      <div class="city-right">
+        <span class="city-count">4</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/shenzhen.html" onclick="fadeOut(event,'Photos/shenzhen.html')"
+     data-photos='[
+       "Photos/Shenzhen/01.jpg",
+       "Photos/Shenzhen/000021340015.jpg"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Shenzhen</span>
+      <div class="city-right">
+        <span class="city-count">2</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="city-item" href="Photos/thailand.html" onclick="fadeOut(event,'Photos/thailand.html')"
+     data-photos='[
+       "Photos/Thailand/01.jpg",
+       "Photos/Thailand/000060.jpg",
+       "Photos/Thailand/000060_副本.jpg",
+       "Photos/Thailand/000064.jpg"
+     ]'>
+    <div class="city-img-wrap">
+      <div class="city-dots"></div>
+    </div>
+    <div class="city-caption">
+      <span class="city-name">Thailand</span>
+      <div class="city-right">
+        <span class="city-count">4</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<script>
+  /* ── 动态测量并设置视口高度变量 ── */
+  function setHeightVars() {
+    const nav = document.querySelector('.nav');
+    const hdr = document.querySelector('.photo-page-header');
+    if (nav && hdr) {
+      document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      document.documentElement.style.setProperty('--hdr-h', hdr.offsetHeight + 'px');
+    }
+  }
+  setHeightVars();
+  window.addEventListener('resize', setHeightVars);
+
+  function fadeOut(e, url) {
+    e.preventDefault();
+    const fade = document.getElementById('page-fade');
+    fade.classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 580);
+  }
+
+  const SLIDE_INTERVAL = 300;
+
+  document.querySelectorAll('.city-item[data-photos]').forEach(item => {
+    const photos = JSON.parse(item.dataset.photos);
+    if (!photos || photos.length === 0) return;
+
+    const wrap = item.querySelector('.city-img-wrap');
+    const dotsEl = item.querySelector('.city-dots');
+
+    const slides = photos.map((src, i) => {
+      const img = document.createElement('img');
+      img.className = 'slide' + (i === 0 ? ' active' : '');
+      img.src = src;
+      img.alt = '';
+      img.draggable = false;
+      wrap.insertBefore(img, dotsEl);
+      return img;
+    });
+
+    const dots = photos.map((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'city-dot' + (i === 0 ? ' active' : '');
+      dotsEl.appendChild(d);
+      return d;
+    });
+
+    let current = 0;
+    let timer = null;
+
+    function showSlide(idx) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = idx % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    item.addEventListener('mouseenter', () => {
+      if (slides.length <= 1) return;
+      timer = setInterval(() => showSlide(current + 1), SLIDE_INTERVAL);
+    });
+
+    item.addEventListener('mouseleave', () => {
+      clearInterval(timer);
+      timer = null;
+      showSlide(0);
+    });
+  });
+</script>
+</body>
+</html>

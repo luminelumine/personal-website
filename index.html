@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Modernline';
+      src: url('modernline-personal-use/modernline.otf') format('opentype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Modernline';
+      src: url('modernline-personal-use/modernline bold.otf') format('opentype');
+      font-weight: bold;
+    }
+
+    :root {
+      --modernline: 'Modernline', 'Cormorant Garamond', Georgia, serif;
+      --mono: 'Courier New', 'Courier', monospace;
+      --bg: #111110;
+      --card-bg: #1e1e1c;
+      --card-border: #2e2e2b;
+      --panel-right: #252523;
+      --text-dim: rgba(200, 198, 190, 0.45);
+      --text-mid: rgba(200, 198, 190, 0.72);
+      --text-bright: rgba(220, 218, 210, 0.92);
+      --text-label: rgba(200, 198, 190, 0.35);
+      --accent: rgba(200, 198, 190, 0.18);
+      --divider: rgba(200, 198, 190, 0.12);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    /* ── Noise grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.6;
+    }
+
+    /* ── Ticket card ── */
+    #ticket {
+      position: relative;
+      display: flex;
+      width: min(820px, 92vw);
+      height: min(320px, 41vw);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.6),
+        0 32px 80px rgba(0,0,0,0.7),
+        0 8px 24px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(12px);
+      animation: ticketIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+    }
+
+    @keyframes ticketIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Perforation notch ── */
+    #ticket::before,
+    #ticket::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      z-index: 10;
+    }
+    #ticket::before { left: calc(min(320px, 41vw) - 7px); }
+    #ticket::after  { display: none; }
+
+    /* ── LEFT: photo panel — square (width = ticket height) ── */
+    #photo-panel {
+      position: relative;
+      width: min(320px, 41vw);
+      flex-shrink: 0;
+      overflow: hidden;
+      background: #0a0a09;
+      aspect-ratio: 1 / 1;
+    }
+
+    .photo-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 1.2s ease, transform 0s;
+    }
+    .photo-slide.active {
+      opacity: 1;
+      transform: scale(1.06);
+      animation: kenBurns 6s ease-out forwards;
+    }
+    @keyframes kenBurns {
+      from { transform: scale(1.06); }
+      to   { transform: scale(1.0);  }
+    }
+
+    /* Location label top-left */
+    #location-label {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 20;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: rgba(220, 218, 210, 0.55);
+      text-transform: uppercase;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    /* Subtle dark vignette on photo */
+    #photo-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0,0,0,0.28) 0%,
+        transparent 50%,
+        rgba(0,0,0,0.18) 100%
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* ── Perforated tear line ── */
+    #tear {
+      position: absolute;
+      left: min(320px, 41vw);
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      z-index: 8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      pointer-events: none;
+    }
+
+    #tear::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      /* dashed border via repeating-linear-gradient */
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 5px,
+        rgba(200,198,190,0.13) 5px,
+        rgba(200,198,190,0.13) 9px
+      );
+    }
+
+    /* ── RIGHT: info panel ── */
+    #info-panel {
+      flex: 1;
+      background: var(--panel-right);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 22px 32px 16px 32px;
+      position: relative;
+    }
+
+    /* Content block: flush to top, spacer pushes bottom-strip down */
+    #panel-middle {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* flex spacer between act-block and bottom-strip */
+    #panel-spacer {
+      flex: 1;
+    }
+
+    /* Info panel top block */
+    .info-top {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Each info row */
+    .info-row {
+      display: grid;
+      grid-template-columns: 90px 12px 1fr;
+      align-items: baseline;
+      gap: 0 0;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateX(8px);
+    }
+
+    .info-row.spacer { margin-bottom: 18px; }
+
+    /* staggered reveal */
+    #ticket.loaded .info-row:nth-child(1)  { animation: rowIn 0.6s ease 0.5s forwards; }
+    #ticket.loaded .info-row:nth-child(2)  { animation: rowIn 0.6s ease 0.62s forwards; }
+    #ticket.loaded .info-row:nth-child(3)  { animation: rowIn 0.6s ease 0.76s forwards; }
+    #ticket.loaded .info-row:nth-child(4)  { animation: rowIn 0.6s ease 0.88s forwards; }
+    #ticket.loaded .info-row:nth-child(5)  { animation: rowIn 0.6s ease 1.0s forwards; }
+    #ticket.loaded .info-row:nth-child(6)  { animation: rowIn 0.6s ease 1.12s forwards; }
+
+    @keyframes rowIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .info-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-label);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .info-arrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-label);
+    }
+
+    .info-value {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-bright);
+      text-transform: uppercase;
+    }
+
+    /* ── Perforated divider row ── */
+    .perf-divider {
+      margin: 14px 0;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      animation: rowIn 0.6s ease 1.22s forwards;
+    }
+
+    .perf-divider span {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--text-label);
+      line-height: 1;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* ── ACT rows (links) ── */
+    .act-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .act-row {
+      display: grid;
+      grid-template-columns: 90px 12px 1fr;
+      align-items: baseline;
+      gap: 0 0;
+      opacity: 0;
+      transform: translateX(8px);
+      text-decoration: none;
+    }
+
+    #ticket.loaded .act-row:nth-child(1) { animation: rowIn 0.6s ease 1.32s forwards; }
+    #ticket.loaded .act-row:nth-child(2) { animation: rowIn 0.6s ease 1.44s forwards; }
+
+    .act-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-label);
+      text-transform: uppercase;
+    }
+
+    .act-arrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-label);
+      transition: color 0.2s;
+    }
+
+    .act-value {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      transition: color 0.2s, letter-spacing 0.25s;
+      position: relative;
+    }
+
+    .act-row:hover .act-value {
+      color: var(--text-bright);
+      letter-spacing: 0.22em;
+    }
+    .act-row:hover .act-arrow {
+      color: var(--text-mid);
+    }
+
+    /* underline on hover */
+    .act-value::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: rgba(200,198,190,0.3);
+      transition: width 0.3s ease;
+    }
+    .act-row:hover .act-value::after { width: 100%; }
+
+    /* ── Bottom strip ── */
+    #bottom-strip {
+      border-top: 1px solid var(--divider);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: rowIn 0.6s ease 1.55s forwards;
+    }
+
+    .bottom-left, .bottom-right {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--text-label);
+      text-transform: uppercase;
+    }
+
+    /* ── Music Player ── */
+    #music-player {
+      width: min(860px, 92vw);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 24px 14px;
+      gap: 0;
+      background: rgba(22, 22, 20, 0.55);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 8px;
+      border: 1px solid rgba(200, 198, 190, 0.07);
+      opacity: 0;
+      transform: translateY(6px);
+      animation: ticketIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.7s forwards;
+      user-select: none;
+      position: relative;
+    }
+
+    /* ── progress row ── */
+    #mp-seek-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mp-time {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      color: rgba(200,198,190,0.45);
+      width: 28px;
+      flex-shrink: 0;
+    }
+    .mp-time.right { text-align: right; }
+
+    /* seek bar */
+    #mp-seek {
+      flex: 1;
+      position: relative;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    #mp-track-bg {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: rgba(200,198,190,0.15);
+      border-radius: 1px;
+    }
+
+    #mp-track-fill {
+      position: absolute;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: rgba(200,198,190,0.75);
+      border-radius: 1px;
+      transition: width 0.8s linear;
+    }
+
+    #mp-thumb {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(220,218,210,0.9);
+      left: 0%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 4px rgba(0,0,0,0.6);
+      transition: left 0.8s linear;
+    }
+
+    /* ── controls row ── */
+    #mp-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .mp-ctrl {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(200,198,190,0.4);
+      transition: color 0.2s;
+    }
+    .mp-ctrl:hover { color: rgba(200,198,190,0.8); }
+    .mp-ctrl svg { display: block; }
+
+    /* big play/pause circle */
+    #mp-playbtn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(200,198,190,0.12);
+      border: 1px solid rgba(200,198,190,0.2);
+      color: rgba(220,218,210,0.85);
+      transition: background 0.2s, color 0.2s;
+    }
+    #mp-playbtn:hover {
+      background: rgba(200,198,190,0.2);
+      color: rgba(220,218,210,1);
+    }
+
+    /* hide/show play vs pause icons */
+    #mp-playbtn .icon-play  { display: block; }
+    #mp-playbtn .icon-pause { display: none; }
+    #music-player.playing #mp-playbtn .icon-play  { display: none; }
+    #music-player.playing #mp-playbtn .icon-pause { display: block; }
+
+    /* ── Fade transition ── */
+    #fade {
+      position: fixed;
+      inset: 0;
+      background: #111110;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 999;
+      transition: opacity 0.55s ease;
+    }
+    #fade.out { opacity: 1; pointer-events: all; }
+
+  </style>
+</head>
+<body>
+
+<div id="ticket">
+
+  <!-- LEFT: Photo slideshow -->
+  <div id="photo-panel">
+    <div id="location-label">— — —</div>
+    <!-- slides injected by JS -->
+  </div>
+
+  <!-- Tear line -->
+  <div id="tear"></div>
+
+  <!-- RIGHT: Info -->
+  <div id="info-panel">
+
+    <div id="panel-middle">
+      <div class="info-top">
+        <div class="info-row">
+          <span class="info-label">Name</span>
+          <span class="info-arrow">&gt;</span>
+          <span class="info-value">Lumine Tong</span>
+        </div>
+        <div class="info-row spacer">
+          <span class="info-label">Access</span>
+          <span class="info-arrow">&gt;</span>
+          <span class="info-value">VIP Zones</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Date</span>
+          <span class="info-arrow">&gt;</span>
+          <span class="info-value">20.04.1997</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Venue</span>
+          <span class="info-arrow">&gt;</span>
+          <span class="info-value">Hong Kong</span>
+        </div>
+      </div>
+
+      <div class="perf-divider">
+        <span id="perf-text"></span>
+      </div>
+
+      <div class="act-block">
+        <a class="act-row" href="About Me/cv.html" onclick="goTo('About Me/cv.html'); return false;">
+          <span class="act-label">Act 01</span>
+          <span class="act-arrow">&gt;</span>
+          <span class="act-value">About Me</span>
+        </a>
+        <a class="act-row" href="writings.html" onclick="goTo('writings.html'); return false;">
+          <span class="act-label">Act 02</span>
+          <span class="act-arrow">&gt;</span>
+          <span class="act-value">Writings</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- spacer pushes bottom-strip to the bottom -->
+    <div id="panel-spacer"></div>
+
+    <div id="bottom-strip">
+      <span class="bottom-left">LT-1997 &nbsp;=&nbsp; Vol. 01</span>
+      <span class="bottom-right">ID: LT-1997 &nbsp;&nbsp; &copy; 2025</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Music Player -->
+<div id="music-player">
+
+  <!-- seek / progress row -->
+  <div id="mp-seek-row">
+    <span class="mp-time left" id="mp-cur">0:00</span>
+    <div id="mp-seek">
+      <div id="mp-track-bg"></div>
+      <div id="mp-track-fill"></div>
+      <div id="mp-thumb"></div>
+    </div>
+    <span class="mp-time right" id="mp-rem">-0:00</span>
+  </div>
+
+  <!-- controls row -->
+  <div id="mp-controls">
+
+    <!-- shuffle -->
+    <button class="mp-ctrl" id="mp-shuffle" title="Shuffle">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 3 21 3 21 8"/><polyline points="16 21 21 21 21 16"/>
+        <path d="M4 20 L21 3"/><path d="M21 21 L15 15"/>
+        <path d="M4 4 L9 9"/>
+      </svg>
+    </button>
+
+    <!-- prev -->
+    <button class="mp-ctrl" title="Previous">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/>
+      </svg>
+    </button>
+
+    <!-- play/pause big -->
+    <button class="mp-ctrl" id="mp-playbtn" title="Play / Pause">
+      <!-- play icon -->
+      <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      <!-- pause icon -->
+      <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>
+      </svg>
+    </button>
+
+    <!-- next -->
+    <button class="mp-ctrl" title="Next">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
+      </svg>
+    </button>
+
+    <!-- equalizer / settings -->
+    <button class="mp-ctrl" title="Equalizer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="4" y1="6" x2="20" y2="6"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="18" x2="20" y2="18"/>
+        <circle cx="9" cy="6" r="2" fill="var(--bg)" stroke="currentColor"/>
+        <circle cx="15" cy="12" r="2" fill="var(--bg)" stroke="currentColor"/>
+        <circle cx="10" cy="18" r="2" fill="var(--bg)" stroke="currentColor"/>
+      </svg>
+    </button>
+
+  </div>
+</div>
+
+<div id="fade"></div>
+
+<script>
+  /* ── Perforated divider fill ── */
+  (function() {
+    const el = document.getElementById('perf-text');
+    const fill = () => {
+      const w = el.parentElement.offsetWidth;
+      const chars = Math.floor(w / 5.8); // approx char width at 8px mono
+      el.textContent = Array(Math.max(chars, 10)).fill('L').join(' ');
+    };
+    fill();
+    window.addEventListener('resize', fill);
+  })();
+
+  /* ── Photo slideshow — inline manifest ── */
+  function buildSlides() {
+    const panel      = document.getElementById('photo-panel');
+    const locationEl = document.getElementById('location-label');
+    const ticket     = document.getElementById('ticket');
+
+    const allSlides = [{"src":"Photos/Burenos Aries/01.JPG","label":"Buenos Aires"},{"src":"Photos/Burenos Aries/IMG_6368.JPG","label":"Buenos Aires"},{"src":"Photos/Burenos Aries/fqs 2025-11-18 161253.381.JPG","label":"Buenos Aires"},{"src":"Photos/Burenos Aries/fxn 2025-11-18 174248.254.JPG","label":"Buenos Aires"},{"src":"Photos/Burenos Aries/ofm 2025-11-15 181706.311.JPG","label":"Buenos Aires"},{"src":"Photos/Burenos Aries/ofm 2025-11-18 164946.232.JPG","label":"Buenos Aires"},{"src":"Photos/Brussels/000002 2.jpg","label":"Brussels"},{"src":"Photos/Brussels/000002 2_副本.jpg","label":"Brussels"},{"src":"Photos/Brussels/000002.jpg","label":"Brussels"},{"src":"Photos/Brussels/000005 2.jpg","label":"Brussels"},{"src":"Photos/Brussels/000005.jpg","label":"Brussels"},{"src":"Photos/Brussels/000010.jpg","label":"Brussels"},{"src":"Photos/Brussels/000029.jpg","label":"Brussels"},{"src":"Photos/Brussels/000031.jpg","label":"Brussels"},{"src":"Photos/Brussels/000033.jpg","label":"Brussels"},{"src":"Photos/Brussels/01.jpg","label":"Brussels"},{"src":"Photos/Brussels/LVCP2101.JPG","label":"Brussels"},{"src":"Photos/Brussels/UHUV1361.JPG","label":"Brussels"},{"src":"Photos/Thailand/000060.jpg","label":"Thailand"},{"src":"Photos/Thailand/000060_副本.jpg","label":"Thailand"},{"src":"Photos/Thailand/000064.jpg","label":"Thailand"},{"src":"Photos/Thailand/01.jpg","label":"Thailand"},{"src":"Photos/Shenzhen/000021340015.jpg","label":"Shenzhen"},{"src":"Photos/Shenzhen/01.jpg","label":"Shenzhen"},{"src":"Photos/Hong Kong/000021340026.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/000021340036 - 副本.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/000021340036.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/000021340042 - 副本.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/000021340044 - 副本.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/01.jpg","label":"Hong Kong"},{"src":"Photos/Hong Kong/DSCF0876.JPG","label":"Hong Kong"},{"src":"Photos/Hong Kong/DSCF7997.JPG","label":"Hong Kong"},{"src":"Photos/San Francisco/01.JPG","label":"San Francisco"},{"src":"Photos/San Francisco/DSCF1520.JPG","label":"San Francisco"},{"src":"Photos/San Francisco/DSCF1605.JPG","label":"San Francisco"},{"src":"Photos/San Francisco/DSCF1719.JPG","label":"San Francisco"},{"src":"Photos/Finland/01.JPG","label":"Finland"},{"src":"Photos/Finland/DSCF8192.JPG","label":"Finland"},{"src":"Photos/Finland/DSCF8266.JPG","label":"Finland"},{"src":"Photos/Finland/DSCF8451.JPG","label":"Finland"},{"src":"Photos/Finland/DSCF8631.JPG","label":"Finland"},{"src":"Photos/Finland/DSCF8660.JPG","label":"Finland"},{"src":"Photos/Finland/IMG_3221.JPG","label":"Finland"},{"src":"Photos/Finland/IMG_3228.JPG","label":"Finland"}];
+
+    if (!allSlides.length) {
+      panel.style.background = '#111';
+      locationEl.textContent = '';
+      ticket.classList.add('loaded');
+      return;
+    }
+
+    // Shuffle
+    for (let i = allSlides.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allSlides[i], allSlides[j]] = [allSlides[j], allSlides[i]];
+    }
+
+    // Build slide divs
+    const slideDivs = allSlides.map(({ src, label }) => {
+      const div = document.createElement('div');
+      div.className = 'photo-slide';
+      div.style.backgroundImage = `url('${src.replace(/'/g, "\\'")}')`;
+      div.dataset.label = label;
+      panel.appendChild(div);
+      return div;
+    });
+
+    // Activate first
+    let current = 0;
+    slideDivs[0].classList.add('active');
+    locationEl.textContent = allSlides[0].label.toUpperCase();
+    ticket.classList.add('loaded');
+
+    // Cycle every 2s
+    setInterval(() => {
+      slideDivs[current].classList.remove('active');
+      current = (current + 1) % slideDivs.length;
+      slideDivs[current].classList.add('active');
+
+      locationEl.style.opacity = '0';
+      setTimeout(() => {
+        locationEl.textContent = allSlides[current].label.toUpperCase();
+        locationEl.style.opacity = '1';
+      }, 500);
+    }, 2000);
+  }
+
+  buildSlides(); // sync, no await needed
+
+  /* ── Music Player ── */
+  (function() {
+    const player    = document.getElementById('music-player');
+    const trackFill = document.getElementById('mp-track-fill');
+    const thumb     = document.getElementById('mp-thumb');
+    const curEl     = document.getElementById('mp-cur');
+    const remEl     = document.getElementById('mp-rem');
+    const seekEl    = document.getElementById('mp-seek');
+    const playBtn   = document.getElementById('mp-playbtn');
+    const audio     = new Audio('music/rook1e - i want to love you but I cant.mp3');
+    audio.loop      = false;
+    audio.volume    = 1;
+
+    function fmt(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    function syncUI() {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      trackFill.style.width = pct + '%';
+      thumb.style.left = pct + '%';
+      curEl.textContent = fmt(audio.currentTime);
+      remEl.textContent = '-' + fmt(audio.duration - audio.currentTime);
+    }
+
+    audio.addEventListener('timeupdate', syncUI);
+
+    audio.addEventListener('loadedmetadata', () => {
+      remEl.textContent = '-' + fmt(audio.duration);
+    });
+
+    audio.addEventListener('ended', () => {
+      player.classList.remove('playing');
+      trackFill.style.transition = 'none';
+      thumb.style.transition = 'none';
+      trackFill.style.width = '0%';
+      thumb.style.left = '0%';
+      curEl.textContent = '0:00';
+    });
+
+    /* auto-play: attempt immediately, retry on first gesture if blocked */
+    let autoplayDone = false;
+    function attemptPlay() {
+      if (autoplayDone) return;
+      audio.play().then(() => {
+        autoplayDone = true;
+        player.classList.add('playing');
+      }).catch(() => {
+        // Blocked — will retry via gesture listener below
+      });
+    }
+
+    // Retry on any user interaction (only fires once successfully)
+    function gesturePlay() {
+      if (autoplayDone) return;
+      audio.play().then(() => {
+        autoplayDone = true;
+        player.classList.add('playing');
+        document.removeEventListener('click',      gesturePlay);
+        document.removeEventListener('keydown',    gesturePlay);
+        document.removeEventListener('touchstart', gesturePlay);
+      }).catch(() => {});
+    }
+    document.addEventListener('click',      gesturePlay);
+    document.addEventListener('keydown',    gesturePlay);
+    document.addEventListener('touchstart', gesturePlay);
+
+    setTimeout(attemptPlay, 200);
+
+    /* play/pause button */
+    playBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (audio.paused) {
+        audio.play().then(() => player.classList.add('playing')).catch(() => {});
+      } else {
+        audio.pause();
+        player.classList.remove('playing');
+      }
+    });
+
+    /* seek on click */
+    seekEl.addEventListener('click', (e) => {
+      if (!audio.duration) return;
+      const rect = seekEl.getBoundingClientRect();
+      const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      trackFill.style.transition = 'none';
+      thumb.style.transition = 'none';
+      audio.currentTime = pct * audio.duration;
+      setTimeout(() => {
+        trackFill.style.transition = 'width 0.8s linear';
+        thumb.style.transition = 'left 0.8s linear';
+      }, 50);
+    });
+  })();
+
+  /* ── Page transition ── */
+  function goTo(url) {
+    document.getElementById('fade').classList.add('out');
+    setTimeout(() => { window.location.href = url; }, 580);
+  }
+
+  /* ── Fade in on load ── */
+  window.addEventListener('pageshow', () => {
+    document.getElementById('fade').classList.remove('out');
+  });
+</script>
+</body>
+</html>
