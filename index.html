@@ -500,6 +500,111 @@
     }
     #fade.out { opacity: 1; pointer-events: all; }
 
+    /* ── Responsive: tablet ── */
+    @media (max-width: 900px) {
+      html, body {
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+        padding-top: max(16px, env(safe-area-inset-top));
+        padding-bottom: 18px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      #ticket {
+        width: min(760px, 92vw);
+        height: auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 40% 60%;
+      }
+
+      #photo-panel {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+      }
+
+      #ticket::before { left: calc(40% - 7px); }
+      #tear { left: 40%; }
+
+      #info-panel { padding: 16px 18px 12px; }
+      .info-row, .act-row { grid-template-columns: 76px 12px 1fr; margin-bottom: 8px; }
+      .info-row.spacer { margin-bottom: 12px; }
+      .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value { font-size: 10px; }
+      .perf-divider { margin: 10px 0; }
+      .perf-divider span { font-size: 8px; }
+      .bottom-left, .bottom-right { font-size: 8px; letter-spacing: 0.14em; }
+
+      #music-player {
+        width: min(760px, 92vw);
+        padding: 14px 16px 12px;
+      }
+    }
+
+    /* ── Responsive: phone ── */
+    @media (max-width: 640px) {
+      html, body {
+        gap: 10px;
+        padding-top: max(14px, env(safe-area-inset-top));
+      }
+
+      #ticket {
+        width: 92vw;
+        display: block;
+        border-radius: 10px;
+      }
+
+      #ticket::before,
+      #ticket::after,
+      #tear {
+        display: none;
+      }
+
+      #photo-panel {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        min-height: 170px;
+      }
+
+      #location-label {
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+
+      #info-panel { padding: 14px 14px 12px; }
+      .info-row, .act-row { grid-template-columns: 74px 10px 1fr; margin-bottom: 8px; }
+      .info-row.spacer { margin-bottom: 12px; }
+      .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value {
+        font-size: 11px;
+        letter-spacing: 0.11em;
+      }
+
+      #bottom-strip {
+        padding-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .bottom-left, .bottom-right {
+        font-size: 8px;
+        letter-spacing: 0.14em;
+      }
+
+      #music-player {
+        width: 92vw;
+        border-radius: 10px;
+        padding: 12px 12px 10px;
+      }
+
+      #mp-seek-row { gap: 8px; margin-bottom: 8px; }
+      .mp-time { font-size: 10px; width: 34px; }
+      #mp-controls { gap: 14px; }
+      .mp-ctrl { padding: 6px; }
+      #mp-playbtn { width: 42px; height: 42px; }
+    }
+
   </style>
 </head>
 <body>
