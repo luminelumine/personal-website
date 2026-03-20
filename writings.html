@@ -22,7 +22,7 @@
       --bg: #111110;
       --sidebar-bg: #0d0d0c;
       --card-bg: #1e1e1c;
-      --mosaic-width: 15%;
+      --mosaic-size: clamp(100px, 10vw, 148px);
       --border: rgba(200, 198, 190, 0.12);
       --border-hover: rgba(200, 198, 190, 0.35);
       --text-bright: rgb(32, 28, 13);
@@ -170,7 +170,7 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 3px;
-      padding: 16px 16px 12px;
+      padding: 16px calc(var(--mosaic-size) + 18px) 12px 16px;
       display: flex;
       flex-direction: column;
       cursor: pointer;
@@ -184,13 +184,28 @@
       border-color: var(--border-hover);
     }
 
-    .card-canvas {
+    .card-anim-wrap {
       position: absolute;
-      top: 0;
+      top: 50%;
       right: 0;
-      width: var(--mosaic-width);
+      width: var(--mosaic-size);
+      height: var(--mosaic-size);
+      transform: translateY(-50%);
+      border-left: 1px solid rgba(200, 198, 190, 0.20);
+      overflow: hidden;
+      opacity: 0.56;
+      background: rgba(18, 18, 18, 0.86);
+      pointer-events: none;
+    }
+
+    .card-anim-frame {
+      width: 100%;
       height: 100%;
-      opacity: 0.30;
+      border: 0;
+      display: block;
+      transform: scale(2.35);
+      transform-origin: center center;
+      filter: grayscale(1) saturate(0) contrast(1.12) brightness(0.78);
       pointer-events: none;
     }
 
@@ -208,7 +223,6 @@
       color: rgba(230, 226, 214, 0.95);
       text-transform: uppercase;
       line-height: 1.65;
-      padding-right: calc(var(--mosaic-width) + 2%);
       flex: 1;
       word-break: break-word;
     }
@@ -266,6 +280,10 @@
     }
 
     @media (max-width: 900px) {
+      :root {
+        --mosaic-size: clamp(90px, 24vw, 118px);
+      }
+
       html, body {
         overflow: auto;
       }
@@ -315,7 +333,7 @@
 
       .ticket-card {
         min-height: 164px;
-        padding: 14px 14px 12px;
+        padding: 14px calc(var(--mosaic-size) + 14px) 12px 14px;
       }
 
       .card-vol {
@@ -334,12 +352,16 @@
         font-size: 12px;
       }
 
-      .card-canvas {
-        opacity: 0.34;
+      .card-anim-wrap {
+        opacity: 0.62;
       }
     }
 
     @media (max-width: 520px) {
+      :root {
+        --mosaic-size: 92px;
+      }
+
       .main {
         padding: 12px 10px 20px;
       }
@@ -370,7 +392,6 @@
 
     <div class="sidebar-footer">
       Lumine<br>
-      Vol. 01<br>
       ID: LT-1997
     </div>
   </div>
@@ -384,7 +405,9 @@
         <div class="card-title">Lending-AMM Convergence: A Comparative Study of Euler and Fluid</div>
         <div class="card-date">06.2025</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="lines" data-seed="0.15"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/1.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
       <!-- Vol 05 — scattered dots -->
@@ -393,7 +416,9 @@
         <div class="card-title">The Fartcoin Insider Playbook:<br>Buy Low, Dump Loud</div>
         <div class="card-date">02.2025</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="dots" data-seed="0.45"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/2.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
       <!-- Vol 04 — scan lines -->
@@ -402,7 +427,9 @@
         <div class="card-title">Can NFT Ticketing Go Mainstream?</div>
         <div class="card-date">04.2023</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="scan" data-seed="0.82"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/3.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
       <!-- Vol 03 — ripple waves -->
@@ -411,7 +438,9 @@
         <div class="card-title">NFT Creator Tools at a Crossroads</div>
         <div class="card-date">11.2022</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="ripple" data-seed="1.12"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/4.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
       <!-- Vol 02 — cross grid -->
@@ -420,7 +449,9 @@
         <div class="card-title">On the Promise of Omnichain NFTs</div>
         <div class="card-date">10.2022</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="grid" data-seed="1.55"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/5.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
       <!-- Vol 01 — gradient bars -->
@@ -429,7 +460,9 @@
         <div class="card-title">NFT Aggregator Market Landscape</div>
         <div class="card-date">06.2022</div>
         <div class="card-footer"><span><span class="status-dot"></span>Research</span></div>
-        <canvas class="card-canvas" data-type="bars" data-seed="1.88"></canvas>
+        <div class="card-anim-wrap">
+          <iframe class="card-anim-frame" src="article-design/6.html" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        </div>
       </a>
 
     </div>
@@ -471,65 +504,6 @@
   window.addEventListener('resize', alignCardTopToSidebarDivider);
   setTimeout(alignCardTopToSidebarDivider, 60);
 
-  /* ── Mosaic pixel noise shader (same for all cards, seed provides variation) ── */
-  const fsSource = `
-    precision highp float;
-    uniform vec2 uR; uniform float uT; uniform float uS;
-    float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898,78.233))) * 43758.5453); }
-    void main() {
-      vec2 st = gl_FragCoord.xy / uR;
-      float n = hash(floor(st * 38.0) + uS + uT * 0.04);
-      gl_FragColor = vec4(0.89, 0.87, 0.84, step(0.68, n));
-    }
-  `;
-
-  document.querySelectorAll('.card-canvas').forEach(canvas => {
-    const gl = canvas.getContext('webgl');
-    if (!gl) return;
-    const seed = parseFloat(canvas.dataset.seed);
-
-    function resize() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width  = rect.width  * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-    resize();
-
-    const vsSource = `attribute vec4 aP; void main() { gl_Position = aP; }`;
-
-    const program = gl.createProgram();
-    const vs = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vs, vsSource); gl.compileShader(vs);
-    const fs = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fs, fsSource); gl.compileShader(fs);
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.linkProgram(program);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,1,1,-1,-1,1,-1]), gl.STATIC_DRAW);
-
-    const pos = gl.getAttribLocation(program, 'aP');
-    const res = gl.getUniformLocation(program, 'uR');
-    const tim = gl.getUniformLocation(program, 'uT');
-    const sed = gl.getUniformLocation(program, 'uS');
-
-    function render(t) {
-      gl.clearColor(0,0,0,0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.useProgram(program);
-      gl.enableVertexAttribArray(pos);
-      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
-      gl.uniform2f(res, canvas.width, canvas.height);
-      gl.uniform1f(tim, t * 0.001);
-      gl.uniform1f(sed, seed);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(render);
-    }
-    render(0);
-  });
 </script>
 
 </body>
