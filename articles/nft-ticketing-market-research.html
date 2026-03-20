@@ -406,7 +406,149 @@
 
     body { animation: fadeIn 0.5s ease forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  </style>
+  
+
+    /* ── Mobile Article Layout ── */
+    @media (max-width: 980px) {
+      html, body {
+        overflow: auto;
+      }
+
+      .wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 16px 14px;
+      }
+
+      .sidebar-label {
+        font-size: 10px;
+      }
+
+      .sidebar-vol {
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .sidebar-divider {
+        margin-bottom: 10px;
+      }
+
+      .sidebar-title {
+        font-size: 11px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .sidebar-meta-row,
+      .sidebar-foot-label {
+        display: none;
+      }
+
+      .sidebar-footer {
+        padding-top: 6px;
+        margin-top: 0;
+      }
+
+      .back-btn {
+        font-size: 11px;
+        margin-bottom: 0;
+      }
+
+      .main {
+        height: auto;
+        overflow: visible;
+        padding: 16px 14px 24px;
+      }
+
+      .article-header {
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+      }
+
+      .article-title {
+        font-size: 16px;
+        line-height: 1.45;
+        letter-spacing: 0.06em;
+      }
+
+      .article-tagline {
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .article-body {
+        max-width: 100%;
+      }
+
+      .article-body p,
+      .article-body li {
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .article-body h2 {
+        margin: 24px 0 10px;
+      }
+
+      .article-body h3 {
+        margin: 18px 0 8px;
+      }
+
+      .compare-table,
+      table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+      }
+
+      .compare-table th,
+      .compare-table td,
+      table th,
+      table td {
+        white-space: nowrap;
+      }
+
+      .flow-map svg,
+      .flow-chart svg {
+        min-width: 640px;
+      }
+
+      .figure-grid,
+      .image-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .main {
+        padding: 12px 10px 18px;
+      }
+
+      .article-title {
+        font-size: 15px;
+      }
+
+      .article-body p,
+      .article-body li {
+        font-size: 13px;
+      }
+
+      .flow-map svg,
+      .flow-chart svg {
+        min-width: 520px;
+      }
+    }
+</style>
 </head>
 <body>
 
