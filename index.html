@@ -28,9 +28,9 @@
       --card-bg: #1e1e1c;
       --card-border: #2e2e2b;
       --panel-right: #252523;
-      --text-dim: rgba(200, 198, 190, 0.45);
-      --text-mid: rgba(200, 198, 190, 0.72);
-      --text-bright: rgba(220, 218, 210, 0.92);
+      --text-dim: rgba(200, 198, 190, 0.80);
+      --text-mid: rgba(210, 208, 200, 0.90);
+      --text-bright: rgba(228, 226, 218, 0.98);
       --text-label: rgba(200, 198, 190, 0.35);
       --accent: rgba(200, 198, 190, 0.18);
       --divider: rgba(200, 198, 190, 0.12);
@@ -132,7 +132,7 @@
       left: 16px;
       z-index: 20;
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 13px;
       letter-spacing: 0.18em;
       color: rgba(220, 218, 210, 0.55);
       text-transform: uppercase;
@@ -241,7 +241,7 @@
 
     .info-label {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-label);
       text-transform: uppercase;
@@ -250,13 +250,13 @@
 
     .info-arrow {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-label);
     }
 
     .info-value {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-bright);
       text-transform: uppercase;
@@ -273,7 +273,7 @@
 
     .perf-divider span {
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 13px;
       letter-spacing: 0.22em;
       color: var(--text-label);
       line-height: 1;
@@ -305,7 +305,7 @@
 
     .act-label {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-label);
       text-transform: uppercase;
@@ -313,19 +313,31 @@
 
     .act-arrow {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-label);
       transition: color 0.2s;
     }
 
     .act-value {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-mid);
       text-transform: uppercase;
       transition: color 0.2s, letter-spacing 0.25s;
       position: relative;
+    }
+
+    /* square brackets (scheme C) */
+    .act-value::before {
+      content: '[ ';
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+    .act-value::after {
+      content: ' ]';
+      opacity: 0.4;
+      transition: opacity 0.2s;
     }
 
     .act-row:hover .act-value {
@@ -335,19 +347,27 @@
     .act-row:hover .act-arrow {
       color: var(--text-mid);
     }
+    .act-row:hover .act-value::before,
+    .act-row:hover .act-value::after {
+      opacity: 1;
+    }
 
-    /* underline on hover */
-    .act-value::after {
+    /* underline on hover (scheme A) */
+    .act-value-inner {
+      position: relative;
+      display: inline;
+    }
+    .act-value-inner::after {
       content: '';
       position: absolute;
       bottom: -2px;
       left: 0;
       width: 0;
       height: 1px;
-      background: rgba(200,198,190,0.3);
+      background: rgba(228,226,218,0.6);
       transition: width 0.3s ease;
     }
-    .act-row:hover .act-value::after { width: 100%; }
+    .act-row:hover .act-value-inner::after { width: 100%; }
 
     /* ── Bottom strip ── */
     #bottom-strip {
@@ -362,7 +382,7 @@
 
     .bottom-left, .bottom-right {
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 13px;
       letter-spacing: 0.18em;
       color: var(--text-label);
       text-transform: uppercase;
@@ -397,7 +417,7 @@
 
     .mp-time {
       font-family: var(--mono);
-      font-size: 9px;
+      font-size: 13px;
       letter-spacing: 0.08em;
       color: rgba(200,198,190,0.45);
       width: 28px;
@@ -532,10 +552,10 @@
       .info-row, .act-row { grid-template-columns: 76px 12px 1fr; margin-bottom: 8px; }
       .act-block { gap: 0; }
       .info-row.spacer { margin-bottom: 12px; }
-      .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value { font-size: 10px; }
+      .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value { font-size: 12px; }
       .perf-divider { margin: 10px 0; }
-      .perf-divider span { font-size: 8px; }
-      .bottom-left, .bottom-right { font-size: 8px; letter-spacing: 0.14em; }
+      .perf-divider span { font-size: 10px; }
+      .bottom-left, .bottom-right { font-size: 10px; letter-spacing: 0.14em; }
 
       #music-player {
         width: min(760px, 92vw);
@@ -569,7 +589,7 @@
       }
 
       #location-label {
-        font-size: 10px;
+        font-size: 12px;
         letter-spacing: 0.14em;
       }
 
@@ -578,7 +598,7 @@
       .act-block { gap: 0; }
       .info-row.spacer { margin-bottom: 12px; }
       .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value {
-        font-size: 11px;
+        font-size: 13px;
         letter-spacing: 0.11em;
       }
 
@@ -590,7 +610,7 @@
       }
 
       .bottom-left, .bottom-right {
-        font-size: 8px;
+        font-size: 10px;
         letter-spacing: 0.14em;
       }
 
@@ -601,7 +621,7 @@
       }
 
       #mp-seek-row { gap: 8px; margin-bottom: 8px; }
-      .mp-time { font-size: 10px; width: 34px; }
+      .mp-time { font-size: 12px; width: 34px; }
       #mp-controls { gap: 14px; }
       .mp-ctrl { padding: 6px; }
       #mp-playbtn { width: 42px; height: 42px; }
@@ -657,12 +677,12 @@
         <a class="act-row" href="about-me/cv.html" onclick="goTo('about-me/cv.html'); return false;">
           <span class="act-label">Act 01</span>
           <span class="act-arrow">&gt;</span>
-          <span class="act-value">About Me</span>
+          <span class="act-value"><span class="act-value-inner">About Me</span></span>
         </a>
         <a class="act-row" href="writings.html" onclick="goTo('writings.html'); return false;">
           <span class="act-label">Act 02</span>
           <span class="act-arrow">&gt;</span>
-          <span class="act-value">Writings</span>
+          <span class="act-value"><span class="act-value-inner">Writings</span></span>
         </a>
       </div>
     </div>
