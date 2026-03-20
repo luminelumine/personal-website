@@ -35,6 +35,8 @@
       font-family: var(--mono);
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     /* grain */
@@ -267,6 +269,13 @@
     }
     .article-body a:hover { color: var(--text-bright); }
 
+    /* ── Figure/table text normalization ── */
+    .table-caption,
+    .figure-cap,
+    .evidence-figure figcaption {
+      font-family: var(--body-font);
+    }
+
     /* ── Summary box ── */
     .summary-box {
       border: 1px solid var(--border);
@@ -316,7 +325,7 @@
 
     .compare-table tr:last-child td { border-bottom: none; }
     .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
-    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+    .compare-table .row-label { font-family: var(--body-font); color: var(--text-dim); font-size: 11px; white-space: nowrap; }
 
     /* ── Flow chart ── */
     .flow-chart {
@@ -336,7 +345,7 @@
     }
 
     .flow-chart .lane-label {
-      font-family: var(--mono);
+      font-family: var(--body-font);
       font-size: 11px;
       letter-spacing: 0.08em;
       fill: rgba(220,218,210,0.66);
@@ -366,14 +375,14 @@
     }
 
     .flow-chart .node-title {
-      font-family: var(--mono);
+      font-family: var(--body-font);
       font-size: 11px;
       fill: rgba(220,218,210,0.88);
       text-anchor: middle;
     }
 
     .flow-chart .node-sub {
-      font-family: var(--mono);
+      font-family: var(--body-font);
       font-size: 10px;
       fill: rgba(220,218,210,0.58);
       text-anchor: middle;
@@ -425,7 +434,7 @@
         height: auto;
         border-right: none;
         border-bottom: 1px solid var(--border);
-        padding: 16px 14px;
+        padding: 16px 18px;
       }
 
       .sidebar-label {
@@ -465,7 +474,7 @@
       .main {
         height: auto;
         overflow: visible;
-        padding: 16px 14px 24px;
+        padding: 18px 18px 28px;
       }
 
       .article-header {
@@ -518,6 +527,21 @@
         white-space: nowrap;
       }
 
+      .compare-table th,
+      table th {
+        font-family: var(--body-font);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .compare-table td,
+      table td,
+      .compare-table .row-label {
+        font-family: var(--body-font);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
       .flow-map svg,
       .flow-chart svg {
         min-width: 640px;
@@ -531,7 +555,7 @@
 
     @media (max-width: 520px) {
       .main {
-        padding: 12px 10px 18px;
+        padding: 14px 16px 22px;
       }
 
       .article-title {
@@ -563,8 +587,6 @@
     <div class="sidebar-vol">Research</div>
     <div class="sidebar-divider"></div>
 
-    <div class="sidebar-title">Can NFT Ticketing<br>Go Mainstream?</div>
-
     <div class="sidebar-meta-row">
       <div class="sidebar-meta-item">
         <span>Vol</span><span>04</span>
@@ -580,7 +602,7 @@
     <div class="sidebar-footer">
       <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
       <div class="sidebar-foot-label">
-        Luminescence<br>
+        Lumine<br>
         ID: LT-1997
       </div>
     </div>
@@ -660,6 +682,7 @@
       <h2>5. Typical Operating Flow</h2>
       <div class="flow-chart">
         <svg viewBox="0 0 980 300" role="img" aria-label="NFT ticketing organizer and buyer operating flow">
+          <style>text { font-family: var(--body-font); }</style>
           <defs>
             <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(220,218,210,0.75)"></path>

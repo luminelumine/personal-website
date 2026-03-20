@@ -35,6 +35,8 @@
       font-family: var(--mono);
       overflow: hidden;
       -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     /* grain */
@@ -267,6 +269,13 @@
     }
     .article-body a:hover { color: var(--text-bright); }
 
+    /* ── Figure/table text normalization ── */
+    .table-caption,
+    .figure-cap,
+    .evidence-figure figcaption {
+      font-family: var(--body-font);
+    }
+
     /* ── TL;DR block ── */
     .tldr {
       border: 1px solid var(--border);
@@ -330,7 +339,7 @@
 
     .compare-table tr:last-child td { border-bottom: none; }
     .compare-table tr:hover td { background: rgba(200,198,190,0.02); }
-    .compare-table .row-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; }
+    .compare-table .row-label { font-family: var(--body-font); color: var(--text-dim); font-size: 11px; white-space: nowrap; }
 
     .tick-yes { color: #7ec8a0; }
     .tick-no  { color: var(--text-dim); opacity: 0.4; }
@@ -388,7 +397,7 @@
         height: auto;
         border-right: none;
         border-bottom: 1px solid var(--border);
-        padding: 16px 14px;
+        padding: 16px 18px;
       }
 
       .sidebar-label {
@@ -428,7 +437,7 @@
       .main {
         height: auto;
         overflow: visible;
-        padding: 16px 14px 24px;
+        padding: 18px 18px 28px;
       }
 
       .article-header {
@@ -481,6 +490,21 @@
         white-space: nowrap;
       }
 
+      .compare-table th,
+      table th {
+        font-family: var(--body-font);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .compare-table td,
+      table td,
+      .compare-table .row-label {
+        font-family: var(--body-font);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
       .flow-map svg,
       .flow-chart svg {
         min-width: 640px;
@@ -494,7 +518,7 @@
 
     @media (max-width: 520px) {
       .main {
-        padding: 12px 10px 18px;
+        padding: 14px 16px 22px;
       }
 
       .article-title {
@@ -526,8 +550,6 @@
     <div class="sidebar-vol">Research</div>
     <div class="sidebar-divider"></div>
 
-    <div class="sidebar-title">NFT Aggregator Market Landscape</div>
-
     <div class="sidebar-meta-row">
       <div class="sidebar-meta-item">
         <span>Vol</span><span>01</span>
@@ -543,7 +565,7 @@
     <div class="sidebar-footer">
       <a class="back-btn" href="../writings.html" onclick="fadeOut(event,'../writings.html')">← Back</a>
       <div class="sidebar-foot-label">
-        Luminescence<br>
+        Lumine<br>
         ID: LT-1997
       </div>
     </div>
