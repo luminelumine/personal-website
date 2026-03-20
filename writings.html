@@ -264,6 +264,95 @@
         padding: 20px 16px;
       }
     }
+
+    @media (max-width: 900px) {
+      html, body {
+        overflow: auto;
+      }
+
+      .wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 16px 16px 14px;
+      }
+
+      .sidebar-title {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .sidebar-divider {
+        margin-bottom: 12px;
+      }
+
+      .back-btn {
+        margin-bottom: 0;
+        font-size: 11px;
+      }
+
+      .sidebar-footer {
+        display: none;
+      }
+
+      .main {
+        height: auto;
+        overflow: visible;
+        padding: 14px 14px 24px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .ticket-card {
+        min-height: 164px;
+        padding: 14px 14px 12px;
+      }
+
+      .card-vol {
+        font-size: 11px;
+        margin-bottom: 8px;
+      }
+
+      .card-title {
+        font-size: 14px;
+        line-height: 1.6;
+        letter-spacing: 0.08em;
+      }
+
+      .card-date,
+      .card-footer {
+        font-size: 12px;
+      }
+
+      .card-canvas {
+        opacity: 0.34;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .main {
+        padding: 12px 10px 20px;
+      }
+
+      .ticket-card {
+        border-radius: 8px;
+        min-height: 174px;
+      }
+
+      .card-title {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 <body>
