@@ -24,8 +24,8 @@
       --sidebar-bg: #181816;
       --border: rgba(200, 198, 190, 0.12);
       --text-bright: rgba(228, 226, 218, 0.98);
-      --text-mid: rgba(210, 208, 200, 0.88);
-      --text-dim: rgba(200, 198, 190, 0.65);
+      --text-mid: rgba(210, 208, 200, 0.90);
+      --text-dim: rgba(200, 198, 190, 0.80);
     }
 
     html, body {
@@ -59,7 +59,7 @@
       position: fixed;
       top: 28px;
       left: 32px;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-dim);
@@ -107,7 +107,7 @@
 
     .sidebar-header {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.2em;
       color: var(--text-bright);
       text-transform: uppercase;
@@ -117,14 +117,15 @@
 
     .tab-item {
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.15em;
+      font-size: 13px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-dim);
       margin-bottom: 12px;
       cursor: pointer;
       transition: color 0.2s, opacity 0.2s;
       user-select: none;
+      white-space: nowrap;
     }
     .tab-item.active {
       color: var(--text-bright);
@@ -136,11 +137,13 @@
       margin-top: auto;
       font-family: var(--mono);
       font-size: 11px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       color: var(--text-dim);
       text-transform: uppercase;
       display: flex;
       justify-content: space-between;
+      white-space: nowrap;
+      gap: 8px;
     }
 
     /* ── Main panel ── */
@@ -168,14 +171,14 @@
 
     .panel-title {
       font-family: var(--mono);
-      font-size: 16px;
+      font-size: 18px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-bright);
     }
 
     .panel-meta {
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-mid);
       text-transform: uppercase;
@@ -188,7 +191,7 @@
     /* ── Bio text ── */
     .bio-text {
       font-family: var(--mono);
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1.85;
       color: var(--text-bright);
       margin-bottom: 16px;
@@ -200,7 +203,7 @@
       display: grid;
       grid-template-columns: 90px 14px 1fr;
       row-gap: 8px;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.1em;
       flex-shrink: 0;
     }
@@ -210,7 +213,7 @@
 
     /* ── Experience entries ── */
     .exp-section-label {
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--text-mid);
@@ -226,14 +229,14 @@
       gap: 0 16px;
       padding: 9px 0;
       border-bottom: 1px solid rgba(200,198,190,0.08);
-      font-size: 12px;
+      font-size: 14px;
       flex-shrink: 0;
     }
     .exp-entry:last-child { border-bottom: none; }
 
-    .exp-year { color: var(--text-mid); letter-spacing: 0.06em; padding-top: 1px; font-size: 11px; white-space: nowrap; }
+    .exp-year { color: var(--text-mid); letter-spacing: 0.06em; padding-top: 1px; font-size: 13px; white-space: nowrap; }
     .exp-name { color: var(--text-bright); letter-spacing: 0.06em; }
-    .exp-role { color: var(--text-mid); letter-spacing: 0.06em; font-size: 11px; margin-top: 3px; }
+    .exp-role { color: var(--text-mid); letter-spacing: 0.06em; font-size: 13px; margin-top: 3px; }
 
     /* ── Qual entries ── */
     .qual-entry {
@@ -242,7 +245,7 @@
       gap: 0 16px;
       padding: 11px 0;
       border-bottom: 1px solid rgba(200,198,190,0.08);
-      font-size: 12px;
+      font-size: 14px;
       flex-shrink: 0;
     }
     .qual-entry:last-child { border-bottom: none; }
@@ -260,7 +263,7 @@
       display: grid;
       grid-template-columns: 80px 14px 1fr;
       row-gap: 14px;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: 0.1em;
       flex-shrink: 0;
     }
@@ -277,7 +280,7 @@
     .texture-divider {
       white-space: nowrap; overflow: hidden;
       letter-spacing: 1px; opacity: 0.12;
-      font-size: 10px; margin: 14px 0 16px;
+      font-size: 14px; margin: 14px 0 16px;
       flex-shrink: 0;
     }
 
@@ -285,7 +288,7 @@
     .panel-footer {
       margin-top: auto;
       padding-top: 12px;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 0.14em;
       color: var(--text-mid);
       text-transform: uppercase;
@@ -319,7 +322,7 @@
       .back-link {
         top: 16px;
         left: 14px;
-        font-size: 11px;
+        font-size: 13px;
       }
 
       .card {
@@ -350,6 +353,8 @@
         margin-bottom: 8px;
         margin-right: 10px;
         font-size: 11px;
+        letter-spacing: 0.10em;
+        white-space: nowrap;
       }
 
       .sidebar-foot {
@@ -367,7 +372,7 @@
       }
 
       .panel-meta {
-        font-size: 10px;
+        font-size: 14px;
       }
 
       .bio-text {
@@ -381,7 +386,7 @@
       }
 
       .exp-year {
-        font-size: 11px;
+        font-size: 13px;
         color: var(--text-dim);
       }
 
@@ -391,7 +396,7 @@
       }
 
       .qual-year {
-        font-size: 11px;
+        font-size: 13px;
         color: var(--text-dim);
       }
 
@@ -415,7 +420,7 @@
       }
 
       .tab-item {
-        font-size: 10px;
+        font-size: 14px;
         margin-right: 8px;
       }
 
@@ -432,14 +437,14 @@
       }
 
       .bio-text {
-        font-size: 12px;
+        font-size: 14px;
       }
 
       .exp-name,
       .qual-link,
       .c-val,
       .g-val {
-        font-size: 11px;
+        font-size: 13px;
       }
     }
   </style>
