@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Polara is a private iPhone companion for pole dancers, independently designed and built by Lumine Tong.">
+  <title>Polara — Selected Work by Lumine</title>
+  <link rel="stylesheet" href="../work.css">
+</head>
+<body class="polara-page">
+  <header class="site-nav">
+    <a class="site-logo" href="../index.html" aria-label="Lumine home">lumine</a>
+    <a class="nav-link" href="../selected-work.html">Selected work</a>
+  </header>
+
+  <main>
+    <section class="polara-section polara-hero" aria-labelledby="polara-title">
+      <div class="page-shell polara-hero-grid">
+        <div>
+          <p class="eyebrow">Independent Product / iOS / 2026</p>
+          <h1 class="polara-wordmark" id="polara-title">Polara</h1>
+          <p class="hero-statement">Never forget a trick.</p>
+          <p class="hero-description">A private iPhone companion for pole dancers to track every trick, record practice, and see their progress.</p>
+          <a class="app-store-link" href="https://apps.apple.com/app/id6772756796" target="_blank" rel="noopener noreferrer">Download on the App Store</a>
+
+          <div class="hero-meta">
+            <div>
+              <span class="meta-label">Role</span>
+              <span class="meta-value">Independent Product<br>Designer &amp; Developer</span>
+            </div>
+            <div>
+              <span class="meta-label">Scope</span>
+              <span class="meta-value">Strategy · UX/UI · iOS<br>Brand · Monetization</span>
+            </div>
+          </div>
+
+          <div class="product-facts" aria-label="Product facts">
+            <span class="stat">100+ Pole Tricks</span>
+            <span class="stat">5 Levels</span>
+            <span class="stat">3 Languages</span>
+            <span class="stat">No Account Required</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <img src="../assets/polara/welcome.png" alt="Polara welcome screen with an illustrated pole dancer" width="828" height="1800">
+        </div>
+      </div>
+    </section>
+
+    <section class="polara-section product-section" aria-labelledby="product-title">
+      <div class="page-shell">
+        <div class="section-heading-row reveal">
+          <span class="section-index">01 / The Product</span>
+          <h2 class="section-title" id="product-title">Remember.<br>Track. Reflect.</h2>
+        </div>
+
+        <div class="product-flow">
+          <article class="product-step reveal">
+            <div class="screen-frame">
+              <img src="../assets/polara/trick-library.png" alt="Polara searchable trick library" width="828" height="1800" loading="lazy">
+            </div>
+            <div class="step-copy">
+              <p class="step-label">01 / Remember</p>
+              <h3>Give every trick a home.</h3>
+              <p>Keep the moves learned across classes and studios in one searchable place.</p>
+            </div>
+          </article>
+
+          <article class="product-step reveal">
+            <div class="screen-frame">
+              <img src="../assets/polara/dancer-profile.png" alt="Polara dancer profile showing learning and mastered trick progress" width="828" height="1800" loading="lazy">
+            </div>
+            <div class="step-copy">
+              <p class="step-label">02 / Track</p>
+              <h3>Know where you are.</h3>
+              <p>Move naturally from To Learn to Learning to Landed, without turning practice into a score.</p>
+            </div>
+          </article>
+
+          <article class="product-step reveal">
+            <div class="screen-frame">
+              <img src="../assets/polara/achievements.png" alt="Polara milestones and achievement history" width="828" height="1800" loading="lazy">
+            </div>
+            <div class="step-copy">
+              <p class="step-label">03 / Reflect</p>
+              <h3>See the journey take shape.</h3>
+              <p>Connect practice records and milestones into a personal history worth returning to.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="polara-section thinking-section" aria-labelledby="thinking-title">
+      <div class="page-shell">
+        <span class="section-index">02 / The Thinking</span>
+        <h2 class="thinking-quote reveal" id="thinking-title">Pole dancers did not need another tutorial library. They needed a <em>personal memory</em> for their journey.</h2>
+
+        <div class="decisions">
+          <article class="decision reveal">
+            <span class="decision-number">01</span>
+            <h3>Simple progress states</h3>
+            <p>Progress is personal. Polara keeps the language clear and lets each dancer decide what “landed” means to them.</p>
+          </article>
+
+          <article class="decision reveal">
+            <span class="decision-number">02</span>
+            <h3>Connected practice history</h3>
+            <p>Tricks, sessions, plans, and milestones form one continuous record instead of another scattered archive.</p>
+          </article>
+
+          <article class="decision reveal">
+            <span class="decision-number">03</span>
+            <h3>Private by design</h3>
+            <p>No mandatory account. Training data stays local, with user-controlled backup and restore when it is needed.</p>
+          </article>
+        </div>
+
+        <div class="build-note reveal">
+          <span class="tiny-note">From idea to launch</span>
+          <p>Designed and built independently with React Native, Expo, TypeScript, and StoreKit.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="case-footer">
+    <span>Polara · 2026</span>
+    <span>Independent product design &amp; development</span>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js');
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach((item) => observer.observe(item));
+  </script>
+</body>
+</html>

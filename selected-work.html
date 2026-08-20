@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Selected independent product work by Lumine Tong.">
+  <title>Selected Work — Lumine</title>
+  <link rel="stylesheet" href="work.css">
+</head>
+<body>
+  <header class="site-nav">
+    <a class="site-logo" href="index.html" aria-label="Lumine home">lumine</a>
+    <a class="nav-link" href="index.html">Back home</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="index-intro" aria-labelledby="work-title">
+      <div>
+        <p class="eyebrow">Portfolio / 2026</p>
+        <h1 class="display-title" id="work-title">Selected<br>Work</h1>
+      </div>
+      <p>Products designed, built, and shipped independently.</p>
+    </section>
+
+    <a class="project-entry reveal" href="projects/polara.html" aria-label="View the Polara case study">
+      <div class="project-copy">
+        <span class="project-number">01 / iOS / 2026</span>
+        <div>
+          <h2 class="project-title">Polara</h2>
+          <p class="project-summary">A private pole training companion for remembering every trick and seeing progress over time.</p>
+
+          <div class="project-meta">
+            <div>
+              <span class="meta-label">Role</span>
+              <span class="meta-value">Independent Product<br>Designer &amp; Developer</span>
+            </div>
+            <div>
+              <span class="meta-label">Scope</span>
+              <span class="meta-value">Product Strategy · UX/UI · iOS<br>Monetization · Growth</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-visual" aria-hidden="true">
+        <img src="assets/polara/welcome.png" alt="" width="828" height="1800">
+        <span class="project-open">↗</span>
+      </div>
+    </a>
+
+    <footer class="index-footer">Lumine Tong · Selected independent work</footer>
+  </main>
+
+  <script>
+    document.documentElement.classList.add('js');
+    const revealItems = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach((item) => observer.observe(item));
+  </script>
+</body>
+</html>
