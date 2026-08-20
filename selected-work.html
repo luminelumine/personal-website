@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Selected independent product work by Lumine.">
+  <title>Selected Work — Lumine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mono: "Courier New", Courier, monospace;
+      --site-bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1e1e1c;
+      --card-deep: #161615;
+      --line: rgba(200, 198, 190, 0.12);
+      --line-hover: rgba(200, 198, 190, 0.34);
+      --text: rgba(228, 226, 218, 0.98);
+      --text-mid: rgba(222, 220, 212, 0.88);
+      --text-dim: rgba(210, 208, 200, 0.68);
+      --polara-bg: #1a0f12;
+      --polara-card: #2d1a1e;
+      --polara-pink: #db7f8e;
+      --polara-blush: #ffdbda;
+      --polara-taupe: #604d53;
+    }
+
+    html { background: var(--site-bg); }
+
+    body {
+      min-height: 100vh;
+      background: var(--site-bg);
+      color: var(--text);
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitchTiles'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--line);
+    }
+
+    .sidebar-title {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-mid);
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .sidebar-nav { margin-top: 26px; }
+
+    .sidebar-item,
+    .back-link {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      gap: 10px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      line-height: 1.5;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .sidebar-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--polara-pink);
+      box-shadow: 0 0 0 3px rgba(219, 127, 142, 0.08);
+    }
+
+    .sidebar-item { color: var(--text); }
+
+    .back-link {
+      margin-top: 32px;
+      transition: color 180ms ease;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible { color: var(--text); }
+
+    .sidebar-footer {
+      margin-top: auto;
+      color: rgba(210, 208, 200, 0.52);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 2.1;
+      text-transform: uppercase;
+    }
+
+    .main {
+      min-width: 0;
+      padding: clamp(28px, 4.2vw, 64px) clamp(24px, 4.8vw, 72px) 64px;
+    }
+
+    .section-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(980px, 100%);
+      margin-bottom: 18px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .project-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.8fr);
+      width: min(980px, 100%);
+      min-height: 520px;
+      overflow: hidden;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      transition: border-color 220ms ease, transform 220ms ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--line-hover);
+      transform: translateY(-2px);
+    }
+
+    .project-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      padding: clamp(28px, 4vw, 52px);
+    }
+
+    .project-index {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .project-title {
+      margin-top: 34px;
+      color: var(--text);
+      font-size: clamp(28px, 3.4vw, 48px);
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .project-deck {
+      width: min(470px, 100%);
+      margin-top: 18px;
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1.85;
+    }
+
+    .project-details {
+      display: grid;
+      gap: 11px;
+      margin-top: 36px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 82px 12px minmax(0, 1fr);
+      align-items: baseline;
+      color: var(--text-mid);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      line-height: 1.7;
+      text-transform: uppercase;
+    }
+
+    .detail-label,
+    .detail-arrow { color: var(--text-dim); }
+
+    .project-bottom {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin-top: auto;
+      padding-top: 34px;
+    }
+
+    .project-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .stat-number {
+      color: var(--polara-blush);
+      font-size: clamp(31px, 3.5vw, 48px);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      max-width: 150px;
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 1.6;
+      text-transform: uppercase;
+    }
+
+    .project-link {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border: 1px solid var(--polara-taupe);
+      color: var(--polara-pink);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+
+    .project-link:hover,
+    .project-link:focus-visible {
+      border-color: var(--polara-pink);
+      background: rgba(219, 127, 142, 0.08);
+      color: var(--polara-blush);
+    }
+
+    .project-media {
+      position: relative;
+      height: 520px;
+      min-height: 520px;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: var(--polara-bg);
+      border-left: 1px solid var(--line);
+      scroll-snap-type: x mandatory;
+      scrollbar-color: var(--polara-taupe) transparent;
+      scrollbar-width: thin;
+    }
+
+    .project-media::-webkit-scrollbar { height: 3px; }
+    .project-media::-webkit-scrollbar-track { background: transparent; }
+    .project-media::-webkit-scrollbar-thumb { background: var(--polara-taupe); }
+
+    .project-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 18px 0 40px rgba(13, 13, 12, 0.22);
+    }
+
+    .project-shot {
+      position: relative;
+      width: auto;
+      height: 520px;
+      min-width: 100%;
+      flex: 0 0 100%;
+      overflow: hidden;
+      border-right: 1px solid rgba(96, 77, 83, 0.5);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .project-shot:last-of-type { border-right: 0; }
+
+    .project-shot img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: 50% 35%;
+      filter: saturate(0.88) contrast(1.02);
+      transition: transform 650ms cubic-bezier(.22, 1, .36, 1), filter 300ms ease;
+    }
+
+    .project-shot[data-index="1"] img { object-position: 50% 86%; }
+
+    .project-card:hover .project-shot img {
+      transform: scale(1.015);
+      filter: saturate(1) contrast(1.02);
+    }
+
+    .gallery-count {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      width: max-content;
+      margin: 0;
+      padding: 8px 10px;
+      background: rgba(26, 15, 18, 0.82);
+      border: 1px solid rgba(255, 219, 218, 0.18);
+      color: var(--polara-blush);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    [contenteditable="true"] { outline: none; }
+    [contenteditable="true"]:focus { box-shadow: inset 0 -1px 0 var(--polara-pink); }
+
+    :focus-visible { outline: 1px solid var(--polara-pink); outline-offset: 4px; }
+
+    @media (max-width: 1024px) {
+      .main { padding-right: 32px; padding-left: 32px; }
+      .project-card { grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr); }
+      .project-copy { padding: 34px; }
+    }
+
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 176px minmax(0, 1fr); }
+      .sidebar { padding: 26px 18px; }
+      .main { padding: 28px 24px 48px; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-media {
+        grid-row: 1;
+        height: 300px;
+        min-height: 300px;
+        border-bottom: 1px solid var(--line);
+        border-left: 0;
+      }
+      .project-shot {
+        width: auto;
+        height: 300px;
+        min-width: 100%;
+        flex: 0 0 100%;
+        border-right: 1px solid rgba(96, 77, 83, 0.5);
+        border-bottom: 0;
+      }
+      .gallery-count {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        margin: 0;
+      }
+      .project-media img { object-position: 50% 30%; }
+      .project-copy { min-height: 500px; }
+    }
+
+    @media (max-width: 520px) {
+      .shell { display: block; }
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 20px 18px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .sidebar-title { padding: 0; border: 0; font-size: 12px; }
+      .sidebar-nav,
+      .sidebar-footer { display: none; }
+      .back-link { margin: 0; font-size: 12px; }
+      .main { padding: 24px 16px 40px; }
+      .section-meta { margin-bottom: 12px; }
+      .project-card { min-height: 0; }
+      .project-media { height: 270px; min-height: 270px; }
+      .project-shot { height: 270px; }
+      .project-copy { min-height: 520px; padding: 26px 22px; }
+      .project-title { margin-top: 28px; font-size: 30px; }
+      .project-deck { font-size: 16px; }
+      .detail-row { grid-template-columns: 72px 10px minmax(0, 1fr); font-size: 12px; }
+      .project-bottom { grid-template-columns: 1fr; align-items: stretch; }
+      .project-link { width: 100%; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root { color-scheme: dark; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Selected work navigation">
+      <div class="sidebar-title">Selected Work</div>
+      <nav class="sidebar-nav" aria-label="Projects">
+        <a class="sidebar-item" href="#polara">01 / Polara</a>
+      </nav>
+      <a class="back-link" href="index.html" aria-label="Back to homepage">← Back</a>
+      <div class="sidebar-footer" aria-hidden="true">Lumine<br>ID: LT–1997</div>
+    </aside>
+
+    <main class="main">
+      <div class="section-meta" aria-label="Collection metadata">
+        <span>Independent product work</span>
+        <span>01 project</span>
+      </div>
+
+      <article class="project-card" id="polara">
+        <div class="project-copy">
+          <div class="project-index">
+            <span>Project 01</span>
+            <span>2026 / iOS</span>
+          </div>
+
+          <h1 class="project-title">Polara</h1>
+          <p class="project-deck">A private pole-training diary for tracking practice, tricks, and progress.</p>
+
+          <div class="project-details" aria-label="Project details">
+            <div class="detail-row">
+              <span class="detail-label">Role</span><span class="detail-arrow">→</span><span>Independent product designer &amp; developer</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Scope</span><span class="detail-arrow">→</span><span>Strategy · UX/UI · iOS · Brand</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Built</span><span class="detail-arrow">→</span><span>Solo, from concept to shipped product</span>
+            </div>
+          </div>
+
+          <div class="project-bottom">
+            <div class="project-stat">
+              <span class="stat-number">100+</span>
+              <span class="stat-label">Pole tricks across five levels</span>
+            </div>
+            <a class="project-link" href="projects/polara.html">View case study →</a>
+          </div>
+        </div>
+
+        <figure class="project-media" aria-label="Scrollable Polara product gallery" tabindex="0">
+          <figcaption class="gallery-count"><span data-gallery-current>01</span> / 05 · Scroll</figcaption>
+          <div class="project-shot" data-index="1">
+            <img src="assets/polara/app-store-07.webp" alt="Polara progress and profile views" width="1284" height="2778" fetchpriority="high">
+          </div>
+          <div class="project-shot" data-index="2">
+            <img src="assets/polara/app-store-01.webp" alt="Polara trick dictionary and status tracking" width="1284" height="2778" loading="lazy">
+          </div>
+          <div class="project-shot" data-index="3">
+            <img src="assets/polara/app-store-02.webp" alt="Polara practice logging flow" width="1284" height="2778" loading="lazy">
+          </div>
+          <div class="project-shot" data-index="4">
+            <img src="assets/polara/app-store-04.webp" alt="Polara personalized pole persona" width="1284" height="2778" loading="lazy">
+          </div>
+          <div class="project-shot" data-index="5">
+            <img src="assets/polara/app-store-05.webp" alt="Polara achievement milestones" width="1284" height="2778" loading="lazy">
+          </div>
+        </figure>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const gallery = document.querySelector(".project-media");
+    const current = document.querySelector("[data-gallery-current]");
+    const shots = document.querySelectorAll(".project-shot");
+    if ("IntersectionObserver" in window) {
+      const galleryObserver = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
+      }, { root: gallery, threshold: [0.55, 0.75] });
+      shots.forEach((shot) => galleryObserver.observe(shot));
+    }
+  </script>
+</body>
+</html>

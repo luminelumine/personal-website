@@ -302,6 +302,7 @@
 
     #ticket.loaded .act-row:nth-child(1) { animation: rowIn 0.6s ease 1.32s forwards; }
     #ticket.loaded .act-row:nth-child(2) { animation: rowIn 0.6s ease 1.44s forwards; }
+    #ticket.loaded .act-row:nth-child(3) { animation: rowIn 0.6s ease 1.56s forwards; }
 
     .act-label {
       font-family: var(--mono);
@@ -377,7 +378,7 @@
       justify-content: space-between;
       align-items: center;
       opacity: 0;
-      animation: rowIn 0.6s ease 1.55s forwards;
+      animation: rowIn 0.6s ease 1.68s forwards;
     }
 
     .bottom-left, .bottom-right {
@@ -655,7 +656,7 @@
         <div class="info-row spacer">
           <span class="info-label">Trait</span>
           <span class="info-arrow">&gt;</span>
-          <span class="info-value">Strategic</span>
+          <span class="info-value">Rigorous</span>
         </div>
         <div class="info-row">
           <span class="info-label">Date</span>
@@ -683,6 +684,11 @@
           <span class="act-label">Act 02</span>
           <span class="act-arrow">&gt;</span>
           <span class="act-value"><span class="act-value-inner">Writings</span></span>
+        </a>
+        <a class="act-row" href="selected-work.html" onclick="goTo('selected-work.html'); return false;">
+          <span class="act-label">Act 03</span>
+          <span class="act-arrow">&gt;</span>
+          <span class="act-value"><span class="act-value-inner">Selected Work</span></span>
         </a>
       </div>
     </div>

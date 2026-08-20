@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Polara is a private pole-training diary independently designed and built by Lumine.">
+  <title>Polara — Lumine</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mono: "Courier New", Courier, monospace;
+      --site-bg: #111110;
+      --sidebar-bg: #0d0d0c;
+      --card-bg: #1e1e1c;
+      --card-deep: #161615;
+      --line: rgba(200, 198, 190, 0.12);
+      --line-strong: rgba(200, 198, 190, 0.24);
+      --text: rgba(228, 226, 218, 0.98);
+      --text-mid: rgba(222, 220, 212, 0.88);
+      --text-dim: rgba(210, 208, 200, 0.68);
+      --polara-bg: #1a0f12;
+      --polara-surface: #261419;
+      --polara-card: #2d1a1e;
+      --polara-pink: #db7f8e;
+      --polara-blush: #ffdbda;
+      --polara-taupe: #604d53;
+      --polara-gold: #ccab6e;
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    html { background: var(--site-bg); scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--site-bg);
+      color: var(--text);
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitchTiles'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--line);
+    }
+
+    .sidebar-title {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-mid);
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .sidebar-nav {
+      display: grid;
+      gap: 15px;
+      margin-top: 26px;
+    }
+
+    .sidebar-item,
+    .back-link {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      line-height: 1.5;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 180ms ease;
+    }
+
+    .sidebar-item::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--polara-pink);
+      opacity: 0.38;
+      transition: opacity 180ms ease, box-shadow 180ms ease;
+    }
+
+    .sidebar-item:hover,
+    .sidebar-item:focus-visible,
+    .back-link:hover,
+    .back-link:focus-visible { color: var(--text); }
+
+    .sidebar-item:hover::before,
+    .sidebar-item:focus-visible::before {
+      opacity: 1;
+      box-shadow: 0 0 0 3px rgba(219, 127, 142, 0.08);
+    }
+
+    .back-link { margin-top: 22px; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      color: rgba(210, 208, 200, 0.52);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 2.1;
+      text-transform: uppercase;
+    }
+
+    .main { min-width: 0; }
+
+    .section {
+      width: 100%;
+      padding: clamp(40px, 5vw, 72px) clamp(24px, 5vw, 76px);
+      border-bottom: 1px solid var(--line);
+      scroll-margin-top: 24px;
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .section-label::after {
+      content: "";
+      width: clamp(40px, 8vw, 110px);
+      height: 1px;
+      margin-left: 20px;
+      background: var(--line-strong);
+    }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; }
+
+    .hero-ticket {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
+      min-height: 650px;
+      overflow: hidden;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+    }
+
+    html.motion-ready .hero-ticket {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 520ms ease-out, transform 620ms var(--ease-out);
+    }
+
+    html.motion-ready.is-loaded .hero-ticket {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      padding: clamp(30px, 4vw, 54px);
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      margin-top: clamp(34px, 5vw, 66px);
+      font-size: clamp(38px, 5.4vw, 70px);
+      font-weight: 400;
+      letter-spacing: 0.19em;
+      line-height: 0.96;
+      text-transform: uppercase;
+    }
+
+    .hero-kicker {
+      margin-top: 22px;
+      color: var(--polara-blush);
+      font-size: clamp(15px, 1.8vw, 22px);
+      font-weight: 400;
+      letter-spacing: 0.11em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .hero-deck {
+      width: min(520px, 100%);
+      margin-top: 18px;
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      line-height: 1.72;
+    }
+
+    .hero-details {
+      display: grid;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 72px 12px minmax(0, 1fr);
+      color: var(--text-mid);
+      font-size: 12px;
+      letter-spacing: 0.09em;
+      line-height: 1.65;
+      text-transform: uppercase;
+    }
+
+    .detail-label,
+    .detail-arrow { color: var(--text-dim); }
+
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      margin-top: auto;
+      padding-top: 34px;
+    }
+
+    .facts {
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      line-height: 1.75;
+      text-transform: uppercase;
+    }
+
+    .facts strong { color: var(--polara-pink); font-weight: 400; }
+
+    .cta {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border: 1px solid var(--polara-taupe);
+      color: var(--polara-pink);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+
+    .cta:hover,
+    .cta:focus-visible {
+      border-color: var(--polara-pink);
+      background: rgba(219, 127, 142, 0.08);
+      color: var(--polara-blush);
+    }
+
+    .hero-media {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 34px 20px;
+      background:
+        linear-gradient(145deg, rgba(219, 127, 142, 0.08), transparent 36%),
+        var(--polara-bg);
+      border-left: 1px solid var(--line);
+    }
+
+    .hero-media::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(219, 127, 142, 0.12);
+      pointer-events: none;
+    }
+
+    .hero-media img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      max-height: 590px;
+      display: block;
+      object-fit: contain;
+      transition: transform 700ms var(--ease-out);
+    }
+
+    html.motion-ready .hero-media img { transform: translateY(18px) scale(0.97); }
+    html.motion-ready.is-loaded .hero-media img { transform: translateY(0) scale(1); }
+    html.motion-ready.is-loaded .hero-media:hover img { transform: translateY(-6px) scale(1.008); }
+
+    .product-heading {
+      width: min(840px, 100%);
+      margin-bottom: 38px;
+      font-size: clamp(28px, 4.3vw, 56px);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1.13;
+      text-transform: uppercase;
+    }
+
+    .product-heading span { color: var(--polara-pink); }
+
+    .product-rail {
+      position: relative;
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 12px;
+      scroll-snap-type: x mandatory;
+      scrollbar-color: var(--polara-taupe) transparent;
+      scrollbar-width: thin;
+    }
+
+    .product-rail::-webkit-scrollbar { height: 3px; }
+    .product-rail::-webkit-scrollbar-track { background: transparent; }
+    .product-rail::-webkit-scrollbar-thumb { background: var(--polara-taupe); }
+
+    .product-card {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.82fr) minmax(240px, 1fr);
+      flex: 0 0 min(740px, 72%);
+      min-height: 470px;
+      overflow: hidden;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      transition: border-color 220ms ease-out, transform 320ms var(--ease-out);
+    }
+
+    .product-card:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+
+    .product-shot {
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      padding: 18px;
+      overflow: hidden;
+      background: var(--polara-bg);
+      border-right: 1px solid var(--line);
+    }
+
+    .product-shot img {
+      width: 100%;
+      height: 430px;
+      display: block;
+      object-fit: contain;
+      transition: transform 420ms var(--ease-out);
+    }
+
+    .product-card:hover .product-shot img { transform: scale(1.012); }
+
+    .product-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(24px, 3vw, 38px);
+    }
+
+    .product-index {
+      color: var(--polara-pink);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .product-card h3 {
+      margin-top: auto;
+      padding-top: 50px;
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.15;
+      text-transform: uppercase;
+    }
+
+    .product-card p {
+      margin-top: 16px;
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+    }
+
+    .rail-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .rail-progress {
+      height: 2px;
+      margin-top: 14px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .rail-progress-bar {
+      width: 100%;
+      height: 100%;
+      background: var(--polara-pink);
+      opacity: 0.78;
+      transform: scaleX(var(--gallery-progress, 0.142857));
+      transform-origin: left center;
+      transition: transform 240ms ease-out;
+    }
+
+    .thinking-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.84fr) minmax(420px, 1.16fr);
+      gap: clamp(40px, 7vw, 96px);
+      align-items: start;
+    }
+
+    .thinking-statement {
+      position: sticky;
+      top: 72px;
+    }
+
+    .thinking-statement h2 {
+      color: var(--polara-blush);
+      font-size: clamp(22px, 3.3vw, 42px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .thinking-statement p {
+      margin-top: 24px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    .decision-list { border-top: 1px solid var(--line); }
+
+    .decision {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 18px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .decision-number {
+      color: var(--polara-pink);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+    }
+
+    .decision h3 {
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.11em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .decision p {
+      margin-top: 10px;
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+    }
+
+    .build-note {
+      margin-top: 30px;
+      padding: 24px;
+      background: var(--card-deep);
+      border: 1px solid var(--line);
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.07em;
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    .build-note span { color: var(--polara-pink); }
+
+    [contenteditable="true"] { outline: none; }
+    [contenteditable="true"]:focus { box-shadow: inset 0 -1px 0 var(--polara-pink); }
+    :focus-visible { outline: 1px solid var(--polara-pink); outline-offset: 4px; }
+
+    html.motion-ready [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 480ms ease-out var(--reveal-delay, 0ms), transform 560ms var(--ease-out) var(--reveal-delay, 0ms);
+    }
+
+    html.motion-ready [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .section { padding-right: 32px; padding-left: 32px; }
+      .hero-ticket { grid-template-columns: minmax(0, 1.12fr) minmax(290px, 0.88fr); }
+      .hero-copy { padding: 34px; }
+      .hero-title { font-size: clamp(38px, 5vw, 52px); }
+      .product-card { flex-basis: 82%; }
+    }
+
+    @media (max-width: 768px) {
+      .shell { grid-template-columns: 176px minmax(0, 1fr); }
+      .sidebar { padding: 26px 18px; }
+      .section { padding: 34px 24px 48px; }
+      .hero { min-height: auto; }
+      .hero-ticket { grid-template-columns: 1fr; min-height: 0; }
+      .hero-media { grid-row: 1; min-height: 390px; border-bottom: 1px solid var(--line); border-left: 0; }
+      .hero-media img { max-height: 360px; }
+      .hero-copy { min-height: 580px; }
+      .product-card { grid-template-columns: 1fr; flex-basis: 86%; min-height: 0; }
+      .product-shot { border-right: 0; border-bottom: 1px solid var(--line); }
+      .product-shot img { height: 360px; }
+      .product-copy { min-height: 260px; }
+      .thinking-grid { grid-template-columns: 1fr; }
+      .thinking-statement { position: static; }
+    }
+
+    @media (max-width: 520px) {
+      .shell { display: block; }
+      .sidebar {
+        position: sticky;
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        padding: 18px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .sidebar-title { padding: 0; border: 0; font-size: 12px; }
+      .sidebar-nav,
+      .sidebar-footer { display: none; }
+      .back-link { min-height: 44px; margin: 0; font-size: 12px; }
+      .section { padding: 26px 16px 40px; scroll-margin-top: 80px; }
+      .hero-ticket { min-height: 0; }
+      .hero-media { min-height: 330px; padding: 24px 12px; }
+      .hero-media::before { inset: 12px; }
+      .hero-media img { max-height: 310px; }
+      .hero-copy { min-height: 590px; padding: 26px 22px; }
+      .hero-meta { gap: 16px; font-size: 11px; }
+      .hero-title { font-size: 37px; }
+      .hero-kicker { font-size: 15px; }
+      .hero-deck { font-size: 16px; }
+      .detail-row { grid-template-columns: 66px 10px minmax(0, 1fr); font-size: 12px; }
+      .hero-bottom { grid-template-columns: 1fr; align-items: stretch; }
+      .cta { width: 100%; }
+      .product-heading { margin-bottom: 26px; font-size: 28px; }
+      .product-rail { gap: 10px; }
+      .product-card { flex-basis: 92%; }
+      .product-shot { padding: 12px; }
+      .product-shot img { height: 330px; }
+      .product-copy { min-height: 250px; padding: 24px 20px; }
+      .product-card h3 { padding-top: 34px; font-size: 22px; }
+      .thinking-grid { gap: 34px; }
+      .thinking-statement h2 { font-size: 24px; }
+      .decision { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
+      .build-note { padding: 20px; }
+    }
+
+    @media (prefers-color-scheme: light) { :root { color-scheme: dark; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+      html.motion-ready .hero-ticket,
+      html.motion-ready .hero-media img,
+      html.motion-ready [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Polara case study navigation">
+      <div class="sidebar-title">Polara</div>
+      <nav class="sidebar-nav" aria-label="Case study sections">
+        <a class="sidebar-item" href="#hero">00 / Hero</a>
+        <a class="sidebar-item" href="#product">01 / Product</a>
+        <a class="sidebar-item" href="#thinking">02 / Thinking</a>
+      </nav>
+      <a class="back-link" href="../selected-work.html" aria-label="Back to selected work">← Selected Work</a>
+      <div class="sidebar-footer" aria-hidden="true">Lumine<br>ID: LT–1997</div>
+    </aside>
+
+    <main class="main">
+      <section class="section hero" id="hero" aria-labelledby="hero-title">
+        <div class="section-inner">
+          <div class="section-label"><span>00 / Independent Product</span></div>
+          <article class="hero-ticket">
+            <div class="hero-copy">
+              <div class="hero-meta"><span>iOS / 2026</span><span>Designed + built solo</span></div>
+              <h1 class="hero-title" id="hero-title">Polara</h1>
+              <h2 class="hero-kicker">Never forget a trick.</h2>
+              <p class="hero-deck">A private pole-training diary that helps dancers remember what they learned, track every session, and see how far they have come.</p>
+
+              <div class="hero-details" aria-label="Project details">
+                <div class="detail-row"><span class="detail-label">Role</span><span class="detail-arrow">→</span><span>Independent product designer &amp; developer</span></div>
+                <div class="detail-row"><span class="detail-label">Scope</span><span class="detail-arrow">→</span><span>Strategy · UX/UI · iOS · Brand · Monetization</span></div>
+              </div>
+
+              <div class="hero-bottom">
+                <p class="facts"><strong>100+</strong> pole tricks · <strong>5</strong> levels · <strong>3</strong> languages</p>
+                <a class="cta" href="https://apps.apple.com/app/id6772756796">View on App Store →</a>
+              </div>
+            </div>
+
+            <figure class="hero-media">
+              <img src="../assets/polara/app-store-07.webp" alt="Polara progress overview and profile screens" width="1284" height="2778" fetchpriority="high">
+            </figure>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="product" aria-labelledby="product-title">
+        <div class="section-inner">
+          <div class="section-label"><span>01 / The Product</span></div>
+          <h2 class="product-heading" id="product-title" data-reveal>Remember <span>→</span> Track <span>→</span> Reflect</h2>
+
+          <div class="product-rail" aria-label="Scrollable Polara product story" data-reveal tabindex="0">
+            <article class="product-card" data-index="1">
+              <figure class="product-shot"><img src="../assets/polara/app-store-01.webp" alt="Polara trick dictionary and progress states" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">01 / Discover</span>
+                <div>
+                  <h3>A vocabulary for practice</h3>
+                  <p>Browse 100+ tricks by level, then mark each one as to learn, learning, or landed—the smallest useful memory of where practice stands.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="2">
+              <figure class="product-shot"><img src="../assets/polara/app-store-02.webp" alt="Polara practice session logging flow" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">02 / Log</span>
+                <div>
+                  <h3>Log the session, not the admin</h3>
+                  <p>A fast flow captures the tricks, duration, notes, and feeling of a session without turning training into paperwork.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="3">
+              <figure class="product-shot"><img src="../assets/polara/app-store-03.webp" alt="Polara level progress and training history" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">03 / Progress</span>
+                <div>
+                  <h3>See momentum at a glance</h3>
+                  <p>Level progress and training history make improvement visible between the sessions where it is hardest to notice.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="4">
+              <figure class="product-shot"><img src="../assets/polara/app-store-04.webp" alt="Polara personalized pole persona" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">04 / Personalize</span>
+                <div>
+                  <h3>A profile shaped by practice</h3>
+                  <p>A lightweight pole persona turns training patterns into a personal view of strengths, preferences, and what to explore next.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="5">
+              <figure class="product-shot"><img src="../assets/polara/app-store-05.webp" alt="Polara achievement milestones and progress reflection" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">05 / Celebrate</span>
+                <div>
+                  <h3>Make progress visible</h3>
+                  <p>Milestones turn scattered practice into a record dancers can return to, recognize, and feel proud of.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="6">
+              <figure class="product-shot"><img src="../assets/polara/app-store-06.webp" alt="Polara custom trick creation flow" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">06 / Capture</span>
+                <div>
+                  <h3>Add what the library misses</h3>
+                  <p>Custom tricks keep the diary useful across studios, naming systems, and the moves dancers create for themselves.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card" data-index="7">
+              <figure class="product-shot"><img src="../assets/polara/app-store-07.webp" alt="Polara progress overview and profile screens" width="1284" height="2778" loading="lazy"></figure>
+              <div class="product-copy">
+                <span class="product-index">07 / Reflect</span>
+                <div>
+                  <h3>Your whole journey, together</h3>
+                  <p>Practice records, progress, favorite moves, and achievements resolve into one private place that belongs to the dancer.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="rail-footer" data-reveal><span><span data-gallery-current>01</span> / 07</span><span>Scroll horizontally →</span></div>
+          <div class="rail-progress" aria-hidden="true"><div class="rail-progress-bar"></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="thinking" aria-labelledby="thinking-title">
+        <div class="section-inner">
+          <div class="section-label"><span>02 / The Thinking</span></div>
+          <div class="thinking-grid">
+            <div class="thinking-statement" data-reveal>
+              <h2 id="thinking-title">Pole dancers did not need another tutorial library. They needed a personal memory for their journey.</h2>
+              <p>The product decisions followed that principle.</p>
+            </div>
+
+            <div>
+              <div class="decision-list">
+                <article class="decision" data-reveal style="--reveal-delay: 70ms">
+                  <span class="decision-number">01</span>
+                  <div><h3>Simple progress states</h3><p>Learning, landed, and mastered are clear enough to use in seconds, but meaningful enough to show movement over time.</p></div>
+                </article>
+                <article class="decision" data-reveal style="--reveal-delay: 140ms">
+                  <span class="decision-number">02</span>
+                  <div><h3>Connected practice history</h3><p>Tricks and sessions reinforce each other, so a dancer can move from “what am I working on?” to “how has it evolved?” without maintaining two separate systems.</p></div>
+                </article>
+                <article class="decision" data-reveal style="--reveal-delay: 210ms">
+                  <span class="decision-number">03</span>
+                  <div><h3>Private by design</h3><p>No account is required. Training data stays local, with backup and restore controlled by the person who created it.</p></div>
+                </article>
+              </div>
+
+              <p class="build-note" data-reveal style="--reveal-delay: 280ms"><span>Designed and built independently</span> with React Native, Expo, TypeScript, and StoreKit—from first idea to launch.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const supportsIntersectionObserver = "IntersectionObserver" in window;
+    if (!reduceMotion && supportsIntersectionObserver) {
+      document.documentElement.classList.add("motion-ready");
+      requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add("is-loaded")));
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
+      document.querySelectorAll("[data-reveal]").forEach((item) => revealObserver.observe(item));
+    } else {
+      document.documentElement.classList.add("is-loaded");
+    }
+
+    const rail = document.querySelector(".product-rail");
+    const current = document.querySelector("[data-gallery-current]");
+    const cards = document.querySelectorAll(".product-card");
+    const progressBar = document.querySelector(".rail-progress-bar");
+    if (supportsIntersectionObserver) {
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
+      }, { root: rail, threshold: [0.5, 0.72] });
+      cards.forEach((card) => observer.observe(card));
+    }
+
+    let galleryFrame;
+    function updateGalleryProgress() {
+      const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
+      const progress = (rail.scrollLeft / maxScroll) * (1 - 1 / cards.length) + 1 / cards.length;
+      progressBar.style.setProperty("--gallery-progress", String(progress));
+      galleryFrame = undefined;
+    }
+    rail.addEventListener("scroll", () => {
+      if (!galleryFrame) galleryFrame = requestAnimationFrame(updateGalleryProgress);
+    }, { passive: true });
+    window.addEventListener("resize", updateGalleryProgress, { passive: true });
+    updateGalleryProgress();
+  </script>
+</body>
+</html>
