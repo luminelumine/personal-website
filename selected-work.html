@@ -82,6 +82,7 @@
     .back-link {
       display: flex;
       align-items: center;
+      min-height: 44px;
       gap: 10px;
       color: var(--text-dim);
       font-size: 12px;
@@ -472,22 +473,22 @@
           </div>
         </div>
 
-        <figure class="project-media" aria-label="Scrollable Polara product gallery">
+        <figure class="project-media" aria-label="Scrollable Polara product gallery" tabindex="0">
           <figcaption class="gallery-count"><span data-gallery-current>01</span> / 05 · Scroll</figcaption>
           <div class="project-shot" data-index="1">
-            <img src="assets/polara/app-store-07.png" alt="Polara progress and profile views">
+            <img src="assets/polara/app-store-07.webp" alt="Polara progress and profile views" width="1284" height="2778" fetchpriority="high">
           </div>
           <div class="project-shot" data-index="2">
-            <img src="assets/polara/app-store-01.png" alt="Polara trick dictionary and status tracking">
+            <img src="assets/polara/app-store-01.webp" alt="Polara trick dictionary and status tracking" width="1284" height="2778" loading="lazy">
           </div>
           <div class="project-shot" data-index="3">
-            <img src="assets/polara/app-store-02.png" alt="Polara practice logging flow">
+            <img src="assets/polara/app-store-02.webp" alt="Polara practice logging flow" width="1284" height="2778" loading="lazy">
           </div>
           <div class="project-shot" data-index="4">
-            <img src="assets/polara/app-store-04.png" alt="Polara personalized pole persona">
+            <img src="assets/polara/app-store-04.webp" alt="Polara personalized pole persona" width="1284" height="2778" loading="lazy">
           </div>
           <div class="project-shot" data-index="5">
-            <img src="assets/polara/app-store-05.png" alt="Polara achievement milestones">
+            <img src="assets/polara/app-store-05.webp" alt="Polara achievement milestones" width="1284" height="2778" loading="lazy">
           </div>
         </figure>
       </article>
@@ -498,11 +499,13 @@
     const gallery = document.querySelector(".project-media");
     const current = document.querySelector("[data-gallery-current]");
     const shots = document.querySelectorAll(".project-shot");
-    const galleryObserver = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
-    }, { root: gallery, threshold: [0.55, 0.75] });
-    shots.forEach((shot) => galleryObserver.observe(shot));
+    if ("IntersectionObserver" in window) {
+      const galleryObserver = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
+      }, { root: gallery, threshold: [0.55, 0.75] });
+      shots.forEach((shot) => galleryObserver.observe(shot));
+    }
   </script>
 </body>
 </html>

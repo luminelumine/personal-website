@@ -2,12 +2,18 @@
 
 ## Current Sprint
 
+- [ ] Publish the approved Polara portfolio work to luminetong.xyz.
+  - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
+  - [ ] Run release checks and create the pull request.
+  - [ ] Merge to main and wait for the Vercel production deployment.
+  - [ ] Verify the production homepage, Selected Work index, and Polara gallery.
+
 - [x] Inspect the personal website and Polara product context.
 - [x] Define the Selected Work information architecture.
 - [x] Approve the compact Polara case-study structure.
 - [x] Audit the existing subpage design system and the supplied Polara screenshots.
 - [x] Approve a design-system-native Selected Work index preview.
-- [ ] Approve a design-system-native Polara case-study preview.
+- [x] Approve a design-system-native Polara case-study preview.
 - [x] Increase sidebar and explanatory-copy readability.
 - [x] Expand the Product rail to all seven current App Store screenshots.
 - [x] Add restrained, purposeful motion with reduced-motion support.
