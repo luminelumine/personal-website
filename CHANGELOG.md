@@ -12,6 +12,7 @@ All notable changes to this website are documented here.
 
 ### Changed
 
+- Updated the homepage trait to `Rigorous`.
 - Improved explanatory-copy readability, sidebar navigation, keyboard focus, touch targets, and responsive behavior.
 - Replaced page-delivered screenshot PNGs with a 576 KB WebP set while retaining the original launch exports as source assets.
 - Prepared the static site for clean Vercel publishing without local worktree files.
