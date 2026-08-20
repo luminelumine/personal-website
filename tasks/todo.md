@@ -5,7 +5,7 @@
 - [ ] Publish the approved Polara portfolio work to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
-  - [ ] Create the pull request.
+  - [x] Create pull request #1.
   - [ ] Merge to main and wait for the Vercel production deployment.
   - [ ] Verify the production homepage, Selected Work index, and Polara gallery.
 
