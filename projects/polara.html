@@ -27,6 +27,7 @@
       --polara-blush: #ffdbda;
       --polara-taupe: #604d53;
       --polara-gold: #ccab6e;
+      --ease-out: cubic-bezier(.22, 1, .36, 1);
     }
 
     html { background: var(--site-bg); scroll-behavior: smooth; }
@@ -181,6 +182,17 @@
       border-radius: 3px;
     }
 
+    html.motion-ready .hero-ticket {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 520ms ease-out, transform 620ms var(--ease-out);
+    }
+
+    html.motion-ready.is-loaded .hero-ticket {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .hero-copy {
       display: flex;
       min-width: 0;
@@ -318,7 +330,12 @@
       max-height: 590px;
       display: block;
       object-fit: contain;
+      transition: transform 700ms var(--ease-out);
     }
+
+    html.motion-ready .hero-media img { transform: translateY(18px) scale(0.97); }
+    html.motion-ready.is-loaded .hero-media img { transform: translateY(0) scale(1); }
+    html.motion-ready.is-loaded .hero-media:hover img { transform: translateY(-6px) scale(1.008); }
 
     .product-heading {
       width: min(840px, 100%);
@@ -360,7 +377,10 @@
       border-radius: 3px;
       scroll-snap-align: start;
       scroll-snap-stop: always;
+      transition: border-color 220ms ease-out, transform 320ms var(--ease-out);
     }
+
+    .product-card:hover { border-color: var(--line-strong); transform: translateY(-4px); }
 
     .product-shot {
       display: grid;
@@ -377,7 +397,10 @@
       height: 430px;
       display: block;
       object-fit: contain;
+      transition: transform 420ms var(--ease-out);
     }
+
+    .product-card:hover .product-shot img { transform: scale(1.012); }
 
     .product-copy {
       display: flex;
@@ -419,6 +442,23 @@
       font-size: 11px;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+    }
+
+    .rail-progress {
+      height: 2px;
+      margin-top: 14px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .rail-progress-bar {
+      width: 100%;
+      height: 100%;
+      background: var(--polara-pink);
+      opacity: 0.78;
+      transform: scaleX(var(--gallery-progress, 0.142857));
+      transform-origin: left center;
+      transition: transform 240ms ease-out;
     }
 
     .thinking-grid {
@@ -501,6 +541,17 @@
     [contenteditable="true"]:focus { box-shadow: inset 0 -1px 0 var(--polara-pink); }
     :focus-visible { outline: 1px solid var(--polara-pink); outline-offset: 4px; }
 
+    html.motion-ready [data-reveal] {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 480ms ease-out var(--reveal-delay, 0ms), transform 560ms var(--ease-out) var(--reveal-delay, 0ms);
+    }
+
+    html.motion-ready [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 1024px) {
       .section { padding-right: 32px; padding-left: 32px; }
       .hero-ticket { grid-template-columns: minmax(0, 1.12fr) minmax(290px, 0.88fr); }
@@ -577,6 +628,12 @@
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
       }
+      html.motion-ready .hero-ticket,
+      html.motion-ready .hero-media img,
+      html.motion-ready [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
   </style>
 </head>
@@ -625,9 +682,9 @@
       <section class="section" id="product" aria-labelledby="product-title">
         <div class="section-inner">
           <div class="section-label"><span>01 / The Product</span></div>
-          <h2 class="product-heading" id="product-title">Remember <span>→</span> Track <span>→</span> Reflect</h2>
+          <h2 class="product-heading" id="product-title" data-reveal>Remember <span>→</span> Track <span>→</span> Reflect</h2>
 
-          <div class="product-rail" aria-label="Scrollable Polara product story">
+          <div class="product-rail" aria-label="Scrollable Polara product story" data-reveal>
             <article class="product-card" data-index="1">
               <figure class="product-shot"><img src="../assets/polara/app-store-01.png" alt="Polara trick dictionary and progress states" width="1284" height="2778" loading="lazy"></figure>
               <div class="product-copy">
@@ -706,7 +763,8 @@
             </article>
           </div>
 
-          <div class="rail-footer"><span><span data-gallery-current>01</span> / 07</span><span>Scroll horizontally →</span></div>
+          <div class="rail-footer" data-reveal><span><span data-gallery-current>01</span> / 07</span><span>Scroll horizontally →</span></div>
+          <div class="rail-progress" aria-hidden="true"><div class="rail-progress-bar"></div></div>
         </div>
       </section>
 
@@ -714,28 +772,28 @@
         <div class="section-inner">
           <div class="section-label"><span>02 / The Thinking</span></div>
           <div class="thinking-grid">
-            <div class="thinking-statement">
+            <div class="thinking-statement" data-reveal>
               <h2 id="thinking-title">Pole dancers did not need another tutorial library. They needed a personal memory for their journey.</h2>
               <p>The product decisions followed that principle.</p>
             </div>
 
             <div>
               <div class="decision-list">
-                <article class="decision">
+                <article class="decision" data-reveal style="--reveal-delay: 70ms">
                   <span class="decision-number">01</span>
                   <div><h3>Simple progress states</h3><p>Learning, landed, and mastered are clear enough to use in seconds, but meaningful enough to show movement over time.</p></div>
                 </article>
-                <article class="decision">
+                <article class="decision" data-reveal style="--reveal-delay: 140ms">
                   <span class="decision-number">02</span>
                   <div><h3>Connected practice history</h3><p>Tricks and sessions reinforce each other, so a dancer can move from “what am I working on?” to “how has it evolved?” without maintaining two separate systems.</p></div>
                 </article>
-                <article class="decision">
+                <article class="decision" data-reveal style="--reveal-delay: 210ms">
                   <span class="decision-number">03</span>
                   <div><h3>Private by design</h3><p>No account is required. Training data stays local, with backup and restore controlled by the person who created it.</p></div>
                 </article>
               </div>
 
-              <p class="build-note"><span>Designed and built independently</span> with React Native, Expo, TypeScript, and StoreKit—from first idea to launch.</p>
+              <p class="build-note" data-reveal style="--reveal-delay: 280ms"><span>Designed and built independently</span> with React Native, Expo, TypeScript, and StoreKit—from first idea to launch.</p>
             </div>
           </div>
         </div>
@@ -744,14 +802,46 @@
   </div>
 
   <script>
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion) {
+      document.documentElement.classList.add("motion-ready");
+      requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add("is-loaded")));
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8%" });
+      document.querySelectorAll("[data-reveal]").forEach((item) => revealObserver.observe(item));
+    } else {
+      document.documentElement.classList.add("is-loaded");
+    }
+
     const rail = document.querySelector(".product-rail");
     const current = document.querySelector("[data-gallery-current]");
     const cards = document.querySelectorAll(".product-card");
+    const progressBar = document.querySelector(".rail-progress-bar");
     const observer = new IntersectionObserver((entries) => {
       const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
     }, { root: rail, threshold: [0.5, 0.72] });
     cards.forEach((card) => observer.observe(card));
+
+    let galleryFrame;
+    function updateGalleryProgress() {
+      const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
+      const progress = (rail.scrollLeft / maxScroll) * (1 - 1 / cards.length) + 1 / cards.length;
+      progressBar.style.setProperty("--gallery-progress", String(progress));
+      galleryFrame = undefined;
+    }
+    rail.addEventListener("scroll", () => {
+      if (!galleryFrame) galleryFrame = requestAnimationFrame(updateGalleryProgress);
+    }, { passive: true });
+    window.addEventListener("resize", updateGalleryProgress, { passive: true });
+    updateGalleryProgress();
   </script>
 </body>
 </html>
