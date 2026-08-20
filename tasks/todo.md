@@ -4,7 +4,8 @@
 
 - [ ] Publish the approved Polara portfolio work to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
-  - [ ] Run release checks and create the pull request.
+  - [x] Run release checks.
+  - [ ] Create the pull request.
   - [ ] Merge to main and wait for the Vercel production deployment.
   - [ ] Verify the production homepage, Selected Work index, and Polara gallery.
 
@@ -34,3 +35,7 @@
 - The Product rail contains all seven current App Store exports and remains horizontal at every breakpoint.
 - Motion is limited to hero entrance, gallery progress feedback, hover response, and staggered Thinking reveals; reduced-motion users receive a static page.
 - Final verification passed at 1440×900, 768×900, and 375×812 with no page-level horizontal overflow or console errors.
+- Pre-landing review converged after removing dead assets, correcting product-state copy,
+  optimizing the seven screenshots to a 576 KB WebP set, and adding accessible gallery fallbacks.
+- Fresh browser QA passed the homepage → Selected Work → Polara path at desktop and mobile sizes;
+  all galleries, lazy-loaded images, keyboard scrolling, counters, links, and console checks passed.
