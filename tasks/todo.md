@@ -5,7 +5,8 @@
 - [x] Reframe the Polara index gallery around product screens.
   - [x] Approve retaining the five branded images with screen-first focal points.
   - [x] Apply frame-specific top and bottom positioning.
-  - [x] Verify every frame at desktop and mobile sizes.
+  - [x] Stack the card early enough to preserve the crops on tablet and small-laptop widths.
+  - [x] Verify every frame at desktop, tablet, and mobile sizes.
 
 - [x] Replace contained Polara artwork with a safe full-bleed crop.
   - [x] Approve top-aligned cover treatment with whole primary headlines.
@@ -61,3 +62,7 @@
   dominated the product UI; its fourth-frame mobile safe zoom was retained.
 - The approved screen-first crop map bottom-aligns frames 1, 2, and 5 and top-aligns frames 3
   and 4, keeping App UI dominant while removing the large external marketing headlines.
+- The project card switches to a stacked gallery at 1280px so narrow landscape media panes
+  do not reintroduce App Store marketing copy on tablets and small laptops.
+- Final pre-release browser QA passed at 1440, 1281, 1280, 1024, 900, 769, 768, and 375px widths;
+  all five images loaded, the counter reached `05`, and no overflow or console errors appeared.
