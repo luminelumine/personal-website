@@ -2,6 +2,11 @@
 
 ## Current Sprint
 
+- [ ] Reframe the Polara index gallery around product screens.
+  - [x] Approve retaining the five branded images with screen-first focal points.
+  - [ ] Apply frame-specific top and bottom positioning.
+  - [ ] Verify every frame at desktop and mobile sizes.
+
 - [x] Replace contained Polara artwork with a safe full-bleed crop.
   - [x] Approve top-aligned cover treatment with whole primary headlines.
   - [x] Implement the crop without vertical scrolling.

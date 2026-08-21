@@ -31,8 +31,12 @@
 - **Why:** The case study has enough space for exhaustive screenshot coverage, so marketing copy should remain fully readable there.
 
 ### Editorial screenshot crops
-- **Pattern:** On a compact portfolio index, full-image containment can make tall launch artwork feel undersized. Prefer a top-aligned, art-directed cover crop that keeps the primary headline whole and excludes secondary copy as a complete block.
-- **Why:** The index needs visual impact more than exhaustive screenshot coverage; a clean intentional crop reads better than either large gutters or half-visible marketing text.
+- **Pattern:** When marketing narrative is the goal, a top-aligned cover crop can keep a primary headline whole and exclude secondary copy as a complete block.
+- **Why:** This is cleaner than large gutters or half-visible marketing text, but it should not be used when the index needs to foreground the product interface.
+
+### Product-led index imagery
+- **Pattern:** When the portfolio index is meant to demonstrate the product, position branded App Store artwork around the phone UI and let marketing headlines leave the frame.
+- **Why:** Marketing typography can overpower a compact project card; screen-first crops show more design and engineering evidence while retaining the product's visual world.
 
 ### Brand integration
 - **Pattern:** Let a featured product contribute accent color and imagery while the portfolio's existing typography and page shell stay dominant.
