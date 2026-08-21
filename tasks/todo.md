@@ -2,10 +2,10 @@
 
 ## Current Sprint
 
-- [ ] Replace contained Polara artwork with a safe full-bleed crop.
+- [x] Replace contained Polara artwork with a safe full-bleed crop.
   - [x] Approve top-aligned cover treatment with whole primary headlines.
-  - [ ] Implement the crop without vertical scrolling.
-  - [ ] Inspect all five frames at desktop and mobile sizes.
+  - [x] Implement the crop without vertical scrolling.
+  - [x] Inspect all five frames at desktop and mobile sizes.
 
 - [x] Make Selected Work App Store screenshots fully readable.
   - [x] Diagnose the crop caused by the landscape media pane and `object-fit: cover`.
@@ -50,5 +50,7 @@
   optimizing the seven screenshots to a 576 KB WebP set, and adding accessible gallery fallbacks.
 - Fresh browser QA passed the homepage → Selected Work → Polara path at desktop and mobile sizes;
   all galleries, lazy-loaded images, keyboard scrolling, counters, links, and console checks passed.
-- The Selected Work gallery now preserves every App Store screenshot's full aspect ratio against
-  the Polara berry background; its mobile counter is compact so it does not cover screenshot copy.
+- A full-aspect-ratio contain pass was tested and rejected because it made the index artwork feel
+  too small; the compact mobile counter was retained because it does not cover screenshot copy.
+- The final index treatment uses top-aligned full-bleed crops: primary headlines remain whole,
+  secondary copy exits the frame cleanly, and the fourth mobile frame uses a small safe zoom.

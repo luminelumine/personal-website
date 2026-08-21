@@ -312,8 +312,8 @@
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: contain;
-      object-position: center;
+      object-fit: cover;
+      object-position: center top;
       filter: saturate(0.88) contrast(1.02);
       transition: filter 300ms ease;
     }
@@ -407,6 +407,10 @@
       .project-bottom { grid-template-columns: 1fr; align-items: stretch; }
       .project-link { width: 100%; }
       .gallery-hint { display: none; }
+      .project-shot[data-index="4"] img {
+        transform: scale(1.08);
+        transform-origin: center top;
+      }
     }
 
     @media (prefers-color-scheme: light) {
