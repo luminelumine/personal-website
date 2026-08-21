@@ -312,16 +312,13 @@
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover;
-      object-position: 50% 35%;
+      object-fit: contain;
+      object-position: center;
       filter: saturate(0.88) contrast(1.02);
-      transition: transform 650ms cubic-bezier(.22, 1, .36, 1), filter 300ms ease;
+      transition: filter 300ms ease;
     }
 
-    .project-shot[data-index="1"] img { object-position: 50% 86%; }
-
     .project-card:hover .project-shot img {
-      transform: scale(1.015);
       filter: saturate(1) contrast(1.02);
     }
 
@@ -378,7 +375,6 @@
         right: 14px;
         margin: 0;
       }
-      .project-media img { object-position: 50% 30%; }
       .project-copy { min-height: 500px; }
     }
 
@@ -410,6 +406,7 @@
       .detail-row { grid-template-columns: 72px 10px minmax(0, 1fr); font-size: 12px; }
       .project-bottom { grid-template-columns: 1fr; align-items: stretch; }
       .project-link { width: 100%; }
+      .gallery-hint { display: none; }
     }
 
     @media (prefers-color-scheme: light) {
@@ -474,7 +471,7 @@
         </div>
 
         <figure class="project-media" aria-label="Scrollable Polara product gallery" tabindex="0">
-          <figcaption class="gallery-count"><span data-gallery-current>01</span> / 05 · Scroll</figcaption>
+          <figcaption class="gallery-count"><span data-gallery-current>01</span> / 05<span class="gallery-hint"> · Scroll</span></figcaption>
           <div class="project-shot" data-index="1">
             <img src="assets/polara/app-store-07.webp" alt="Polara progress and profile views" width="1284" height="2778" fetchpriority="high">
           </div>
