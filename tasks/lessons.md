@@ -26,6 +26,10 @@
 - **Pattern:** Use the founder-supplied current App Store exports and simulator screenshots as the canonical Polara imagery; verify the exact source path before composing a preview.
 - **Why:** Rebuilding or substituting device mockups makes the product look inconsistent and can surface stale UI or outdated trick counts.
 
+### App Store screenshot legibility
+- **Pattern:** Show tall App Store marketing screenshots at their full aspect ratio whenever their embedded headlines are part of the story; do not use `object-fit: cover` in a short landscape viewport.
+- **Why:** Cover-cropping preserves visual impact but removes the marketing copy and makes the screenshots look broken rather than intentionally framed.
+
 ### Brand integration
 - **Pattern:** Let a featured product contribute accent color and imagery while the portfolio's existing typography and page shell stay dominant.
 - **Why:** The work should feel selected by the portfolio, not like a separate marketing site embedded inside it.

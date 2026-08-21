@@ -2,6 +2,12 @@
 
 ## Current Sprint
 
+- [ ] Make Selected Work App Store screenshots fully readable.
+  - [x] Diagnose the crop caused by the landscape media pane and `object-fit: cover`.
+  - [x] Approve full-image `contain` treatment with Polara-colored gutters.
+  - [ ] Implement the responsive image-fit change.
+  - [ ] Verify desktop and mobile gallery behaviour and legibility.
+
 - [ ] Publish the approved Polara portfolio work to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
