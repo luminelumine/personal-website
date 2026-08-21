@@ -2,6 +2,23 @@
 
 ## Current Sprint
 
+- [x] Reframe the Polara index gallery around product screens.
+  - [x] Approve retaining the five branded images with screen-first focal points.
+  - [x] Apply frame-specific top and bottom positioning.
+  - [x] Stack the card early enough to preserve the crops on tablet and small-laptop widths.
+  - [x] Verify every frame at desktop, tablet, and mobile sizes.
+
+- [x] Replace contained Polara artwork with a safe full-bleed crop.
+  - [x] Approve top-aligned cover treatment with whole primary headlines.
+  - [x] Implement the crop without vertical scrolling.
+  - [x] Inspect all five frames at desktop and mobile sizes.
+
+- [x] Make Selected Work App Store screenshots fully readable.
+  - [x] Diagnose the crop caused by the landscape media pane and `object-fit: cover`.
+  - [x] Approve full-image `contain` treatment with Polara-colored gutters.
+  - [x] Implement the responsive image-fit change.
+  - [x] Verify desktop and mobile gallery behaviour and legibility.
+
 - [ ] Publish the approved Polara portfolio work to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
@@ -39,3 +56,13 @@
   optimizing the seven screenshots to a 576 KB WebP set, and adding accessible gallery fallbacks.
 - Fresh browser QA passed the homepage → Selected Work → Polara path at desktop and mobile sizes;
   all galleries, lazy-loaded images, keyboard scrolling, counters, links, and console checks passed.
+- A full-aspect-ratio contain pass was tested and rejected because it made the index artwork feel
+  too small; the compact mobile counter was retained because it does not cover screenshot copy.
+- A headline-led top-aligned crop was tested and rejected because the marketing typography still
+  dominated the product UI; its fourth-frame mobile safe zoom was retained.
+- The approved screen-first crop map bottom-aligns frames 1, 2, and 5 and top-aligns frames 3
+  and 4, keeping App UI dominant while removing the large external marketing headlines.
+- The project card switches to a stacked gallery at 1280px so narrow landscape media panes
+  do not reintroduce App Store marketing copy on tablets and small laptops.
+- Final pre-release browser QA passed at 1440, 1281, 1280, 1024, 900, 769, 768, and 375px widths;
+  all five images loaded, the counter reached `05`, and no overflow or console errors appeared.

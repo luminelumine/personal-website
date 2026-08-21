@@ -26,6 +26,18 @@
 - **Pattern:** Use the founder-supplied current App Store exports and simulator screenshots as the canonical Polara imagery; verify the exact source path before composing a preview.
 - **Why:** Rebuilding or substituting device mockups makes the product look inconsistent and can surface stale UI or outdated trick counts.
 
+### App Store screenshot legibility
+- **Pattern:** In the detailed case study, show tall App Store marketing screenshots at their full aspect ratio whenever their complete narrative is part of the story.
+- **Why:** The case study has enough space for exhaustive screenshot coverage, so marketing copy should remain fully readable there.
+
+### Editorial screenshot crops
+- **Pattern:** When marketing narrative is the goal, a top-aligned cover crop can keep a primary headline whole and exclude secondary copy as a complete block.
+- **Why:** This is cleaner than large gutters or half-visible marketing text, but it should not be used when the index needs to foreground the product interface.
+
+### Product-led index imagery
+- **Pattern:** When the portfolio index is meant to demonstrate the product, position branded App Store artwork around the phone UI and let marketing headlines leave the frame.
+- **Why:** Marketing typography can overpower a compact project card; screen-first crops show more design and engineering evidence while retaining the product's visual world.
+
 ### Brand integration
 - **Pattern:** Let a featured product contribute accent color and imagery while the portfolio's existing typography and page shell stay dominant.
 - **Why:** The work should feel selected by the portfolio, not like a separate marketing site embedded inside it.

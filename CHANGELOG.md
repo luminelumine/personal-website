@@ -2,6 +2,12 @@
 
 All notable changes to this website are documented here.
 
+## [0.1.0.1] - 2026-08-21
+
+### Changed
+
+- Refocused the Selected Work gallery on Polara's product screens with frame-specific crops that minimize App Store marketing copy across desktop and mobile.
+
 ## [0.1.0.0] - 2026-08-21
 
 ### Added
