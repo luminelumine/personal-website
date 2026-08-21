@@ -2,6 +2,11 @@
 
 ## Current Sprint
 
+- [ ] Replace contained Polara artwork with a safe full-bleed crop.
+  - [x] Approve top-aligned cover treatment with whole primary headlines.
+  - [ ] Implement the crop without vertical scrolling.
+  - [ ] Inspect all five frames at desktop and mobile sizes.
+
 - [x] Make Selected Work App Store screenshots fully readable.
   - [x] Diagnose the crop caused by the landscape media pane and `object-fit: cover`.
   - [x] Approve full-image `contain` treatment with Polara-colored gutters.

@@ -27,8 +27,12 @@
 - **Why:** Rebuilding or substituting device mockups makes the product look inconsistent and can surface stale UI or outdated trick counts.
 
 ### App Store screenshot legibility
-- **Pattern:** Show tall App Store marketing screenshots at their full aspect ratio whenever their embedded headlines are part of the story; do not use `object-fit: cover` in a short landscape viewport.
-- **Why:** Cover-cropping preserves visual impact but removes the marketing copy and makes the screenshots look broken rather than intentionally framed.
+- **Pattern:** In the detailed case study, show tall App Store marketing screenshots at their full aspect ratio whenever their complete narrative is part of the story.
+- **Why:** The case study has enough space for exhaustive screenshot coverage, so marketing copy should remain fully readable there.
+
+### Editorial screenshot crops
+- **Pattern:** On a compact portfolio index, full-image containment can make tall launch artwork feel undersized. Prefer a top-aligned, art-directed cover crop that keeps the primary headline whole and excludes secondary copy as a complete block.
+- **Why:** The index needs visual impact more than exhaustive screenshot coverage; a clean intentional crop reads better than either large gutters or half-visible marketing text.
 
 ### Brand integration
 - **Pattern:** Let a featured product contribute accent color and imagery while the portfolio's existing typography and page shell stay dominant.
