@@ -2,10 +2,10 @@
 
 ## Current Sprint
 
-- [ ] Reframe the Polara index gallery around product screens.
+- [x] Reframe the Polara index gallery around product screens.
   - [x] Approve retaining the five branded images with screen-first focal points.
-  - [ ] Apply frame-specific top and bottom positioning.
-  - [ ] Verify every frame at desktop and mobile sizes.
+  - [x] Apply frame-specific top and bottom positioning.
+  - [x] Verify every frame at desktop and mobile sizes.
 
 - [x] Replace contained Polara artwork with a safe full-bleed crop.
   - [x] Approve top-aligned cover treatment with whole primary headlines.
@@ -57,5 +57,7 @@
   all galleries, lazy-loaded images, keyboard scrolling, counters, links, and console checks passed.
 - A full-aspect-ratio contain pass was tested and rejected because it made the index artwork feel
   too small; the compact mobile counter was retained because it does not cover screenshot copy.
-- The final index treatment uses top-aligned full-bleed crops: primary headlines remain whole,
-  secondary copy exits the frame cleanly, and the fourth mobile frame uses a small safe zoom.
+- A headline-led top-aligned crop was tested and rejected because the marketing typography still
+  dominated the product UI; its fourth-frame mobile safe zoom was retained.
+- The approved screen-first crop map bottom-aligns frames 1, 2, and 5 and top-aligns frames 3
+  and 4, keeping App UI dominant while removing the large external marketing headlines.
