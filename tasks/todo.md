@@ -2,6 +2,18 @@
 
 ## Current Sprint
 
+- [ ] Implement the approved SEO roadmap one review gate at a time.
+  - [x] Step 1: Improve the current Polara page title, description, H1, hero copy, and CTA. Awaiting founder review before Step 2.
+  - [x] Step 2: Convert the existing Polara case study into the product page after approval. Awaiting founder review before Step 3.
+  - [x] Steps 3–4: Embed Ballerina and Ayesha demos in the product page, then add About, Methodology, authorship, and original supporting material. Awaiting founder review before Step 5.
+  - [ ] Step 5: Add sitemap, robots, canonical URLs, and structured data after approval.
+  - [ ] Step 6: Define the Search Console and analytics iteration workflow after approval.
+
+- [x] Strengthen the Polara App Store CTA and audit the page against the shared SEO guidance.
+  - [x] Restyle the hero CTA with a Polara-pink fill and white text.
+  - [x] Verify the CTA at desktop and mobile sizes.
+  - [x] Record prioritized content recommendations for Google and AI search.
+
 - [x] Reframe the Polara index gallery around product screens.
   - [x] Approve retaining the five branded images with screen-first focal points.
   - [x] Apply frame-specific top and bottom positioning.
@@ -19,12 +31,12 @@
   - [x] Implement the responsive image-fit change.
   - [x] Verify desktop and mobile gallery behaviour and legibility.
 
-- [ ] Publish the approved Polara portfolio work to luminetong.xyz.
+- [ ] Publish the approved Polara product page v0.1.0.2 to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
-  - [x] Create pull request #1.
-  - [ ] Merge to main and wait for the Vercel production deployment.
-  - [ ] Verify the production homepage, Selected Work index, and Polara gallery.
+  - [ ] Create and merge the v0.1.0.2 release pull request.
+  - [ ] Wait for the Vercel production deployment.
+  - [ ] Verify the production homepage, Selected Work index, and Polara product page.
 
 - [x] Inspect the personal website and Polara product context.
 - [x] Define the Selected Work information architecture.
@@ -41,7 +53,7 @@
 ## Review Notes
 
 - Approved structure: Homepage `Selected Work` entry → Selected Work index → Polara.
-- Polara case study is limited to Hero, Product, and Thinking.
+- Polara uses one product-first page; representative trick demos and product provenance live inline rather than on separate trick URLs.
 - The index does not show early-signal metrics.
 - Existing subpages are the visual source of truth: Courier New, Modernline branding,
   dark ticket/card surfaces, 1px dividers, restrained uppercase metadata, and grain.
@@ -50,7 +62,7 @@
 - The Selected Work screenshot rail scrolls horizontally at every responsive size.
 - Sidebar navigation is 12px with 44px targets; explanatory copy is 16px with higher contrast.
 - The Product rail contains all seven current App Store exports and remains horizontal at every breakpoint.
-- Motion is limited to hero entrance, gallery progress feedback, hover response, and staggered Thinking reveals; reduced-motion users receive a static page.
+- Motion is limited to hero entrance, hover response, horizontal scroll snapping, and staggered section reveals; reduced-motion users receive a static page.
 - Final verification passed at 1440×900, 768×900, and 375×812 with no page-level horizontal overflow or console errors.
 - Pre-landing review converged after removing dead assets, correcting product-state copy,
   optimizing the seven screenshots to a 576 KB WebP set, and adding accessible gallery fallbacks.
@@ -66,3 +78,31 @@
   do not reintroduce App Store marketing copy on tablets and small laptops.
 - Final pre-release browser QA passed at 1440, 1281, 1280, 1024, 900, 769, 768, and 375px widths;
   all five images loaded, the counter reached `05`, and no overflow or console errors appeared.
+- The App Store CTA now uses a deeper Polara berry-pink action color with white text, a
+  5.15:1 contrast ratio, and restrained hover elevation. It passed fresh desktop and mobile
+  checks with a 44px target, no page overflow, and no browser warnings or errors.
+- The SEO audit keeps the portfolio case study focused on brand/creator intent while recommending
+  a separate product-led content surface for high-intent pole-dance queries and the public trick library.
+- SEO Step 1 gives the existing case study an explicit `Pole Dance Tracker` H1 descriptor,
+  answer-first product copy, search-oriented title and description, and a `Download Polara` CTA.
+  Desktop and mobile browser checks passed with no overflow or console warnings/errors; the
+  founder approved Step 1 before Step 2 began.
+- SEO Step 2 converts the existing Polara URL into a product-first page rather than creating a
+  duplicate landing page. Product navigation, persistent download actions, user benefits, and
+  privacy messaging replace case-study role, scope, design rationale, and implementation-stack copy.
+  The product page and Selected Work entry passed fresh checks at 1440px, 768px, and 375px with
+  no page overflow or console warnings/errors; Step 3 remains gated on founder approval.
+- SEO Steps 3–4 replace the standalone Butterfly demo with an inline product-page section for
+  Ballerina and Ayesha. The searchable library and one detail screen per demo show the product
+  without publishing the full library. About, Methodology, author, and original-material notes
+  establish provenance without presenting technique instruction.
+- Steps 3–4 browser QA passed at 1440×900, 768×900, and 375×812. All three displayed demo images
+  load at their optimized 900px width when brought into view. Ballerina and Ayesha now show their
+  complete 900×1957 App screenshots inside responsive phone frames, with no `cover` crop; the page
+  has no horizontal overflow or console errors.
+  To learn, Learning, and Landed accept one selection per demo with hover glow, keyboard focus,
+  pink selected state, and synchronized `aria-pressed` values.
+- Search & Filter, Ballerina, and Ayesha now share one compact three-card horizontal rail modeled
+  on How It Works. Each card uses the same split-copy/full-phone composition; scroll snapping,
+  desktop and mobile horizontal scrolling, image loading, and console checks pass. The redundant
+  counters, instruction labels, and progress bars were removed from both horizontal sections.

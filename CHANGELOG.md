@@ -2,6 +2,19 @@
 
 All notable changes to this website are documented here.
 
+## [0.1.0.2] - 2026-08-26
+
+### Added
+
+- Added an inline Polara product demo rail for Search & Filter, Ballerina, and Ayesha using current light- and dark-mode App screenshots.
+- Added concise About, Methodology, authorship, and original-material information to the Polara product page.
+
+### Changed
+
+- Converted the existing Polara case study into a product-first landing page with stronger App Store actions, benefit-led copy, and privacy messaging.
+- Kept all three demo screenshots complete inside responsive phone frames and aligned their horizontal interaction with How It Works.
+- Simplified both horizontal sections by removing redundant counters, instruction labels, and progress bars.
+
 ## [0.1.0.1] - 2026-08-21
 
 ### Changed
