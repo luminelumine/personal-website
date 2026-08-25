@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Polara is a private pole-training diary independently designed and built by Lumine.">
-  <title>Polara — Lumine</title>
+  <meta name="description" content="Polara is a private iOS pole dance training journal and trick progress tracker. Log sessions, track 100+ tricks, and see your progress over time.">
+  <title>Polara: Pole Dance Tracker &amp; Training Journal — Lumine</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -24,6 +24,7 @@
       --polara-surface: #261419;
       --polara-card: #2d1a1e;
       --polara-pink: #db7f8e;
+      --polara-action: #ad4f63;
       --polara-blush: #ffdbda;
       --polara-taupe: #604d53;
       --polara-gold: #ccab6e;
@@ -126,6 +127,34 @@
 
     .back-link { margin-top: 22px; }
 
+    .sidebar-download {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 22px;
+      padding: 0 14px;
+      background: var(--polara-action);
+      border: 1px solid var(--polara-action);
+      color: #fff;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      line-height: 1.4;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .sidebar-download:hover,
+    .sidebar-download:focus-visible {
+      background: #b35769;
+      border-color: var(--polara-blush);
+      transform: translateY(-2px);
+    }
+
+    .sidebar-download + .back-link { margin-top: 10px; }
+
     .sidebar-footer {
       margin-top: auto;
       color: rgba(210, 208, 200, 0.52);
@@ -222,6 +251,15 @@
       text-transform: uppercase;
     }
 
+    .hero-title-product {
+      display: block;
+      margin-top: 16px;
+      color: var(--polara-pink);
+      font-size: clamp(14px, 1.5vw, 19px);
+      letter-spacing: 0.15em;
+      line-height: 1.35;
+    }
+
     .hero-kicker {
       margin-top: 22px;
       color: var(--polara-blush);
@@ -285,20 +323,24 @@
       align-items: center;
       justify-content: center;
       padding: 0 18px;
-      border: 1px solid var(--polara-taupe);
-      color: var(--polara-pink);
+      border: 1px solid var(--polara-action);
+      background: var(--polara-action);
+      box-shadow: 0 10px 28px rgba(173, 79, 99, 0.24);
+      color: #fff;
       font-size: 12px;
       letter-spacing: 0.16em;
       text-decoration: none;
       text-transform: uppercase;
-      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+      transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
     .cta:hover,
     .cta:focus-visible {
-      border-color: var(--polara-pink);
-      background: rgba(219, 127, 142, 0.08);
-      color: var(--polara-blush);
+      border-color: var(--polara-blush);
+      background: #b35769;
+      box-shadow: 0 12px 32px rgba(173, 79, 99, 0.36);
+      color: #fff;
+      transform: translateY(-2px);
     }
 
     .hero-media {
@@ -434,31 +476,307 @@
       line-height: 1.7;
     }
 
-    .rail-footer {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 12px;
-      color: var(--text-dim);
-      font-size: 11px;
-      letter-spacing: 0.16em;
+    .demo-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(300px, 1.1fr);
+      gap: clamp(32px, 6vw, 84px);
+      align-items: end;
+      margin-bottom: 42px;
+    }
+
+    .demo-intro h2 {
+      color: var(--polara-blush);
+      font-size: clamp(30px, 4.5vw, 58px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      line-height: 1.12;
       text-transform: uppercase;
     }
 
-    .rail-progress {
-      height: 2px;
-      margin-top: 14px;
-      overflow: hidden;
-      background: var(--line);
+    .demo-intro-copy {
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1.75;
     }
 
-    .rail-progress-bar {
+    .demo-intro-copy strong { color: var(--polara-pink); font-weight: 400; }
+
+    .library-overview {
+      display: grid;
+      grid-template-columns: minmax(340px, 0.95fr) minmax(360px, 1.05fr);
+      min-height: 620px;
+      overflow: hidden;
+      background: var(--polara-bg);
+      border: 1px solid var(--line);
+    }
+
+    .library-overview-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 36px;
+      border-right: 1px solid var(--line);
+    }
+
+    .mode-label {
+      color: var(--polara-pink);
+      font-size: 11px;
+      letter-spacing: 0.17em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .library-overview h3 {
+      margin-top: auto;
+      padding-top: 48px;
+      font-size: clamp(22px, 3vw, 38px);
+      font-weight: 400;
+      letter-spacing: 0.09em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .library-overview p {
+      margin-top: 18px;
+      color: var(--text-mid);
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+    }
+
+    .library-shot {
+      display: grid;
+      place-items: center;
+      min-width: 0;
+      padding: 28px;
+      background: linear-gradient(145deg, rgba(219, 127, 142, 0.08), transparent 45%);
+      border-left: 1px solid var(--line);
+    }
+
+    .demo-rail {
+      display: flex;
+      gap: 14px;
       width: 100%;
-      height: 100%;
-      background: var(--polara-pink);
-      opacity: 0.78;
-      transform: scaleX(var(--gallery-progress, 0.142857));
-      transform-origin: left center;
-      transition: transform 240ms ease-out;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 12px;
+      scroll-snap-type: x mandatory;
+      scrollbar-color: var(--polara-taupe) transparent;
+      scrollbar-width: thin;
+    }
+
+    .demo-rail::-webkit-scrollbar { height: 3px; }
+    .demo-rail::-webkit-scrollbar-track { background: transparent; }
+    .demo-rail::-webkit-scrollbar-thumb { background: var(--polara-taupe); }
+
+    .demo-card {
+      flex: 0 0 min(760px, 78%);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      transition: border-color 220ms ease-out, transform 320ms var(--ease-out);
+    }
+
+    .demo-card:hover { border-color: var(--line-strong); transform: translateY(-4px); }
+
+    .trick-demo {
+      display: grid;
+      grid-template-columns: minmax(340px, 0.95fr) minmax(360px, 1.05fr);
+      min-height: 620px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .trick-demo-copy {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      padding: 36px;
+    }
+
+    .trick-demo h3 {
+      margin-top: clamp(36px, 5vw, 64px);
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.12;
+    }
+
+    .trick-description {
+      margin-top: 22px;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+      line-height: 1.72;
+    }
+
+    .status-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px;
+      list-style: none;
+    }
+
+    .status-button {
+      min-height: 44px;
+      padding: 8px 11px;
+      border: 1px solid currentColor;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .status-button:hover,
+    .status-button:focus-visible {
+      border-color: var(--polara-pink);
+      box-shadow: 0 0 0 3px rgba(219, 127, 142, 0.12), 0 0 22px rgba(219, 127, 142, 0.4);
+      color: var(--polara-pink);
+      transform: translateY(-2px);
+    }
+
+    .status-button:active { transform: translateY(0) scale(0.97); }
+
+    .status-button[aria-pressed="true"] {
+      border-color: var(--polara-action);
+      background: var(--polara-action);
+      box-shadow: 0 0 24px rgba(219, 127, 142, 0.42);
+      color: #fff;
+    }
+
+    .demo-note {
+      margin-top: auto;
+      padding-top: 38px;
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      line-height: 1.65;
+      text-transform: uppercase;
+    }
+
+    .trick-demo-media {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 620px;
+      place-items: center;
+      min-width: 0;
+      padding: clamp(28px, 4vw, 48px);
+      border-left: 1px solid currentColor;
+    }
+
+    .phone-frame {
+      display: grid;
+      place-items: center;
+      width: min(250px, 78%);
+      min-width: 0;
+      padding: 6px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #d6bd91, #4a3238 42%, #d5b68c 82%, #5f4249);
+      border: 1px solid rgba(255, 243, 224, 0.42);
+      border-radius: 36px;
+      box-shadow: 0 24px 60px rgba(8, 4, 5, 0.34), inset 0 0 0 1px rgba(28, 12, 16, 0.72);
+    }
+
+    .phone-frame img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 29px;
+    }
+
+    .trick-demo.light {
+      background: #fff9f5;
+      border-color: rgba(96, 77, 83, 0.38);
+      color: #37101c;
+    }
+
+    .trick-demo.light .trick-description { color: rgba(55, 16, 28, 0.78); }
+    .trick-demo.light .demo-note { color: rgba(55, 16, 28, 0.58); }
+    .trick-demo.light .trick-demo-media {
+      background: linear-gradient(145deg, #d9ced0, #a9959a);
+      color: rgba(96, 77, 83, 0.35);
+    }
+
+    .trick-demo.dark {
+      background: #321a1f;
+      border-color: rgba(255, 219, 218, 0.22);
+      color: var(--polara-blush);
+    }
+
+    .trick-demo.dark .trick-description { color: rgba(255, 235, 232, 0.8); }
+    .trick-demo.dark .demo-note { color: rgba(255, 235, 232, 0.58); }
+    .trick-demo.dark .trick-demo-media {
+      background: linear-gradient(145deg, #160c0f, #2c171c);
+      color: rgba(255, 219, 218, 0.2);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+      gap: clamp(40px, 7vw, 96px);
+      align-items: start;
+    }
+
+    .about-lead {
+      position: sticky;
+      top: 72px;
+    }
+
+    .about-lead h2 {
+      color: var(--polara-blush);
+      font-size: clamp(28px, 4vw, 50px);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .about-lead p {
+      margin-top: 22px;
+      color: var(--text-dim);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    .about-list { border-top: 1px solid var(--line); }
+
+    .about-item {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr);
+      gap: 22px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-item h3 {
+      color: var(--polara-pink);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      line-height: 1.55;
+      text-transform: uppercase;
+    }
+
+    .about-item p {
+      color: var(--text-mid);
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1.72;
+    }
+
+    .about-item a {
+      color: var(--polara-blush);
+      text-decoration-color: var(--polara-taupe);
+      text-underline-offset: 4px;
     }
 
     .thinking-grid {
@@ -523,7 +841,8 @@
       line-height: 1.7;
     }
 
-    .build-note {
+    .closing-download {
+      display: block;
       margin-top: 30px;
       padding: 24px;
       background: var(--card-deep);
@@ -532,10 +851,19 @@
       font-size: 16px;
       letter-spacing: 0.07em;
       line-height: 1.8;
+      text-decoration: none;
       text-transform: uppercase;
+      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
     }
 
-    .build-note span { color: var(--polara-pink); }
+    .closing-download span { color: var(--polara-pink); }
+
+    .closing-download:hover,
+    .closing-download:focus-visible {
+      background: var(--polara-surface);
+      border-color: var(--polara-taupe);
+      transform: translateY(-2px);
+    }
 
     [contenteditable="true"] { outline: none; }
     [contenteditable="true"]:focus { box-shadow: inset 0 -1px 0 var(--polara-pink); }
@@ -573,6 +901,16 @@
       .product-shot { border-right: 0; border-bottom: 1px solid var(--line); }
       .product-shot img { height: 360px; }
       .product-copy { min-height: 260px; }
+      .demo-intro,
+      .library-overview,
+      .trick-demo,
+      .about-grid { grid-template-columns: 1fr; }
+      .library-overview-copy { min-height: 300px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .trick-demo-copy { min-height: 440px; }
+      .library-shot { border-left: 0; }
+      .trick-demo-media { min-height: 560px; border-top: 1px solid currentColor; border-left: 0; }
+      .demo-card { flex-basis: 88%; }
+      .about-lead { position: static; }
       .thinking-grid { grid-template-columns: 1fr; }
       .thinking-statement { position: static; }
     }
@@ -592,8 +930,9 @@
       }
       .sidebar-title { padding: 0; border: 0; font-size: 12px; }
       .sidebar-nav,
-      .sidebar-footer { display: none; }
-      .back-link { min-height: 44px; margin: 0; font-size: 12px; }
+      .sidebar-footer,
+      .back-link { display: none; }
+      .sidebar-download { min-height: 44px; margin: 0; padding: 0 12px; font-size: 10px; }
       .section { padding: 26px 16px 40px; scroll-margin-top: 80px; }
       .hero-ticket { min-height: 0; }
       .hero-media { min-height: 330px; padding: 24px 12px; }
@@ -614,10 +953,24 @@
       .product-shot img { height: 330px; }
       .product-copy { min-height: 250px; padding: 24px 20px; }
       .product-card h3 { padding-top: 34px; font-size: 22px; }
+      .demo-intro { gap: 22px; margin-bottom: 28px; }
+      .demo-intro h2 { font-size: 30px; }
+      .library-overview-copy { min-height: 270px; padding: 24px 20px; }
+      .library-shot { padding: 24px 18px; }
+      .demo-rail { gap: 10px; }
+      .demo-card { flex-basis: 92%; }
+      .trick-demo-copy { min-height: 360px; padding: 26px 22px; }
+      .trick-demo h3 { margin-top: 48px; font-size: 31px; }
+      .trick-demo-media { min-height: 0; padding: 24px 18px; }
+      .phone-frame { width: min(210px, 100%); border-radius: 32px; }
+      .phone-frame img { border-radius: 29px; }
+      .about-grid { gap: 34px; }
+      .about-lead h2 { font-size: 28px; }
+      .about-item { grid-template-columns: 1fr; gap: 10px; }
       .thinking-grid { gap: 34px; }
       .thinking-statement h2 { font-size: 24px; }
       .decision { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
-      .build-note { padding: 20px; }
+      .closing-download { padding: 20px; }
     }
 
     @media (prefers-color-scheme: light) { :root { color-scheme: dark; } }
@@ -639,36 +992,39 @@
 </head>
 <body>
   <div class="shell">
-    <aside class="sidebar" aria-label="Polara case study navigation">
+    <aside class="sidebar" aria-label="Polara product navigation">
       <div class="sidebar-title">Polara</div>
-      <nav class="sidebar-nav" aria-label="Case study sections">
-        <a class="sidebar-item" href="#hero">00 / Hero</a>
-        <a class="sidebar-item" href="#product">01 / Product</a>
-        <a class="sidebar-item" href="#thinking">02 / Thinking</a>
+      <nav class="sidebar-nav" aria-label="Product sections">
+        <a class="sidebar-item" href="#hero">00 / Overview</a>
+        <a class="sidebar-item" href="#product">01 / How it works</a>
+        <a class="sidebar-item" href="#trick-demos">02 / Trick demos</a>
+        <a class="sidebar-item" href="#why-polara">03 / Why Polara</a>
+        <a class="sidebar-item" href="#about-polara">04 / About</a>
       </nav>
-      <a class="back-link" href="../selected-work.html" aria-label="Back to selected work">← Selected Work</a>
-      <div class="sidebar-footer" aria-hidden="true">Lumine<br>ID: LT–1997</div>
+      <a class="sidebar-download" href="https://apps.apple.com/app/id6772756796">Download ↗</a>
+      <a class="back-link" href="../index.html" aria-label="Back to Lumine homepage">← Lumine</a>
+      <div class="sidebar-footer" aria-hidden="true">Private iOS app<br>For pole dancers</div>
     </aside>
 
     <main class="main">
       <section class="section hero" id="hero" aria-labelledby="hero-title">
         <div class="section-inner">
-          <div class="section-label"><span>00 / Independent Product</span></div>
+          <div class="section-label"><span>00 / Pole Dance Tracker</span></div>
           <article class="hero-ticket">
             <div class="hero-copy">
-              <div class="hero-meta"><span>iOS / 2026</span><span>Designed + built solo</span></div>
-              <h1 class="hero-title" id="hero-title">Polara</h1>
+              <div class="hero-meta"><span>iPhone / iOS</span><span>Private · No account</span></div>
+              <h1 class="hero-title" id="hero-title">Polara<span class="hero-title-product">Pole Dance Tracker</span></h1>
               <h2 class="hero-kicker">Never forget a trick.</h2>
-              <p class="hero-deck">A private pole-training diary that helps dancers remember what they learned, track every session, and see how far they have come.</p>
+              <p class="hero-deck">Polara is a private iOS pole dance training journal and trick progress tracker. Log practice sessions, organize 100+ tricks, and see your progress over time—without creating an account.</p>
 
-              <div class="hero-details" aria-label="Project details">
-                <div class="detail-row"><span class="detail-label">Role</span><span class="detail-arrow">→</span><span>Independent product designer &amp; developer</span></div>
-                <div class="detail-row"><span class="detail-label">Scope</span><span class="detail-arrow">→</span><span>Strategy · UX/UI · iOS · Brand · Monetization</span></div>
+              <div class="hero-details" aria-label="Product details">
+                <div class="detail-row"><span class="detail-label">For</span><span class="detail-arrow">→</span><span>Pole dancers</span></div>
+                <div class="detail-row"><span class="detail-label">Tracks</span><span class="detail-arrow">→</span><span>Tricks · Sessions · Progress</span></div>
               </div>
 
               <div class="hero-bottom">
                 <p class="facts"><strong>100+</strong> pole tricks · <strong>5</strong> levels · <strong>3</strong> languages</p>
-                <a class="cta" href="https://apps.apple.com/app/id6772756796">View on App Store →</a>
+                <a class="cta" href="https://apps.apple.com/app/id6772756796">Download Polara →</a>
               </div>
             </div>
 
@@ -681,7 +1037,7 @@
 
       <section class="section" id="product" aria-labelledby="product-title">
         <div class="section-inner">
-          <div class="section-label"><span>01 / The Product</span></div>
+          <div class="section-label"><span>01 / How It Works</span></div>
           <h2 class="product-heading" id="product-title" data-reveal>Remember <span>→</span> Track <span>→</span> Reflect</h2>
 
           <div class="product-rail" aria-label="Scrollable Polara product story" data-reveal tabindex="0">
@@ -763,37 +1119,125 @@
             </article>
           </div>
 
-          <div class="rail-footer" data-reveal><span><span data-gallery-current>01</span> / 07</span><span>Scroll horizontally →</span></div>
-          <div class="rail-progress" aria-hidden="true"><div class="rail-progress-bar"></div></div>
         </div>
       </section>
 
-      <section class="section" id="thinking" aria-labelledby="thinking-title">
+      <section class="section" id="trick-demos" aria-labelledby="trick-demos-title">
         <div class="section-inner">
-          <div class="section-label"><span>02 / The Thinking</span></div>
+          <div class="section-label"><span>02 / Trick Demos</span></div>
+
+          <div class="demo-intro">
+            <h2 id="trick-demos-title" data-reveal>Multiple tricks.<br>One place to record your progress.</h2>
+            <p class="demo-intro-copy" data-reveal>Below are two representative examples: <strong>Ballerina and Ayesha.</strong> The complete library of 100+ tricks stays inside the app.</p>
+          </div>
+
+          <div class="demo-rail" aria-label="Scrollable Polara trick demos" data-reveal tabindex="0">
+            <article class="library-overview demo-card" data-demo-index="1">
+              <div class="library-overview-copy">
+                <span class="mode-label">Search &amp; filter</span>
+                <div>
+                  <h3>Find the shape you have in mind</h3>
+                  <p>Search by name, narrow the library by level, tag, or status, then open a visual reference without leaving your training record.</p>
+                </div>
+              </div>
+              <div class="library-shot">
+                <figure class="phone-frame"><img src="../assets/polara/demos/trick-library-dark.webp" alt="Polara trick library in dark mode with search, level, tag, and status filters" width="900" height="1957" loading="lazy"></figure>
+              </div>
+            </article>
+
+            <article class="trick-demo light demo-card" data-demo-index="2" aria-labelledby="ballerina-title">
+              <div class="trick-demo-copy">
+                <h3 id="ballerina-title">Ballerina</h3>
+                <p class="trick-description">An elegant ballerina-style shape that tests shoulder and back flexibility.</p>
+                <ul class="status-list" aria-label="Choose a progress state">
+                  <li><button class="status-button" type="button" aria-pressed="false">To learn</button></li>
+                  <li><button class="status-button" type="button" aria-pressed="false">Learning</button></li>
+                  <li><button class="status-button" type="button" aria-pressed="false">Landed</button></li>
+                </ul>
+                <p class="demo-note">Visual reference and progress tracking—not technique instruction.</p>
+              </div>
+              <div class="trick-demo-media" aria-label="Ballerina in Polara light mode">
+                <figure class="phone-frame"><img src="../assets/polara/demos/ballerina-light-detail.webp" alt="Ballerina trick detail in Polara light mode" width="900" height="1957" loading="lazy"></figure>
+              </div>
+            </article>
+
+            <article class="trick-demo dark demo-card" data-demo-index="3" aria-labelledby="ayesha-title">
+              <div class="trick-demo-copy">
+                <h3 id="ayesha-title">Ayesha</h3>
+                <p class="trick-description">A strength goal many dancers want, with several grip options including true grip, twisted grip, and elbow grip. Also known as static V.</p>
+                <ul class="status-list" aria-label="Choose a progress state">
+                  <li><button class="status-button" type="button" aria-pressed="false">To learn</button></li>
+                  <li><button class="status-button" type="button" aria-pressed="false">Learning</button></li>
+                  <li><button class="status-button" type="button" aria-pressed="false">Landed</button></li>
+                </ul>
+                <p class="demo-note">Visual reference and progress tracking—not technique instruction.</p>
+              </div>
+              <div class="trick-demo-media" aria-label="Ayesha in Polara dark mode">
+                <figure class="phone-frame"><img src="../assets/polara/demos/ayesha-dark-detail.webp" alt="Ayesha trick detail in Polara dark mode" width="900" height="1957" loading="lazy"></figure>
+              </div>
+            </article>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section" id="why-polara" aria-labelledby="why-polara-title">
+        <div class="section-inner">
+          <div class="section-label"><span>03 / Why Polara</span></div>
           <div class="thinking-grid">
             <div class="thinking-statement" data-reveal>
-              <h2 id="thinking-title">Pole dancers did not need another tutorial library. They needed a personal memory for their journey.</h2>
-              <p>The product decisions followed that principle.</p>
+              <h2 id="why-polara-title">Your pole journey deserves a memory of its own.</h2>
+              <p>Polara keeps the details of practice together, so progress is easier to see and return to.</p>
             </div>
 
             <div>
               <div class="decision-list">
                 <article class="decision" data-reveal style="--reveal-delay: 70ms">
                   <span class="decision-number">01</span>
-                  <div><h3>Simple progress states</h3><p>Learning, landed, and mastered are clear enough to use in seconds, but meaningful enough to show movement over time.</p></div>
+                  <div><h3>Pick up where you left off</h3><p>To learn, learning, and landed make it easy to remember what you want to try next and what is already taking shape.</p></div>
                 </article>
                 <article class="decision" data-reveal style="--reveal-delay: 140ms">
                   <span class="decision-number">02</span>
-                  <div><h3>Connected practice history</h3><p>Tricks and sessions reinforce each other, so a dancer can move from “what am I working on?” to “how has it evolved?” without maintaining two separate systems.</p></div>
+                  <div><h3>Every session stays connected</h3><p>Tricks, practice notes, duration, and progress live together, turning separate sessions into one continuous training history.</p></div>
                 </article>
                 <article class="decision" data-reveal style="--reveal-delay: 210ms">
                   <span class="decision-number">03</span>
-                  <div><h3>Private by design</h3><p>No account is required. Training data stays local, with backup and restore controlled by the person who created it.</p></div>
+                  <div><h3>Your training stays yours</h3><p>No account is required. Training data stays local, with backup and restore controlled by the dancer who created it.</p></div>
                 </article>
               </div>
 
-              <p class="build-note" data-reveal style="--reveal-delay: 280ms"><span>Designed and built independently</span> with React Native, Expo, TypeScript, and StoreKit—from first idea to launch.</p>
+              <a class="closing-download" href="https://apps.apple.com/app/id6772756796" data-reveal style="--reveal-delay: 280ms"><span>Your pole journey, remembered.</span><br>Download Polara on the App Store →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about-polara" aria-labelledby="about-polara-title">
+        <div class="section-inner">
+          <div class="section-label"><span>04 / About &amp; Methodology</span></div>
+          <div class="about-grid">
+            <div class="about-lead" data-reveal>
+              <h2 id="about-polara-title">Built from lived pole practice.</h2>
+              <p>Independent product · Original app material · Designed for personal progress</p>
+            </div>
+
+            <div class="about-list">
+              <article class="about-item" data-reveal style="--reveal-delay: 70ms">
+                <h3>About</h3>
+                <p>Polara is a private iPhone training journal for pole dancers. It helps dancers remember tricks, log sessions, and see progress over time; it is not a technique course or a replacement for an instructor.</p>
+              </article>
+              <article class="about-item" data-reveal style="--reveal-delay: 140ms">
+                <h3>Methodology</h3>
+                <p>Tricks are organized as visual references with names, short descriptions, levels, and personal states. The states are intentionally simple—To learn, Learning, and Landed—so each dancer can record progress in their own practice context.</p>
+              </article>
+              <article class="about-item" data-reveal style="--reveal-delay: 210ms">
+                <h3>Author</h3>
+                <p>Polara is independently designed, built, and maintained by <a href="../about-me/cv.html">Lumine</a>, a product designer, developer, and pole dancer. First-hand practice shapes what the app records and what it deliberately leaves to qualified teaching.</p>
+              </article>
+              <article class="about-item" data-reveal style="--reveal-delay: 280ms">
+                <h3>Original material</h3>
+                <p>The screenshots on this page were captured from the working iOS app. The Ballerina and Ayesha illustrations are Polara product artwork, shown here only as two representative examples rather than a public copy of the full trick library.</p>
+              </article>
             </div>
           </div>
         </div>
@@ -821,30 +1265,16 @@
       document.documentElement.classList.add("is-loaded");
     }
 
-    const rail = document.querySelector(".product-rail");
-    const current = document.querySelector("[data-gallery-current]");
-    const cards = document.querySelectorAll(".product-card");
-    const progressBar = document.querySelector(".rail-progress-bar");
-    if (supportsIntersectionObserver) {
-      const observer = new IntersectionObserver((entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible && current) current.textContent = String(visible.target.dataset.index).padStart(2, "0");
-      }, { root: rail, threshold: [0.5, 0.72] });
-      cards.forEach((card) => observer.observe(card));
-    }
+    document.querySelectorAll(".status-list").forEach((statusGroup) => {
+      statusGroup.addEventListener("click", (event) => {
+        const selectedButton = event.target.closest(".status-button");
+        if (!selectedButton) return;
 
-    let galleryFrame;
-    function updateGalleryProgress() {
-      const maxScroll = Math.max(1, rail.scrollWidth - rail.clientWidth);
-      const progress = (rail.scrollLeft / maxScroll) * (1 - 1 / cards.length) + 1 / cards.length;
-      progressBar.style.setProperty("--gallery-progress", String(progress));
-      galleryFrame = undefined;
-    }
-    rail.addEventListener("scroll", () => {
-      if (!galleryFrame) galleryFrame = requestAnimationFrame(updateGalleryProgress);
-    }, { passive: true });
-    window.addEventListener("resize", updateGalleryProgress, { passive: true });
-    updateGalleryProgress();
+        const wasSelected = selectedButton.getAttribute("aria-pressed") === "true";
+        statusGroup.querySelectorAll(".status-button").forEach((button) => button.setAttribute("aria-pressed", "false"));
+        selectedButton.setAttribute("aria-pressed", String(!wasSelected));
+      });
+    });
   </script>
 </body>
 </html>

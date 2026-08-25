@@ -6,9 +6,13 @@
 - **Pattern:** Use category labels such as `Selected Work` on the personal homepage instead of exposing an individual product name as a top-level act.
 - **Why:** This preserves the homepage's editorial structure and supports future projects.
 
-### Case-study restraint
-- **Pattern:** Keep the Polara case study to three major sections and fold implementation proof into the narrative.
-- **Why:** The personal website is intentionally minimal; many small sections make the page feel like a presentation deck.
+### Product-page restraint
+- **Pattern:** Keep Polara on one product-first page, and add only sections that directly improve product understanding, search relevance, or provenance.
+- **Why:** Inline demos and concise About/Methodology information help dancers and search systems without reviving a portfolio process deck or creating fragmented microsites.
+
+### One public Polara page
+- **Pattern:** Use the existing Polara page as the product landing page instead of maintaining a separate product page and case study.
+- **Why:** App Store remains the download destination, while one product-first web page avoids duplicate content and duplicated maintenance.
 
 ### Evidence placement
 - **Pattern:** Do not place early seed-user or social-engagement metrics on the Selected Work index.
@@ -17,6 +21,14 @@
 ### Product facts
 - **Pattern:** Use `100+ pole tricks` in current portfolio copy.
 - **Why:** The founder confirmed this as the current public-facing product scale; do not reuse the older repository count.
+
+### Protect the trick library
+- **Pattern:** Keep Polara's complete trick library inside the app; public web content may show only Ballerina and Ayesha as representative demos, embedded in the product page rather than separate trick pages.
+- **Why:** The library is a core product asset and publishing the full dataset would make it easy to copy. SEO should rely on strong product pages, original practitioner-led content, and a small illustrative demo rather than a crawlable replica of the database.
+
+### Trick demo presentation
+- **Pattern:** Present Search & Filter, Ballerina, and Ayesha as one compact horizontal card rail. Use the same split-copy/full-phone composition for each card, and never crop the status bar or lower controls. Omit level and theme labels from the web copy, and make the three progress states directly interactive.
+- **Why:** A consistent right-scroll rail matches the established How It Works interaction, reduces page length, and keeps complete product screens legible without revealing more library content.
 
 ### Design-system fidelity
 - **Pattern:** Before designing a new portfolio page, visually audit at least two existing subpages and reuse their actual shell, typography roles, spacing, borders, and interaction language.
