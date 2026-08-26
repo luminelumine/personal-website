@@ -2,6 +2,10 @@
 
 ## Patterns to Follow
 
+### Website release versioning
+- **Pattern:** Keep the site `VERSION` at `0.1.0.2` for content, presentation, and SEO iterations unless the founder explicitly requests a new version.
+- **Why:** A production content deployment does not automatically require a separate product-style version bump.
+
 ### Portfolio information architecture
 - **Pattern:** Use `Projects` on the personal homepage instead of `Selected Work` or an individual product name as a top-level act.
 - **Why:** This preserves the homepage's editorial structure and supports future projects. Use `projects.html` as the canonical URL and keep the former URL only as a compatibility redirect.
