@@ -14,12 +14,12 @@
   - [x] Step 1: Improve the current Polara page title, description, H1, hero copy, and CTA. Awaiting founder review before Step 2.
   - [x] Step 2: Convert the existing Polara case study into the product page after approval. Awaiting founder review before Step 3.
   - [x] Steps 3–4: Embed Ballerina and Ayesha demos in the product page, then add About, Methodology, authorship, and original supporting material. Awaiting founder review before Step 5.
-  - [ ] Step 5: Add sitemap, robots, canonical URLs, and structured data after approval.
+  - [x] Step 5: Add sitemap, robots, canonical URLs, and structured data after approval.
     - [x] Restore the site version to `0.1.0.2` and keep the approved portfolio cleanup in that release record.
     - [x] Add canonical URLs to every active public page.
     - [x] Add a root sitemap and robots discovery rule.
     - [x] Add visible-fact Polara mobile-application structured data.
-    - [x] Complete local validation. Awaiting founder review before Step 6.
+    - [x] Complete local validation and receive founder approval for deployment.
   - [ ] Step 6: Define the Search Console and analytics iteration workflow after approval.
 
 - [ ] Publish and verify SEO Step 5 on Vercel.
