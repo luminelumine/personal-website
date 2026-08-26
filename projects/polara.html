@@ -73,13 +73,18 @@
     }
 
     .sidebar-title {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--line);
       color: var(--text-mid);
       font-size: 13px;
       letter-spacing: 0.28em;
       line-height: 1.4;
+      text-decoration: none;
       text-transform: uppercase;
+      transition: color 180ms ease;
     }
 
     .sidebar-nav {
@@ -88,8 +93,7 @@
       margin-top: 26px;
     }
 
-    .sidebar-item,
-    .back-link {
+    .sidebar-item {
       display: flex;
       min-height: 44px;
       align-items: center;
@@ -116,16 +120,14 @@
 
     .sidebar-item:hover,
     .sidebar-item:focus-visible,
-    .back-link:hover,
-    .back-link:focus-visible { color: var(--text); }
+    .sidebar-title:hover,
+    .sidebar-title:focus-visible { color: var(--text); }
 
     .sidebar-item:hover::before,
     .sidebar-item:focus-visible::before {
       opacity: 1;
       box-shadow: 0 0 0 3px rgba(219, 127, 142, 0.08);
     }
-
-    .back-link { margin-top: 22px; }
 
     .sidebar-download {
       display: inline-flex;
@@ -151,17 +153,6 @@
       background: #b35769;
       border-color: var(--polara-blush);
       transform: translateY(-2px);
-    }
-
-    .sidebar-download + .back-link { margin-top: 10px; }
-
-    .sidebar-footer {
-      margin-top: auto;
-      color: rgba(210, 208, 200, 0.52);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      line-height: 2.1;
-      text-transform: uppercase;
     }
 
     .main { min-width: 0; }
@@ -229,21 +220,8 @@
       padding: clamp(30px, 4vw, 54px);
     }
 
-    .hero-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid var(--line);
-      color: var(--text-dim);
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      line-height: 1.5;
-      text-transform: uppercase;
-    }
-
     .hero-title {
-      margin-top: clamp(34px, 5vw, 66px);
+      margin-top: 0;
       font-size: clamp(38px, 5.4vw, 70px);
       font-weight: 400;
       letter-spacing: 0.19em;
@@ -380,12 +358,13 @@
     html.motion-ready.is-loaded .hero-media:hover img { transform: translateY(-6px) scale(1.008); }
 
     .product-heading {
-      width: min(840px, 100%);
+      width: 100%;
       margin-bottom: 38px;
-      font-size: clamp(28px, 4.3vw, 56px);
+      font-size: clamp(18px, 3.8vw, 56px);
       font-weight: 400;
       letter-spacing: 0.08em;
       line-height: 1.13;
+      white-space: nowrap;
       text-transform: uppercase;
     }
 
@@ -504,8 +483,9 @@
 
     .library-overview {
       display: grid;
-      grid-template-columns: minmax(340px, 0.95fr) minmax(360px, 1.05fr);
-      min-height: 620px;
+      grid-template-columns: minmax(180px, 0.82fr) minmax(240px, 1fr);
+      height: 470px;
+      min-height: 470px;
       overflow: hidden;
       background: var(--polara-bg);
       border: 1px solid var(--line);
@@ -515,7 +495,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 36px;
+      padding: clamp(24px, 3vw, 38px);
       border-right: 1px solid var(--line);
     }
 
@@ -529,8 +509,8 @@
 
     .library-overview h3 {
       margin-top: auto;
-      padding-top: 48px;
-      font-size: clamp(22px, 3vw, 38px);
+      padding-top: 26px;
+      font-size: clamp(20px, 2.5vw, 32px);
       font-weight: 400;
       letter-spacing: 0.09em;
       line-height: 1.2;
@@ -538,7 +518,7 @@
     }
 
     .library-overview p {
-      margin-top: 18px;
+      margin-top: 14px;
       color: var(--text-mid);
       font-size: 15px;
       letter-spacing: 0.04em;
@@ -549,7 +529,7 @@
       display: grid;
       place-items: center;
       min-width: 0;
-      padding: 28px;
+      padding: 18px;
       background: linear-gradient(145deg, rgba(219, 127, 142, 0.08), transparent 45%);
       border-left: 1px solid var(--line);
     }
@@ -571,7 +551,9 @@
     .demo-rail::-webkit-scrollbar-thumb { background: var(--polara-taupe); }
 
     .demo-card {
-      flex: 0 0 min(760px, 78%);
+      flex: 0 0 min(740px, 72%);
+      height: 470px;
+      min-height: 470px;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       transition: border-color 220ms ease-out, transform 320ms var(--ease-out);
@@ -581,8 +563,9 @@
 
     .trick-demo {
       display: grid;
-      grid-template-columns: minmax(340px, 0.95fr) minmax(360px, 1.05fr);
-      min-height: 620px;
+      grid-template-columns: minmax(180px, 0.82fr) minmax(240px, 1fr);
+      height: 470px;
+      min-height: 470px;
       overflow: hidden;
       border: 1px solid var(--line);
     }
@@ -591,20 +574,20 @@
       display: flex;
       min-width: 0;
       flex-direction: column;
-      padding: 36px;
+      padding: clamp(24px, 3vw, 38px);
     }
 
     .trick-demo h3 {
-      margin-top: clamp(36px, 5vw, 64px);
-      font-size: clamp(28px, 3.4vw, 44px);
+      margin-top: 18px;
+      font-size: clamp(24px, 3vw, 36px);
       font-weight: 400;
       letter-spacing: 0.04em;
       line-height: 1.12;
     }
 
     .trick-description {
-      margin-top: 22px;
-      font-size: 16px;
+      margin-top: 14px;
+      font-size: 14px;
       letter-spacing: 0.03em;
       line-height: 1.72;
     }
@@ -613,7 +596,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 26px;
+      margin-top: 18px;
       list-style: none;
     }
 
@@ -651,7 +634,7 @@
 
     .demo-note {
       margin-top: auto;
-      padding-top: 38px;
+      padding-top: 14px;
       font-size: 11px;
       letter-spacing: 0.13em;
       line-height: 1.65;
@@ -661,17 +644,18 @@
     .trick-demo-media {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      min-height: 620px;
+      height: 470px;
+      min-height: 0;
       place-items: center;
       min-width: 0;
-      padding: clamp(28px, 4vw, 48px);
+      padding: 18px;
       border-left: 1px solid currentColor;
     }
 
     .phone-frame {
       display: grid;
       place-items: center;
-      width: min(250px, 78%);
+      width: min(180px, 72%);
       min-width: 0;
       padding: 6px;
       overflow: hidden;
@@ -841,30 +825,6 @@
       line-height: 1.7;
     }
 
-    .closing-download {
-      display: block;
-      margin-top: 30px;
-      padding: 24px;
-      background: var(--card-deep);
-      border: 1px solid var(--line);
-      color: var(--text-mid);
-      font-size: 16px;
-      letter-spacing: 0.07em;
-      line-height: 1.8;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-    }
-
-    .closing-download span { color: var(--polara-pink); }
-
-    .closing-download:hover,
-    .closing-download:focus-visible {
-      background: var(--polara-surface);
-      border-color: var(--polara-taupe);
-      transform: translateY(-2px);
-    }
-
     [contenteditable="true"] { outline: none; }
     [contenteditable="true"]:focus { box-shadow: inset 0 -1px 0 var(--polara-pink); }
     :focus-visible { outline: 1px solid var(--polara-pink); outline-offset: 4px; }
@@ -885,7 +845,8 @@
       .hero-ticket { grid-template-columns: minmax(0, 1.12fr) minmax(290px, 0.88fr); }
       .hero-copy { padding: 34px; }
       .hero-title { font-size: clamp(38px, 5vw, 52px); }
-      .product-card { flex-basis: 82%; }
+      .product-card,
+      .demo-card { flex-basis: 82%; }
     }
 
     @media (max-width: 768px) {
@@ -897,19 +858,21 @@
       .hero-media { grid-row: 1; min-height: 390px; border-bottom: 1px solid var(--line); border-left: 0; }
       .hero-media img { max-height: 360px; }
       .hero-copy { min-height: 580px; }
-      .product-card { grid-template-columns: 1fr; flex-basis: 86%; min-height: 0; }
-      .product-shot { border-right: 0; border-bottom: 1px solid var(--line); }
-      .product-shot img { height: 360px; }
-      .product-copy { min-height: 260px; }
+      .product-card,
+      .demo-card { flex-basis: 86%; height: 700px; min-height: 700px; }
+      .product-card { grid-template-columns: 1fr; grid-template-rows: 380px 320px; }
+      .product-shot { height: 380px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .product-shot img { height: 344px; }
+      .product-copy { height: 320px; min-height: 0; }
       .demo-intro,
-      .library-overview,
-      .trick-demo,
       .about-grid { grid-template-columns: 1fr; }
-      .library-overview-copy { min-height: 300px; border-right: 0; border-bottom: 1px solid var(--line); }
-      .trick-demo-copy { min-height: 440px; }
-      .library-shot { border-left: 0; }
-      .trick-demo-media { min-height: 560px; border-top: 1px solid currentColor; border-left: 0; }
-      .demo-card { flex-basis: 88%; }
+      .library-overview,
+      .trick-demo { grid-template-columns: 1fr; grid-template-rows: 320px 380px; height: 700px; min-height: 700px; }
+      .library-overview-copy,
+      .trick-demo-copy { height: 320px; min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+      .library-shot,
+      .trick-demo-media { height: 380px; min-height: 380px; border-top: 0; border-left: 0; }
+      .phone-frame { width: min(160px, 65%); }
       .about-lead { position: static; }
       .thinking-grid { grid-template-columns: 1fr; }
       .thinking-statement { position: static; }
@@ -929,9 +892,7 @@
         border-bottom: 1px solid var(--line);
       }
       .sidebar-title { padding: 0; border: 0; font-size: 12px; }
-      .sidebar-nav,
-      .sidebar-footer,
-      .back-link { display: none; }
+      .sidebar-nav { display: none; }
       .sidebar-download { min-height: 44px; margin: 0; padding: 0 12px; font-size: 10px; }
       .section { padding: 26px 16px 40px; scroll-margin-top: 80px; }
       .hero-ticket { min-height: 0; }
@@ -939,38 +900,42 @@
       .hero-media::before { inset: 12px; }
       .hero-media img { max-height: 310px; }
       .hero-copy { min-height: 590px; padding: 26px 22px; }
-      .hero-meta { gap: 16px; font-size: 11px; }
       .hero-title { font-size: 37px; }
       .hero-kicker { font-size: 15px; }
       .hero-deck { font-size: 16px; }
       .detail-row { grid-template-columns: 66px 10px minmax(0, 1fr); font-size: 12px; }
       .hero-bottom { grid-template-columns: 1fr; align-items: stretch; }
       .cta { width: 100%; }
-      .product-heading { margin-bottom: 26px; font-size: 28px; }
+      .product-heading { margin-bottom: 26px; }
       .product-rail { gap: 10px; }
-      .product-card { flex-basis: 92%; }
+      .product-card,
+      .demo-card { flex-basis: 92%; height: 630px; min-height: 630px; }
+      .product-card { grid-template-rows: 300px 330px; }
+      .library-overview,
+      .trick-demo { grid-template-rows: 330px 300px; height: 630px; min-height: 630px; }
+      .product-shot,
+      .library-shot,
+      .trick-demo-media { height: 300px; min-height: 300px; }
       .product-shot { padding: 12px; }
-      .product-shot img { height: 330px; }
-      .product-copy { min-height: 250px; padding: 24px 20px; }
+      .product-shot img { height: 276px; }
+      .product-copy,
+      .library-overview-copy,
+      .trick-demo-copy { height: 330px; min-height: 0; padding: 22px 20px; }
       .product-card h3 { padding-top: 34px; font-size: 22px; }
       .demo-intro { gap: 22px; margin-bottom: 28px; }
       .demo-intro h2 { font-size: 30px; }
-      .library-overview-copy { min-height: 270px; padding: 24px 20px; }
       .library-shot { padding: 24px 18px; }
       .demo-rail { gap: 10px; }
-      .demo-card { flex-basis: 92%; }
-      .trick-demo-copy { min-height: 360px; padding: 26px 22px; }
-      .trick-demo h3 { margin-top: 48px; font-size: 31px; }
-      .trick-demo-media { min-height: 0; padding: 24px 18px; }
-      .phone-frame { width: min(210px, 100%); border-radius: 32px; }
-      .phone-frame img { border-radius: 29px; }
+      .trick-demo h3 { margin-top: 10px; font-size: 28px; }
+      .trick-demo-media { padding: 16px; }
+      .phone-frame { width: min(116px, 46%); border-radius: 26px; }
+      .phone-frame img { border-radius: 23px; }
       .about-grid { gap: 34px; }
       .about-lead h2 { font-size: 28px; }
       .about-item { grid-template-columns: 1fr; gap: 10px; }
       .thinking-grid { gap: 34px; }
       .thinking-statement h2 { font-size: 24px; }
       .decision { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
-      .closing-download { padding: 20px; }
     }
 
     @media (prefers-color-scheme: light) { :root { color-scheme: dark; } }
@@ -993,7 +958,7 @@
 <body>
   <div class="shell">
     <aside class="sidebar" aria-label="Polara product navigation">
-      <div class="sidebar-title">Polara</div>
+      <a class="sidebar-title" href="../projects.html" aria-label="Back to Projects">← Back</a>
       <nav class="sidebar-nav" aria-label="Product sections">
         <a class="sidebar-item" href="#hero">00 / Overview</a>
         <a class="sidebar-item" href="#product">01 / How it works</a>
@@ -1002,17 +967,14 @@
         <a class="sidebar-item" href="#about-polara">04 / About</a>
       </nav>
       <a class="sidebar-download" href="https://apps.apple.com/app/id6772756796">Download ↗</a>
-      <a class="back-link" href="../index.html" aria-label="Back to Lumine homepage">← Lumine</a>
-      <div class="sidebar-footer" aria-hidden="true">Private iOS app<br>For pole dancers</div>
     </aside>
 
     <main class="main">
       <section class="section hero" id="hero" aria-labelledby="hero-title">
         <div class="section-inner">
-          <div class="section-label"><span>00 / Pole Dance Tracker</span></div>
+          <div class="section-label"><span>00 / Overview</span></div>
           <article class="hero-ticket">
             <div class="hero-copy">
-              <div class="hero-meta"><span>iPhone / iOS</span><span>Private · No account</span></div>
               <h1 class="hero-title" id="hero-title">Polara<span class="hero-title-product">Pole Dance Tracker</span></h1>
               <h2 class="hero-kicker">Never forget a trick.</h2>
               <p class="hero-deck">Polara is a private iOS pole dance training journal and trick progress tracker. Log practice sessions, organize 100+ tricks, and see your progress over time—without creating an account.</p>
@@ -1206,7 +1168,6 @@
                 </article>
               </div>
 
-              <a class="closing-download" href="https://apps.apple.com/app/id6772756796" data-reveal style="--reveal-delay: 280ms"><span>Your pole journey, remembered.</span><br>Download Polara on the App Store →</a>
             </div>
           </div>
         </div>
