@@ -14,8 +14,19 @@
   - [x] Step 1: Improve the current Polara page title, description, H1, hero copy, and CTA. Awaiting founder review before Step 2.
   - [x] Step 2: Convert the existing Polara case study into the product page after approval. Awaiting founder review before Step 3.
   - [x] Steps 3–4: Embed Ballerina and Ayesha demos in the product page, then add About, Methodology, authorship, and original supporting material. Awaiting founder review before Step 5.
-  - [ ] Step 5: Add sitemap, robots, canonical URLs, and structured data after approval.
+  - [x] Step 5: Add sitemap, robots, canonical URLs, and structured data after approval.
+    - [x] Restore the site version to `0.1.0.2` and keep the approved portfolio cleanup in that release record.
+    - [x] Add canonical URLs to every active public page.
+    - [x] Add a root sitemap and robots discovery rule.
+    - [x] Add visible-fact Polara mobile-application structured data.
+    - [x] Complete local validation and receive founder approval for deployment.
   - [ ] Step 6: Define the Search Console and analytics iteration workflow after approval.
+
+- [ ] Publish and verify SEO Step 5 on Vercel.
+  - [x] Preserve site version `0.1.0.2` and complete local release QA.
+  - [ ] Create and merge the SEO Step 5 pull request.
+  - [ ] Wait for the Vercel production deployment.
+  - [ ] Verify live sitemap, robots, canonicals, structured data, and responsive rendering.
 
 - [x] Strengthen the Polara App Store CTA and audit the page against the shared SEO guidance.
   - [x] Restyle the hero CTA with a Polara-pink fill and white text.
@@ -39,12 +50,12 @@
   - [x] Implement the responsive image-fit change.
   - [x] Verify desktop and mobile gallery behaviour and legibility.
 
-- [ ] Publish the approved portfolio cleanup v0.1.0.3 to luminetong.xyz.
+- [x] Publish the approved portfolio cleanup to luminetong.xyz while retaining site version `0.1.0.2`.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
-  - [ ] Create and merge the v0.1.0.3 release pull request.
-  - [ ] Wait for the Vercel production deployment.
-  - [ ] Verify the production homepage, Selected Work index, and Polara product page.
+  - [x] Create and merge the portfolio cleanup pull request.
+  - [x] Wait for the Vercel production deployment.
+  - [x] Verify the production homepage, Projects index, and Polara product page.
 
 - [x] Inspect the personal website and Polara product context.
 - [x] Define the Selected Work information architecture.
@@ -92,6 +103,13 @@
   errors. Homepage → Projects → Polara, Writings → article → Writings, the
   legacy Selected Work redirect, Polara status controls, and both horizontal
   rails passed. Health score: 100/100; no QA fixes were required.
+- SEO Step 5 adds one canonical URL to each of the 11 active public pages and
+  lists the same set in the root sitemap. `robots.txt` points crawlers to that
+  sitemap; the legacy Selected Work redirect and draft/orphan pages remain out.
+  Polara now exposes `MobileApplication` JSON-LD with its App Store destination,
+  free offer, author, screenshot, platform, and only product features supported
+  by visible page copy. XML, JSON, canonical/sitemap parity, desktop and mobile
+  rendering, broken-image, overflow, and browser-console checks all passed.
 
 - Approved structure: Homepage `Selected Work` entry → Selected Work index → Polara.
 - Polara uses one product-first page; representative trick demos and product provenance live inline rather than on separate trick URLs.
