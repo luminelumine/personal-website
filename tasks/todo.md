@@ -20,13 +20,24 @@
     - [x] Add a root sitemap and robots discovery rule.
     - [x] Add visible-fact Polara mobile-application structured data.
     - [x] Complete local validation and receive founder approval for deployment.
-  - [ ] Step 6: Define the Search Console and analytics iteration workflow after approval.
+  - [ ] Step 6: Establish the search measurement and iteration workflow.
+    - [x] Verify the live Google, Bing, and OAI-SearchBot crawl prerequisites.
+    - [x] Define the Google/Bing setup, weekly query review, decision rules, and monthly AI-search check.
+    - [x] Keep client-side analytics out until a specific conversion question and privacy tradeoff are approved.
+    - [x] Connect and verify the `luminetong.xyz` Google Search Console property.
+    - [x] Submit the sitemap and inspect the Polara URL in Google.
+    - [x] Request priority crawling for the Polara product URL once.
+    - [ ] Confirm Google has successfully re-read the sitemap, then inspect it in Bing.
+  - [x] Step 7: Strengthen relevance for `pole dance app` after initial indexing.
+    - [x] Align the Polara title, description, H1, structured data, Projects copy, and About copy with the product category.
+    - [x] Add three concise, visible product FAQs without adding an account FAQ or exposing more of the trick library.
+    - [x] Verify metadata, heading structure, responsive layout, links, and console output.
 
-- [ ] Publish and verify SEO Step 5 on Vercel.
+- [x] Publish and verify SEO Step 5 on Vercel.
   - [x] Preserve site version `0.1.0.2` and complete local release QA.
-  - [ ] Create and merge the SEO Step 5 pull request.
-  - [ ] Wait for the Vercel production deployment.
-  - [ ] Verify live sitemap, robots, canonicals, structured data, and responsive rendering.
+  - [x] Create and merge the SEO Step 5 pull request.
+  - [x] Wait for the Vercel production deployment.
+  - [x] Verify live sitemap, robots, canonicals, structured data, and responsive rendering.
 
 - [x] Strengthen the Polara App Store CTA and audit the page against the shared SEO guidance.
   - [x] Restyle the hero CTA with a Polara-pink fill and white text.
@@ -110,6 +121,28 @@
   free offer, author, screenshot, platform, and only product features supported
   by visible page copy. XML, JSON, canonical/sitemap parity, desktop and mobile
   rendering, broken-image, overflow, and browser-console checks all passed.
+- SEO Step 5 shipped through PR #5. Vercel reported a successful production
+  deployment for merge `7e1ff2d`; live checks confirmed version `0.1.0.2`, all
+  11 sitemap URLs, crawler discovery, Polara canonical and application schema,
+  HTTP 200, zero broken images, zero console errors, and zero overflow at
+  1440×900 and 375×812.
+- SEO Step 6 starts with search-platform measurement instead of adding a tracking
+  script. The operations guide defines Search Console and Bing setup, a weekly
+  28-day comparison, query clusters, decision rules, monthly AI-search prompts,
+  and a privacy gate before any App Store click analytics.
+- The `luminetong.xyz` domain property is verified in Google Search Console and
+  its sitemap was submitted on 2026-08-26. Google's first sitemap processing
+  attempt reported `Couldn't fetch` even though the live endpoint returns HTTP
+  200, valid XML, and all 11 URLs. Google subsequently crawled and indexed the
+  Polara product URL. Bing imported the property, accepted the sitemap for
+  processing, discovered Polara, and accepted a one-time indexing request.
+- SEO Step 7 aligns the page's title, description, H1, visible opening copy,
+  `MobileApplication` description, Projects card, and About text around the
+  accurate category phrase `pole dance app`. A new three-question FAQ reuses the
+  established editorial grid, excludes the rejected account question, and keeps
+  the complete trick library inside the app. JSON-LD parsing, heading/fragment
+  structure, 1440px/768px/375px rendering, horizontal overflow, and browser
+  console checks all passed.
 
 - Approved structure: Homepage `Selected Work` entry → Selected Work index → Polara.
 - Polara uses one product-first page; representative trick demos and product provenance live inline rather than on separate trick URLs.
