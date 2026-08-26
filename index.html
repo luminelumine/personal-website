@@ -209,9 +209,9 @@
 
     /* Info panel top block */
     .info-top {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+      display: grid;
+      grid-template-rows: repeat(3, minmax(0, auto));
+      row-gap: 10px;
     }
 
     /* Each info row */
@@ -220,12 +220,11 @@
       grid-template-columns: 90px 12px 1fr;
       align-items: baseline;
       gap: 0 0;
-      margin-bottom: 10px;
+      min-height: 19px;
+      line-height: 1.45;
       opacity: 0;
       transform: translateX(8px);
     }
-
-    .info-row.spacer { margin-bottom: 18px; }
 
     /* staggered reveal */
     #ticket.loaded .info-row:nth-child(1)  { animation: rowIn 0.6s ease 0.5s forwards; }
@@ -262,32 +261,19 @@
       text-transform: uppercase;
     }
 
-    /* ── Perforated divider row ── */
-    .perf-divider {
+    /* ── Section divider ── */
+    .section-divider {
       margin: 14px 0;
-      display: flex;
-      align-items: center;
+      border-top: 1px solid var(--divider);
       opacity: 0;
       animation: rowIn 0.6s ease 1.22s forwards;
     }
 
-    .perf-divider span {
-      font-family: var(--mono);
-      font-size: 13px;
-      letter-spacing: 0.22em;
-      color: var(--text-label);
-      line-height: 1;
-      display: block;
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
     /* ── ACT rows (links) ── */
     .act-block {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: grid;
+      grid-template-rows: repeat(3, minmax(0, auto));
+      row-gap: 10px;
     }
 
     .act-row {
@@ -295,6 +281,8 @@
       grid-template-columns: 90px 12px 1fr;
       align-items: baseline;
       gap: 0 0;
+      min-height: 19px;
+      line-height: 1.45;
       opacity: 0;
       transform: translateX(8px);
       text-decoration: none;
@@ -550,12 +538,10 @@
       #tear { left: 40%; }
 
       #info-panel { padding: 16px 18px 12px; }
-      .info-row, .act-row { grid-template-columns: 76px 12px 1fr; margin-bottom: 8px; }
-      .act-block { gap: 0; }
-      .info-row.spacer { margin-bottom: 12px; }
+      .info-row, .act-row { grid-template-columns: 76px 12px 1fr; }
+      .info-top, .act-block { row-gap: 8px; }
       .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value { font-size: 12px; }
-      .perf-divider { margin: 10px 0; }
-      .perf-divider span { font-size: 10px; }
+      .section-divider { margin: 10px 0; }
       .bottom-left, .bottom-right { font-size: 10px; letter-spacing: 0.14em; }
 
       #music-player {
@@ -595,9 +581,8 @@
       }
 
       #info-panel { padding: 14px 14px 12px; }
-      .info-row, .act-row { grid-template-columns: 74px 10px 1fr; margin-bottom: 8px; }
-      .act-block { gap: 0; }
-      .info-row.spacer { margin-bottom: 12px; }
+      .info-row, .act-row { grid-template-columns: 74px 10px 1fr; }
+      .info-top, .act-block { row-gap: 8px; }
       .info-label, .act-label, .info-arrow, .act-arrow, .info-value, .act-value {
         font-size: 13px;
         letter-spacing: 0.11em;
@@ -653,11 +638,6 @@
           <span class="info-arrow">&gt;</span>
           <span class="info-value">Lumine Tong</span>
         </div>
-        <div class="info-row spacer">
-          <span class="info-label">Trait</span>
-          <span class="info-arrow">&gt;</span>
-          <span class="info-value">Rigorous</span>
-        </div>
         <div class="info-row">
           <span class="info-label">Date</span>
           <span class="info-arrow">&gt;</span>
@@ -670,9 +650,7 @@
         </div>
       </div>
 
-      <div class="perf-divider">
-        <span id="perf-text"></span>
-      </div>
+      <div class="section-divider" aria-hidden="true"></div>
 
       <div class="act-block">
         <a class="act-row" href="about-me/cv.html" onclick="goTo('about-me/cv.html'); return false;">
@@ -685,10 +663,10 @@
           <span class="act-arrow">&gt;</span>
           <span class="act-value"><span class="act-value-inner">Writings</span></span>
         </a>
-        <a class="act-row" href="selected-work.html" onclick="goTo('selected-work.html'); return false;">
+        <a class="act-row" href="projects.html" onclick="goTo('projects.html'); return false;">
           <span class="act-label">Act 03</span>
           <span class="act-arrow">&gt;</span>
-          <span class="act-value"><span class="act-value-inner">Selected Work</span></span>
+          <span class="act-value"><span class="act-value-inner">Projects</span></span>
         </a>
       </div>
     </div>
@@ -696,9 +674,7 @@
     <!-- spacer pushes bottom-strip to the bottom -->
     <div id="panel-spacer"></div>
 
-    <div id="bottom-strip">
-      <span class="bottom-right">LT-1997 &copy; 2026</span>
-    </div>
+    <div id="bottom-strip"></div>
   </div>
 
 </div>
@@ -773,18 +749,6 @@
 <div id="fade"></div>
 
 <script>
-  /* ── Perforated divider fill ── */
-  (function() {
-    const el = document.getElementById('perf-text');
-    const fill = () => {
-      const w = el.parentElement.offsetWidth;
-      const chars = Math.floor(w / 5.8); // approx char width at 8px mono
-      el.textContent = Array(Math.max(chars, 10)).fill('L').join(' ');
-    };
-    fill();
-    window.addEventListener('resize', fill);
-  })();
-
   /* ── Photo slideshow — inline manifest ── */
   function buildSlides() {
     const panel      = document.getElementById('photo-panel');

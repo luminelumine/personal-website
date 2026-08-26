@@ -3,8 +3,12 @@
 ## Patterns to Follow
 
 ### Portfolio information architecture
-- **Pattern:** Use category labels such as `Selected Work` on the personal homepage instead of exposing an individual product name as a top-level act.
-- **Why:** This preserves the homepage's editorial structure and supports future projects.
+- **Pattern:** Use `Projects` on the personal homepage instead of `Selected Work` or an individual product name as a top-level act.
+- **Why:** This preserves the homepage's editorial structure and supports future projects. Use `projects.html` as the canonical URL and keep the former URL only as a compatibility redirect.
+
+### Homepage vertical rhythm
+- **Pattern:** Treat the homepage information rows and navigation rows as matching three-row grids with identical row gaps and equal spacing above and below their divider.
+- **Why:** Removing a metadata row must not leave the upper and lower sections with visibly different rhythm.
 
 ### Product-page restraint
 - **Pattern:** Keep Polara on one product-first page, and add only sections that directly improve product understanding, search relevance, or provenance.
@@ -15,7 +19,7 @@
 - **Why:** App Store remains the download destination, while one product-first web page avoids duplicate content and duplicated maintenance.
 
 ### Evidence placement
-- **Pattern:** Do not place early seed-user or social-engagement metrics on the Selected Work index.
+- **Pattern:** Do not place early seed-user or social-engagement metrics on the Projects index.
 - **Why:** The index should communicate project identity, role, and scope without overstating early promotional signals.
 
 ### Product facts

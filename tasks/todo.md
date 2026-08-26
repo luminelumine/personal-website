@@ -2,6 +2,14 @@
 
 ## Current Sprint
 
+- [ ] Simplify the portfolio one approved step at a time.
+  - [x] Step 1: Remove lower-left `LUMINE / LT-1997` identity labels sitewide.
+  - [x] Step 2: Rename `Selected Work` to `Projects`, move the canonical page to `projects.html`, and keep the old URL compatible.
+  - [x] Step 3: Simplify the homepage divider and metadata.
+  - [x] Step 4: Simplify the Projects page intro and project stats.
+  - [x] Step 5: Simplify the Polara navigation, overview, card layout, and closing CTA.
+  - [x] Run final cross-page QA after all five review gates; release only after approval.
+
 - [ ] Implement the approved SEO roadmap one review gate at a time.
   - [x] Step 1: Improve the current Polara page title, description, H1, hero copy, and CTA. Awaiting founder review before Step 2.
   - [x] Step 2: Convert the existing Polara case study into the product page after approval. Awaiting founder review before Step 3.
@@ -31,10 +39,10 @@
   - [x] Implement the responsive image-fit change.
   - [x] Verify desktop and mobile gallery behaviour and legibility.
 
-- [ ] Publish the approved Polara product page v0.1.0.2 to luminetong.xyz.
+- [ ] Publish the approved portfolio cleanup v0.1.0.3 to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
-  - [ ] Create and merge the v0.1.0.2 release pull request.
+  - [ ] Create and merge the v0.1.0.3 release pull request.
   - [ ] Wait for the Vercel production deployment.
   - [ ] Verify the production homepage, Selected Work index, and Polara product page.
 
@@ -51,6 +59,39 @@
 - [x] Verify desktop and mobile behaviour.
 
 ## Review Notes
+
+- Portfolio cleanup Step 1 removes the lower-left identity labels from the homepage,
+  Projects, Writings, and all six research article sidebars while retaining every
+  article and index-page Back link. Static search, desktop/mobile overflow checks,
+  and representative visual inspection passed; Step 2 remains gated on approval.
+- Portfolio cleanup Step 2 changes the homepage act, Projects sidebar, document title,
+  metadata, and navigation label from `Selected Work` to `Projects`. The canonical
+  page now lives at `projects.html`; `selected-work.html` is a noindex compatibility
+  redirect. The real homepage click-through, 1440px and 375px layouts, and page
+  overflow checks passed.
+- Portfolio cleanup Step 3 removes the entire Trait row and replaces the generated
+  `L L L...` divider with a semantic-free 1px horizontal rule. The earlier identity
+  cleanup already removed `LT-1997 © 2026`. Desktop/mobile checks confirmed the old
+  text is absent, the divider spans the panel, and no horizontal overflow was added.
+  A design-html refinement then converts both three-row groups to matching grids:
+  desktop row steps are 29px with 14px on either side of the divider; tablet/mobile
+  row steps are 27px with 10px on either side. All measured values match exactly.
+- Portfolio cleanup Step 4 removes the Projects collection metadata and the `100+`
+  trick statistic. The remaining Explore Polara action aligns to the lower-right on
+  desktop and stays full-width on mobile. Checks at 1440px and 375px passed with the
+  removed copy absent, the CTA visible, and no horizontal overflow.
+- Portfolio cleanup Step 5 moves a unified `Back` control to the upper-left, relabels
+  the opening section `00 / Overview`, removes the sidebar product descriptor and
+  device/privacy metadata, and keeps `Remember → Track → Reflect` on one line. The
+  closing download panel is removed. Sections 01 and 02 now share exact card sizes:
+  740×470px desktop, 455×700px tablet, and 302×630px mobile. Checks at 1440px,
+  768px, and 375px passed without overflow; status-button interaction, Projects
+  return navigation, and all horizontally lazy-loaded images were also verified.
+- Final release QA covered 11 pages at 1440×900 and 375×812. All pages loaded
+  without horizontal overflow, broken images, empty links, or isolated console
+  errors. Homepage → Projects → Polara, Writings → article → Writings, the
+  legacy Selected Work redirect, Polara status controls, and both horizontal
+  rails passed. Health score: 100/100; no QA fixes were required.
 
 - Approved structure: Homepage `Selected Work` entry → Selected Work index → Polara.
 - Polara uses one product-first page; representative trick demos and product provenance live inline rather than on separate trick URLs.

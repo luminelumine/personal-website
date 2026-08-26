@@ -2,6 +2,18 @@
 
 All notable changes to this website are documented here.
 
+## [0.1.0.3] - 2026-08-26
+
+### Changed
+
+- Renamed Selected Work to Projects and moved the canonical project index to `projects.html`, while preserving the former URL as a compatibility redirect.
+- Simplified the homepage identity panel, metadata, divider, and spacing rhythm.
+- Tightened the Projects index and Polara product page navigation, overview, responsive card rails, and closing content.
+
+### Removed
+
+- Removed repeated portfolio identity labels and redundant project/product metadata across the site.
+
 ## [0.1.0.2] - 2026-08-26
 
 ### Added
