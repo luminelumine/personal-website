@@ -39,10 +39,10 @@
   - [x] Implement the responsive image-fit change.
   - [x] Verify desktop and mobile gallery behaviour and legibility.
 
-- [ ] Publish the approved Polara product page v0.1.0.2 to luminetong.xyz.
+- [ ] Publish the approved portfolio cleanup v0.1.0.3 to luminetong.xyz.
   - [x] Confirm GitHub/Vercel deployment infrastructure and production domain.
   - [x] Run release checks.
-  - [ ] Create and merge the v0.1.0.2 release pull request.
+  - [ ] Create and merge the v0.1.0.3 release pull request.
   - [ ] Wait for the Vercel production deployment.
   - [ ] Verify the production homepage, Selected Work index, and Polara product page.
 
