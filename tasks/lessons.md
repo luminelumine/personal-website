@@ -6,6 +6,10 @@
 - **Pattern:** Keep the site `VERSION` at `0.1.0.2` for content, presentation, and SEO iterations unless the founder explicitly requests a new version.
 - **Why:** A production content deployment does not automatically require a separate product-style version bump.
 
+### Measure before adding trackers
+- **Pattern:** Use Search Console and Bing Webmaster Tools as the first SEO measurement layer; add client-side analytics only after defining a specific conversion question and approving its privacy tradeoff.
+- **Why:** Indexing and search-query data do not require visitor tracking, and Polara's privacy positioning should be reflected in its website operations.
+
 ### Portfolio information architecture
 - **Pattern:** Use `Projects` on the personal homepage instead of `Selected Work` or an individual product name as a top-level act.
 - **Why:** This preserves the homepage's editorial structure and supports future projects. Use `projects.html` as the canonical URL and keep the former URL only as a compatibility redirect.
